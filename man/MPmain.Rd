@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions-protein-requirements.R
 \name{MPmain}
 \alias{MPmain}
-\title{NASEM (2021) equation to predict the total net protein (NP) requirement - Eq. 10-13.}
+\title{NASEM (2021) equation to predict the total maintenance net protein (NP) requirement - Eq. 10-13.}
 \usage{
 MPmain(scurf_cp = 2, endogenous_urinary_cp = 17, metabolic_fecal_cp = 17)
 }
@@ -17,7 +17,7 @@ MPmain(scurf_cp = 2, endogenous_urinary_cp = 17, metabolic_fecal_cp = 17)
 The total maintenance net protein (NP) requirement (g/d)
 }
 \description{
-NASEM (2021) equation to predict the total net protein (NP) requirement - Eq. 10-13.
+NASEM (2021) equation to predict the total maintenance net protein (NP) requirement - Eq. 10-13.
 }
 \examples{
 MPmain(scurf_cp = 2, endogenous_urinary_cp = 17, metabolic_fecal_cp  = 17)

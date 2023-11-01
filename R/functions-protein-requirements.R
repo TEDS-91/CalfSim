@@ -51,7 +51,7 @@ metabolic_fecal_cp <- function(liqDietDMI   = 0.7,
 
 }
 
-#' NASEM (2021) equation to predict the total net protein (NP) requirement - Eq. 10-13.
+#' NASEM (2021) equation to predict the total maintenance net protein (NP) requirement - Eq. 10-13.
 #'
 #' @param scurf_cp Total scurf CP losses (g/d).
 #' @param endogenous_urinary_cp Endogenous urinary CP losses (g/d).
@@ -71,3 +71,45 @@ MPmain <- function(scurf_cp              = 2,
   return(round(MPmain, 3))
 
 }
+
+#' NASEM (2021) equation to predict the net protein requirement for growth - Eq. 10-14.
+#'
+#' @param EBWgain Empty body weight gain (kg/d).
+#' @param retained_energy retained energy (Mcal/d).
+#'
+#' @return Net protein requirement for growth (g/d).
+#' @export
+#'
+#' @examples
+#' NPgain(EBWgain         = 0.4, retained_energy = 0.9)
+NPgain <- function(EBWgain         = 0.4,
+                   retained_energy = 0.9) {
+
+  NPgain <- (166.2 * EBWgain) + (6.1276 * (retained_energy / EBWgain))
+
+  return(round(NPgain, 3))
+
+}
+
+#' NASEM (2021) equation to predict the efficiency of converting metabolizable protein for gain (MPg) to net protein (NPg) - 10-15.
+#'
+#' @param BW Body weight (kg).
+#' @param mature_weight Mature weight (kg).
+#'
+#' @return The efficiency of converting MPg to NPg.
+#' @export
+#'
+#' @examples
+#' efMPgain(0.16, 0.29)
+efMPgain <- function(BW            = 50,
+                     mature_weight = 700) {
+
+  efMPgain <- 0.7 - 0.532 * BW / mature_weight
+
+  return(round(efMPgain, 3))
+
+}
+
+
+
+
