@@ -10,6 +10,7 @@ Imports:
     config (>= 0.3.1),
     golem (>= 0.4.0),
     plotly,
+    purrr,
     shiny (>= 1.7.4)
 Encoding: UTF-8
 LazyData: true
