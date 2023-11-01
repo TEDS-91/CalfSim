@@ -19,18 +19,13 @@ app_ui <- function(request) {
       fluid = TRUE,
       fillable = FALSE,
       theme = bslib::bs_theme(version = 5),
-
       sidebar = bslib::sidebar(
-
       ),
-
       bslib::nav_panel(
         title = "fistPage"
-
       ),
       bslib::nav_panel(
         title = "secondPage"
-
       ),
       bslib::nav_panel(
         title = "thirdPage"
