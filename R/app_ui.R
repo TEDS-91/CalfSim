@@ -9,8 +9,32 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     # Your application UI logic
-    fluidPage(
-      h1("CalfSim")
+
+    bslib::page_navbar(
+
+      title = "CalfSim",
+      bg = "#66AC47",
+      id = "nav",
+      fillable_mobile = TRUE,
+      fluid = TRUE,
+      fillable = FALSE,
+      theme = bslib::bs_theme(version = 5),
+
+      sidebar = bslib::sidebar(
+
+      ),
+
+      bslib::nav_panel(
+        title = "fistPage"
+
+      ),
+      bslib::nav_panel(
+        title = "secondPage"
+
+      ),
+      bslib::nav_panel(
+        title = "thirdPage"
+      )
     )
   )
 }
