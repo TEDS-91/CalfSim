@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions-protein-requirements.R
 \name{efMPgain}
 \alias{efMPgain}
-\title{NASEM (2021) equation to predict the efficiency of converting metabolizable protein for gain (MPg) to net protein (NPg).}
+\title{NASEM (2021) equation to predict the efficiency of converting metabolizable protein for gain (MPg) to net protein (NPg) - 10-15.}
 \usage{
 efMPgain(BW = 50, mature_weight = 700)
 }
@@ -15,8 +15,8 @@ efMPgain(BW = 50, mature_weight = 700)
 The efficiency of converting MPg to NPg.
 }
 \description{
-NASEM (2021) equation to predict the efficiency of converting metabolizable protein for gain (MPg) to net protein (NPg).
+NASEM (2021) equation to predict the efficiency of converting metabolizable protein for gain (MPg) to net protein (NPg) - 10-15.
 }
 \examples{
-efMPgain(0.16, 0.29)
+efMPgain(BW = 0.16, mature_weight = 0.29)
 }

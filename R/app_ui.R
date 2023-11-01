@@ -22,7 +22,14 @@ app_ui <- function(request) {
       sidebar = bslib::sidebar(
       ),
       bslib::nav_panel(
-        title = "fistPage"
+        title = "fistPage",
+
+        numericInput("tt1", "tt1", 2),
+        numericInput("tt2", "tt2", 3),
+        numericInput("tt3", "tt3", 15),
+
+        list("teste1", "teste2", "teste3") |>
+          lapply(card_title = "testes", valueBoxCustom)
       ),
       bslib::nav_panel(
         title = "secondPage"

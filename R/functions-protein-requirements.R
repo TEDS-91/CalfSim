@@ -81,7 +81,7 @@ MPmain <- function(scurf_cp              = 2,
 #' @export
 #'
 #' @examples
-#' NPgain(EBWgain         = 0.4, retained_energy = 0.9)
+#' NPgain(EBWgain = 0.4, retained_energy = 0.9)
 NPgain <- function(EBWgain         = 0.4,
                    retained_energy = 0.9) {
 
@@ -100,7 +100,7 @@ NPgain <- function(EBWgain         = 0.4,
 #' @export
 #'
 #' @examples
-#' efMPgain(0.16, 0.29)
+#' efMPgain(BW = 0.16, mature_weight = 0.29)
 efMPgain <- function(BW            = 50,
                      mature_weight = 700) {
 
@@ -109,7 +109,3 @@ efMPgain <- function(BW            = 50,
   return(round(efMPgain, 3))
 
 }
-
-
-
-

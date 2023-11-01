@@ -18,5 +18,5 @@ Net protein requirement for growth (g/d).
 NASEM (2021) equation to predict the net protein requirement for growth - Eq. 10-14.
 }
 \examples{
-NPgain(EBWgain         = 0.4, retained_energy = 0.9)
+NPgain(EBWgain = 0.4, retained_energy = 0.9)
 }
