@@ -14,20 +14,20 @@ valueBoxCustom(
 )
 }
 \arguments{
-\item{card_title}{Card title.}
+\item{card_title}{Box title.}
 
-\item{card_value}{Card value.}
+\item{card_value}{Box value.}
 
-\item{card_icon}{Card icon.}
+\item{card_icon}{Box icon.}
 
-\item{card_color}{Card color.}
+\item{card_color}{Box color.}
 
-\item{card_bottom_message}{Card bottom message.}
+\item{card_bottom_message}{Box bottom message.}
 
-\item{message_icon}{Message incon.}
+\item{message_icon}{Message icon to be shown.}
 }
 \value{
-Card.
+Value in the box.
 }
 \description{
 Cards to be shown.
