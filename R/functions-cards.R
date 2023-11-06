@@ -1,13 +1,13 @@
 #' Cards to be shown.
 #'
-#' @param card_title Card title.
-#' @param card_value Card value.
-#' @param card_icon Card icon.
-#' @param card_color Card color.
-#' @param card_bottom_message Card bottom message.
-#' @param message_icon Message incon.
+#' @param card_title Box title.
+#' @param card_value Box value.
+#' @param card_icon Box icon.
+#' @param card_color Box color.
+#' @param card_bottom_message Box bottom message.
+#' @param message_icon Message icon to be shown.
 #'
-#' @return Card.
+#' @return Value in the box.
 #'
 valueBoxCustom <- function(card_title = "I got",
                            card_value = "teste1",
