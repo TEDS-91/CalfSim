@@ -157,7 +157,6 @@ NEm <- function(EBW    = 50,
 
 }
 
-
 #' NASEM (2021) equation to predict the additional maintenance energy necessary
 #' for either heat or cold stress abatement (Mcal/day).
 #'
@@ -236,5 +235,30 @@ empty_body_weight_gain_from_re <- function(retained_energy = 0.96,
 
 }
 
+#' Title
+#'
+#' @param ccsNFCI
+#' @param pelleted
+#' @param texturized
+#'
+#' @return
+#' @export
+#'
+#' @examples
+MEcs <- function(ccsNFCI = 1.7,
+                 pelleted = TRUE,
+                 texturized = TRUE) {
 
+  MEcs_exp <- 1.6230 + 1.7683 * (1 - exp(-(0.1677 * ccsNFCI)))
 
+  texturized <- ifelse(texturized == TRUE, 1, 0)
+
+  pelleted <- ifelse(pelleted == TRUE, 1, 0)
+
+  # MEcs_lin <- 2.3186 + 0.2297 * log(ccsNFCI) - 0.6628 * pelleted - 0.2708 * texturized + 0.2960 * pelleted * log(ccsNFCI) + 0.2093 * texturized * log(ccsNFCI)
+  #
+  # MEcs <- ifelse(MEcs_lin <= 0, 0, MEcs_lin)
+
+  return(MEcs_exp)
+
+}

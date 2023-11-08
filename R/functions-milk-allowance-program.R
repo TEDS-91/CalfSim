@@ -12,7 +12,7 @@ milk_allowance_program <- function(weaning_age = 70,
                                    milk_allowance = c(6, 4, 2, 1),
                                    ages_of_change = c(25, 35, 45)) {
 
-  if(length(nutritional_plans) == 1) {
+  if(length(milk_allowance) == 1) {
 
     milk_program <- rep(milk_allowance[1], weaning_age)
 
@@ -33,3 +33,4 @@ milk_allowance_program <- function(weaning_age = 70,
   return(unlist(milk_program))
 
 }
+

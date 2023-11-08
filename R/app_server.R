@@ -7,14 +7,12 @@
 app_server <- function(input, output, session) {
   # Your application server logic
 
-  myFunction <- function(nome, func_input) {
-    output[[ nome ]] <- renderText(input[[func_input]])
-  }
+  requirements_dataset <- mod_inputs_page_server("requirements_calculations")
 
-  list(
-    nome = c("teste1", "teste2", "teste3"),
-    func_input = c("tt1", "tt2", "tt3")
-  ) |>
-    purrr::pmap(myFunction)
+  mod_data_table_server("dataSimulated", dataset = requirements_dataset[["data_frame_simulated"]])
+
+  mod_dashboard_plot_server("plotDashboard", dataset = requirements_dataset[["data_frame_simulated"]])
+
+  mod_kpis_dashboard_server("key_performance_indicators", dataset = requirements_dataset[["data_frame_simulated"]])
 
 }

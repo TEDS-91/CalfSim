@@ -37,19 +37,18 @@ line_plotly <- function(data           = datasets::iris,
                           "<b>%{text}</b>",
                           "<extra></extra>"
                         )) |>
-    plotly::add_trace(x = ~data[[ x_axis ]], y = ~data[[ y_axis_2 ]], mode = "lines+markers", yaxis = "y2", name = y_axis_2_label) |>
+    plotly::add_trace(x = ~data[[ x_axis ]], y = ~data[[ y_axis_2 ]], name = y_axis_2_label, mode = "lines+markers", yaxis = "y2") |>
     plotly::layout(yaxis2 = list(overlaying = "y", side = "right", title = y_axis_2_label, tickfont = list(size = 20), titlefont = list(size = 20))) |>
     plotly::layout(title = plot_title,
                    xaxis = list(title = x_label),
-                   yaxis = list(title = y_label),
-                   hoverlabel = list(namelength = -1)) |>
+                   yaxis = list(title = y_label)) |>
     plotly::layout(title = " ",
                    xaxis = list(tickfont = list(size = 20), titlefont = list(size = 20)),
                    yaxis = list (tickfont = list(size = 20), titlefont = list(size = 20)),
                    showlegend = FALSE) |>
     plotly::layout(autosize = TRUE,
                    margin = list(
-                     l = 20,
+                     l = 80,
                      r = 105,
                      b = 100,
                      t = 0,

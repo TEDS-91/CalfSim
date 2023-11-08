@@ -13,26 +13,31 @@ app_ui <- function(request) {
     bslib::page_navbar(
 
       title = "CalfSim",
-      bg = "#66AC47",
+      #bg = "#66AC47",
       id = "nav",
       fillable_mobile = TRUE,
       fluid = TRUE,
       fillable = FALSE,
-      theme = bslib::bs_theme(version = 5),
+      theme = bslib::bs_theme(bootswatch = "flatly", version = 5),
       sidebar = bslib::sidebar(
       ),
       bslib::nav_panel(
-        title = "fistPage",
+        title = "Inputs",
 
-        numericInput("tt1", "tt1", 2),
-        numericInput("tt2", "tt2", 3),
-        numericInput("tt3", "tt3", 15),
+        mod_inputs_page_ui("requirements_calculations"),
+        mod_data_table_ui("dataSimulated")
 
-        list("teste1", "teste2", "teste3") |>
-          lapply(card_title = "testes", valueBoxCustom)
+        # numericInput("tt1", "tt1", 2),
+        # numericInput("tt2", "tt2", 3),
+        # numericInput("tt3", "tt3", 15),
+        #
+        # list("teste1", "teste2", "teste3") |>
+        #   lapply(card_title = "testes", valueBoxCustom)
       ),
       bslib::nav_panel(
-        title = "secondPage"
+        title = "Dashboard",
+        mod_kpis_dashboard_ui("key_performance_indicators"),
+        mod_dashboard_plot_ui("plotDashboard")
       ),
       bslib::nav_panel(
         title = "thirdPage"
