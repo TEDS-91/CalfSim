@@ -1,4 +1,4 @@
-#' NASEM (2021) equation to predict the calf empty body weight (kg).
+#' NASEM (2021) equation to predict the calf empty body weight (kg) - Table 10-1.
 #'
 #' @param BW Body weight (kg).
 #' @param liquid_diet_only Argument to define whether the calves have only milk available or also forage.

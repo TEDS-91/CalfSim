@@ -18,9 +18,9 @@ app_ui <- function(request) {
       fillable_mobile = TRUE,
       fluid = TRUE,
       fillable = FALSE,
-      theme = bslib::bs_theme(bootswatch = "flatly", version = 5),
-      sidebar = bslib::sidebar(
-      ),
+      theme = bslib::bs_theme(version = 5),
+      # sidebar = bslib::sidebar(
+      # ),
       bslib::nav_panel(
         title = "Inputs",
 
@@ -37,10 +37,12 @@ app_ui <- function(request) {
       bslib::nav_panel(
         title = "Dashboard",
         mod_kpis_dashboard_ui("key_performance_indicators"),
-        mod_dashboard_plot_ui("plotDashboard")
+        mod_dashboard_plot_ui("plotDashboard"),
+        mod_descriptive_pre_weaning_performance_ui("descriptive_pre_weaning_performance")
       ),
       bslib::nav_panel(
-        title = "thirdPage"
+        title = "Nutrient Requirements NASEM (2021)",
+        mod_nutrient_requirements_ui("NASEM")
       )
     )
   )

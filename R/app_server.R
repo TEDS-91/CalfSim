@@ -15,4 +15,8 @@ app_server <- function(input, output, session) {
 
   mod_kpis_dashboard_server("key_performance_indicators", dataset = requirements_dataset[["data_frame_simulated"]])
 
+  mod_descriptive_pre_weaning_performance_server("descriptive_pre_weaning_performance", dataset = requirements_dataset[["data_frame_simulated"]])
+
+  mod_nutrient_requirements_server("NASEM")
+
 }

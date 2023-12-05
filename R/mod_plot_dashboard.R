@@ -17,9 +17,14 @@ mod_dashboard_plot_ui <- function(id){
         "Select the variables to be plotted."
       ),
       bslib::card_body(
-        min_height = 500,
+        min_height = 100,
+        max_height = 450,
         uiOutput(ns("var_selection")),
-        plotly::plotlyOutput(ns("dash_plot"))
+        bslib::layout_column_wrap(
+          width = 1/2,
+          echarts4r::echarts4rOutput(ns("echarts_plot1")),
+          echarts4r::echarts4rOutput(ns("echarts_plot2")),
+        )
       )
     )
   )
@@ -37,27 +42,32 @@ mod_dashboard_plot_server <- function(id, dataset){
       tagList(
         fluidRow(
           column(4,
-                 selectInput(ns("var_1"), "Sel. X axis Var:", choices = names(dataset()), selected = names(dataset())[1])),
+                 selectInput(ns("var_1"), "Sel. X axis Var:", choices = names(dataset()), selected = names(dataset())[2])),
           column(4,
-                 selectInput(ns("var_2"), "Sel. 1° Y axis Var (left):", names(dataset()), selected = names(dataset())[6])),
+                 selectInput(ns("var_2"), "Sel. 1° Y axis Var (left):", names(dataset()), selected = names(dataset())[7])),
           column(4,
-                 selectInput(ns("var_3"), "Sel. 2° Y axis Var (right):", names(dataset()), selected = names(dataset())[13]))
+                 selectInput(ns("var_3"), "Sel. 2° Y axis Var (right):", names(dataset()), selected = names(dataset())[14]))
         )
       )
     })
 
-    output$dash_plot <- plotly::renderPlotly({
+    output$echarts_plot1 <- echarts4r::renderEcharts4r({
 
       req(input$var_1)
 
-      line_plotly(data       = dataset(),
-                  x_axis     = input$var_1,
-                  y_axis     = input$var_2,
-                  x_label    = input$var_1,
-                  y_label    = input$var_2,
-                  y_axis_2   = input$var_3,
-                  y_axis_2_label = input$var_3,
-                  plot_title = paste("Relationship between", input$var_1, "and", input$var_2))
+      plot1 <- scenario_plot(dataset(), input$var_2)
+
+      plot1
+
+    })
+
+    output$echarts_plot2 <- echarts4r::renderEcharts4r({
+
+      req(input$var_1)
+
+      plot2 <- scenario_plot(dataset(), input$var_3)
+
+      plot2
 
     })
 

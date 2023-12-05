@@ -12,6 +12,7 @@ line_plotly(
   x_label = "Sepal length",
   y_label = "Petal Length",
   y_axis_2_label = "Petal.Width",
+  legend_title = "Species",
   plot_title = " "
 )
 }

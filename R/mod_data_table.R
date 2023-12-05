@@ -1,4 +1,4 @@
-#' data_table UI Function
+#' Data Table UI Function
 #'
 #' @description A shiny Module.
 #'
@@ -10,30 +10,25 @@
 mod_data_table_ui <- function(id){
   ns <- NS(id)
   tagList(
-
-
-    bslib::accordion(
-      bslib::accordion_panel(
-        "Simulated",
-        bslib::card(
-          bslib::card_header(
-            class = "bg-dark",
-            "Table with all data simulated."),
-          height = 800,
-          bslib::card_body(
-            min_height = 500,
-            DT::DTOutput(ns("table")),
-          )
-        )
+    bslib::card(
+      bslib::card_header(
+        class = "bg-dark",
+        "Table with all data simulated."),
+      height = 800,
+      bslib::card_body(
+        min_height = 500,
+        DT::DTOutput(ns("table")),
       )
     ),
+
     hr(),
+
     fluidRow(column(offset = 10, 2, downloadButton(ns("downloadData"), label = "Download!")))
 
   )
 }
 
-#' data_table Server Functions
+#' descriptive_pre_weaning_performance Server Functions
 #'
 #' @noRd
 mod_data_table_server <- function(id, dataset){
@@ -45,23 +40,29 @@ mod_data_table_server <- function(id, dataset){
       dataset() |>
         dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x) round(x, 4)))
 
-    }, options = list(paging = TRUE,
+    }, options = list(dom = 't',
+                      ordering = FALSE,
+                      paging = TRUE,
                       scrollY = "600px",
                       scrollX = "900px",
-                      pageLength = 20),
+                      pageLength = 20,
+    initComplete = htmlwidgets::JS(
+      "function(settings, json) {",
+      "$(this.api().table().header()).css({'font-size': '12px', 'background-color': '#007582', 'color': '#fff'});",
+      "}")),
     style = "bootstrap5")
+
+    # Download data
 
     output$downloadData <- downloadHandler(
 
-      filename = function() {
-        # Use the selected dataset as the suggested file name
-        paste0("DataSimulated", ".csv")
-      },
+      filename = function() { "dataSimulated.xlsx"},
+
       content = function(file) {
-        # Write the dataset to the `file` that will be downloaded
-        utils::write.csv(dataset(), file)
-      }
+        writexl::write_xlsx(dataset(), path = file)
+        }
     )
+
 
   })
 }
