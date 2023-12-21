@@ -235,16 +235,17 @@ empty_body_weight_gain_from_re <- function(retained_energy = 0.96,
 
 }
 
-#' Title
+#' Equation to predict the metabolizable energy of calf starter - need to be done.
 #'
-#' @param ccsNFCI
-#' @param pelleted
-#' @param texturized
+#' @param ccsNFCI Non-fiber carbohydrate intake (kg/day).
+#' @param pelleted Pelleted starter.
+#' @param texturized Texturized starter.
 #'
-#' @return
+#' @return The metabolizable energy of calf starter.
 #' @export
 #'
 #' @examples
+#' MEcs(ccsNFCI = 1.7, pelleted = TRUE, texturized = TRUE)
 MEcs <- function(ccsNFCI = 1.7,
                  pelleted = TRUE,
                  texturized = TRUE) {

@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions-get-calf-requirements.R
 \name{get_calf_requirements}
 \alias{get_calf_requirements}
-\title{Title}
+\title{Calculates the calf requirements.}
 \usage{
 get_calf_requirements(
   liqDiet = rep(6, 70),
@@ -18,8 +18,34 @@ get_calf_requirements(
 )
 }
 \arguments{
-\item{max_size}{}
+\item{liqDiet}{A numeric vector with the liquid diet intake.}
+
+\item{liqDietME}{A numeric vector with the liquid diet metabolizable energy.}
+
+\item{nfc_cs}{A numeric vector with the NFC content of the starter.}
+
+\item{liqDietDM}{A numeric vector with the dry matter content of the liquid diet.}
+
+\item{initBW}{A numeric vector with the initial body weight.}
+
+\item{weaningAge}{A numeric vector with the weaning age.}
+
+\item{averTemp}{A numeric vector with the average temperature.}
+
+\item{liqDietOnly}{A logical vector indicating if the calf is fed only liquid diet.}
+
+\item{mature_weight}{A numeric vector with the mature weight.}
+
+\item{max_size}{A numeric vector with the maximum size of the vectors.}
+}
+\value{
+A dataframe with the calf requirements.
 }
 \description{
-Title
+Calculates the calf requirements.
+}
+\examples{
+get_calf_requirements(liqDiet = rep(6, 70), liqDietME = 4.6, nfc_cs = 66,
+liqDietDM = 0.12, initBW = 45, weaningAge = 70, averTemp = 20,
+liqDietOnly = FALSE, mature_weight = 750, max_size = 100)
 }

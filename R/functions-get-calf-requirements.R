@@ -1,20 +1,23 @@
-#' Title
+#' Calculates the calf requirements.
 #'
-#' @param liqDiet
-#' @param liqDietME
-#' @param nfc_cs
-#' @param liqDietDM
-#' @param initBW
-#' @param weaningAge
-#' @param averTemp
-#' @param liqDietOnly
-#' @param mature_weight
-#' @param max_size
+#' @param liqDiet A numeric vector with the liquid diet intake.
+#' @param liqDietME A numeric vector with the liquid diet metabolizable energy.
+#' @param nfc_cs A numeric vector with the NFC content of the starter.
+#' @param liqDietDM A numeric vector with the dry matter content of the liquid diet.
+#' @param initBW A numeric vector with the initial body weight.
+#' @param weaningAge A numeric vector with the weaning age.
+#' @param averTemp A numeric vector with the average temperature.
+#' @param liqDietOnly A logical vector indicating if the calf is fed only liquid diet.
+#' @param mature_weight A numeric vector with the mature weight.
+#' @param max_size A numeric vector with the maximum size of the vectors.
 #'
-#' @return
+#' @return A dataframe with the calf requirements.
 #' @export
 #'
 #' @examples
+#' get_calf_requirements(liqDiet = rep(6, 70), liqDietME = 4.6, nfc_cs = 66,
+#' liqDietDM = 0.12, initBW = 45, weaningAge = 70, averTemp = 20,
+#' liqDietOnly = FALSE, mature_weight = 750, max_size = 100)
 get_calf_requirements <- function(liqDiet          = rep(6, 70),
                                   liqDietME        = 4.6,
                                   nfc_cs           = 66,

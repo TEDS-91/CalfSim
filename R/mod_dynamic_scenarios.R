@@ -1,6 +1,6 @@
 #' Dynamic Scenarios UI Function
 #'
-#' @description This module builds the structure of aech scenario, returning all inputs to populate other functions.
+#' @description This module builds the structure of each scenario, returning all inputs to populate other functions.
 #'
 #' @param id,input,output,session Internal parameters for {shiny}.
 #'
@@ -40,11 +40,11 @@ mod_dynamic_scenarios_server <- function(id){
 
             column(6,
                    lapply(1:input$number_of_nut_plans, \(i) numericInput(ns(paste0("plan_", i)),
-                                                                         label = paste0(i, "° phase (l/d):"),
+                                                                         label = paste0(i, " phase (l/d):"),
                                                                          value = max((7 - i), 1)))),
             column(6,
                    lapply(1:(input$number_of_nut_plans - 1), \(i) numericInput(ns(paste0("days_", i)),
-                                                                               label = paste0(i, "° change"),
+                                                                               label = paste0(i, " change"),
                                                                                value = ((i * 10) ))))
           )
         )

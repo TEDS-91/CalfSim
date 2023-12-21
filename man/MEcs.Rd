@@ -2,13 +2,23 @@
 % Please edit documentation in R/functions-energy-requirements.R
 \name{MEcs}
 \alias{MEcs}
-\title{Title}
+\title{Equation to predict the metabolizable energy of calf starter - need to be done.}
 \usage{
 MEcs(ccsNFCI = 1.7, pelleted = TRUE, texturized = TRUE)
 }
 \arguments{
-\item{texturized}{}
+\item{ccsNFCI}{Non-fiber carbohydrate intake (kg/day).}
+
+\item{pelleted}{Pelleted starter.}
+
+\item{texturized}{Texturized starter.}
+}
+\value{
+The metabolizable energy of calf starter.
 }
 \description{
-Title
+Equation to predict the metabolizable energy of calf starter - need to be done.
+}
+\examples{
+MEcs(ccsNFCI = 1.7, pelleted = TRUE, texturized = TRUE)
 }

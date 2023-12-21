@@ -22,7 +22,7 @@ mod_inputs_page_ui <- function(id){
         fluidRow(
           column(4,
                  numericInput(ns("BW"), label = h6("Birth Weight (kg):"), value = 40),
-                 numericInput(ns("temp"), label = h6("Aver. Temp. (°C):"), value = 15)),
+                 numericInput(ns("temp"), label = h6("Aver. Temp. (C):"), value = 15)),
           column(4,
                  numericInput(ns("weaning_age"), label = h6("Weaning Age (days):"), value = 56),
                  numericInput(ns("nfc"), label = h6("NFC Starter (%):"), value = 60)),
@@ -152,7 +152,6 @@ mod_inputs_page_server <- function(id){
       milk_allowance_list
 
     })
-
 
     output$data_preparation <- renderText({
 

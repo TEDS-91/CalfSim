@@ -42,18 +42,16 @@ mod_dashboard_plot_server <- function(id, dataset){
       tagList(
         fluidRow(
           column(4,
-                 selectInput(ns("var_1"), "Sel. X axis Var:", choices = names(dataset()), selected = names(dataset())[2])),
+                 selectInput(ns("var_2"), "Sel. 1 Y axis Var (left):", names(dataset()), selected = names(dataset())[7])),
           column(4,
-                 selectInput(ns("var_2"), "Sel. 1° Y axis Var (left):", names(dataset()), selected = names(dataset())[7])),
-          column(4,
-                 selectInput(ns("var_3"), "Sel. 2° Y axis Var (right):", names(dataset()), selected = names(dataset())[14]))
+                 selectInput(ns("var_3"), "Sel. 2 Y axis Var (right):", names(dataset()), selected = names(dataset())[14]))
         )
       )
     })
 
     output$echarts_plot1 <- echarts4r::renderEcharts4r({
 
-      req(input$var_1)
+      req(input$var_2)
 
       plot1 <- scenario_plot(dataset(), input$var_2)
 
@@ -63,7 +61,7 @@ mod_dashboard_plot_server <- function(id, dataset){
 
     output$echarts_plot2 <- echarts4r::renderEcharts4r({
 
-      req(input$var_1)
+      req(input$var_2)
 
       plot2 <- scenario_plot(dataset(), input$var_3)
 
