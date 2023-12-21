@@ -26,13 +26,6 @@ app_ui <- function(request) {
 
         mod_inputs_page_ui("requirements_calculations"),
         mod_data_table_ui("dataSimulated")
-
-        # numericInput("tt1", "tt1", 2),
-        # numericInput("tt2", "tt2", 3),
-        # numericInput("tt3", "tt3", 15),
-        #
-        # list("teste1", "teste2", "teste3") |>
-        #   lapply(card_title = "testes", valueBoxCustom)
       ),
       bslib::nav_panel(
         title = "Dashboard",

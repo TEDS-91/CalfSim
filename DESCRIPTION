@@ -15,6 +15,7 @@ Imports:
     golem (>= 0.4.0),
     htmlwidgets,
     purrr,
+    rmarkdown,
     shiny (>= 1.7.4),
     tibble,
     tidyr,

@@ -23,7 +23,8 @@ mod_descriptive_pre_weaning_performance_ui <- function(id){
 
   hr(),
 
-  fluidRow(column(offset = 10, 2, downloadButton(ns("downloadData"), label = "Download!")))
+  fluidRow(column(offset = 10, 2, downloadButton(ns("downloadData"), label = "Download!")),
+           column(offset = 10, 2, downloadButton(ns("downloadreport"), label = "Report!")))
 
   )
 }
@@ -35,10 +36,9 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    output$table <- DT::renderDT({
+    descriptive_data <- reactive({
 
       dataset() |>
-
         dplyr::group_by(scenario) |>
         dplyr::filter(daysOfLife <=56) |>
         dplyr::summarise(
@@ -61,6 +61,14 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
         ) |>
         dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x) round(x, 4)))
 
+    })
+
+
+
+    output$table <- DT::renderDT({
+
+      descriptive_data()
+
     }, options = list(paging = TRUE,
                       scrollY = "600px",
                       scrollX = "900px",
@@ -70,6 +78,53 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
                         "$(this.api().table().header()).css({'font-size': '12px', 'background-color': '#007582', 'color': '#fff'});",
                         "}")),
     style = "bootstrap5")
+
+    output$downloadData <- downloadHandler(
+      filename = function() {
+        paste("PreWeaningPerformance", ".xlsx")
+      },
+      content = function(file) {
+        writexl::write_xlsx(descriptive_data(), path = file)
+      }
+    )
+
+
+    # report generation
+
+    output$downloadreport <-
+
+
+      downloadHandler(
+        "CalfSimReport.html",
+        content =
+          function(file)
+          {
+
+            withProgress(message = "Rendering the report...", {
+
+            path1 <- system.file("app", "report.Rmd", package = "CalfSim")
+
+            path2 <- system.file("app", "built_report.html", package = "CalfSim")
+
+            rmarkdown::render(
+              input = path1,
+              output_file = "built_report.html",
+
+              params = list(
+                teste = descriptive_data(),
+                all_data = dataset()
+              )
+            )
+
+            readBin(con = path2,
+                    what = "raw",
+                    n = file.info(path2)[ , "size"]) |>
+
+              writeBin(con = file)
+
+          })
+          }
+      )
 
   })
 }
