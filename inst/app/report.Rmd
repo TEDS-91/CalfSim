@@ -99,12 +99,32 @@ echarts4r::e_arrange(p1, p2, rows = 1, cols = 2)
 
 ```{r, echo = FALSE}
 
-params$all_data |> 
-  head() |> 
-  kableExtra::kbl(row.names = FALSE, align = "l") |> 
-  kableExtra::column_spec(1, bold = TRUE) |> 
-  kableExtra::row_spec(0, bold = TRUE, color = "white", background = "#007582") |> 
-  kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+# params$all_data |> 
+#   head() |> 
+#   kableExtra::kbl(row.names = FALSE, align = "l") |> 
+#   kableExtra::column_spec(1, bold = TRUE) |> 
+#   kableExtra::row_spec(0, bold = TRUE, color = "white", background = "#007582") |> 
+#   kableExtra::kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
 
 ```
+
+<hr />
+<p style = "text-align: center; color: #007582;"> All rights reserved - University of Vermont </p>
+<center>
+
+```{r, warning = FALSE, echo = FALSE}
+
+path_logo <- system.file("app/www", "costaslablogo.jpeg", package = "CalfSim")
+
+htmltools::img(
+   src = knitr::image_uri(path_logo),
+   style = "width:100px; height:85px;")
+   
+```
+</center>
+&nbsp;
+
+
+
+
 
