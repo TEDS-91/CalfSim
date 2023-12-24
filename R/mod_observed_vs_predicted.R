@@ -18,6 +18,10 @@ mod_observed_vs_predicted_ui <- function(id){
       height = 800,
       bslib::card_body(
 
+        plotly::plotlyOutput(ns("plotObservedPredicted")),
+
+        tableOutput(ns("modelEvaluationMetrics")),
+
         fileInput(ns("observedFile"), "Choose xlsx file",
                   accept = c(".xlsx")),
 
@@ -37,6 +41,86 @@ mod_observed_vs_predicted_server <- function(id){
     ns <- session$ns
 
     templateFile <- readxl::read_xlsx("data-raw/dataEntryTemplateCalfSim.xlsx")
+
+    predicoes <- reactive({
+
+      bezerros <- readxl::read_xlsx("data-raw/dataEntryTemplateCalfSim.xlsx") |>
+        dplyr::rename(initBW = birth_weight_kg) |>
+        dplyr::group_split(animal)
+
+      predictions <- list()
+
+      for (i in 1:length(bezerros)) {
+
+        predictions[[i]] <- get_calf_requirements(
+          liqDiet          = rep(5, 70),
+          liqDietME        = 4.6,
+          nfc_cs           = 66,
+          #solDietME        = 3.2,
+          liqDietDM        = 0.12,
+          initBW           = bezerros[[i]]$initBW,
+          weaningAge       = 70,
+          averTemp         = 20,
+          liqDietOnly      = FALSE,
+          mature_weight    = 750,
+          max_size         = 100
+        )
+      }
+
+      valores_pred <- list()
+
+      for (i in 1:length(predictions)) {
+
+        valores_pred[[i]] <- predictions[[i]] |>
+          dplyr::filter(
+            daysOfLife == bezerros[[i]]$age_days
+          ) |>
+          dplyr::select(
+            daysOfLife, BWcor
+          )
+
+      }
+
+      dfComplete <- valores_pred |>
+        dplyr::bind_rows(.id = "animal") |>
+        dplyr::left_join(bezerros |> dplyr::bind_rows(.id ="animal"),
+                         by = "animal")
+
+      dfComplete
+
+    })
+
+    output$plotObservedPredicted <- plotly::renderPlotly({
+
+      plotly::ggplotly(
+        predicoes() |>
+          dplyr::rename(predicted_bw = BWcor, observed_bw = body_weight_kg) |>
+          ggplot2::ggplot(ggplot2::aes(x = predicted_bw, y = observed_bw)) +
+          ggplot2::theme_bw() +
+          ggplot2::geom_point(size = 2, alpha = 0.5) +
+          ggplot2::geom_abline(intercept = 0, slope = 1, color = "red") +
+          ggplot2::geom_smooth(method = "lm", se = TRUE) +
+          ggplot2::labs(
+            x = "Predicted Body Weight (kg)",
+            y = "Observed Body Weight (kg)"
+          )
+      )
+
+    })
+
+
+    output$modelEvaluationMetrics <- renderTable({
+
+      model_eval(predicoes()$body_weight_kg, predicoes()$BWcor) |>
+        dplyr::mutate(
+          meanPred = mean(predicoes()$BWcor, na.rm = TRUE),
+          meanObs = mean(predicoes()$body_weight_kg, na.rm = TRUE)
+        ) |>
+        dplyr::relocate(
+          meanPred, meanObs, .before = "P-value t test"
+        )
+
+    })
 
     output$templateFile <- downloadHandler(
 
