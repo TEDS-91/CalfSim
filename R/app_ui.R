@@ -34,6 +34,11 @@ app_ui <- function(request) {
         mod_descriptive_pre_weaning_performance_ui("descriptive_pre_weaning_performance")
       ),
       bslib::nav_panel(
+        title = "Predictions vs Observations",
+        mod_observed_vs_predicted_ui("observed_vs_predicted"),
+        "Content to be added"
+      ),
+      bslib::nav_panel(
         title = "Nutrient Requirements NASEM (2021)",
         mod_nutrient_requirements_ui("NASEM")
       )

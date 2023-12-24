@@ -178,9 +178,6 @@ mod_inputs_page_server <- function(id){
                                                                         max_size    = 100))
 
 
-
-
-
       # vector with the scenario names
 
       scenario_names <- lapply(1:input$scenarios, \(x) all_scenarios()[[x]]()$scenario_name)

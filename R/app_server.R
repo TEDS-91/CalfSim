@@ -17,6 +17,8 @@ app_server <- function(input, output, session) {
 
   mod_descriptive_pre_weaning_performance_server("descriptive_pre_weaning_performance", dataset = requirements_dataset[["data_frame_simulated"]])
 
+  mod_observed_vs_predicted_server("observed_vs_predicted")
+
   mod_nutrient_requirements_server("NASEM")
 
 }

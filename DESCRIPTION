@@ -17,6 +17,7 @@ Imports:
     htmlwidgets,
     kableExtra,
     purrr,
+    readxl,
     rmarkdown,
     shiny (>= 1.7.4),
     tibble,

@@ -93,7 +93,6 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
 
     output$downloadreport <-
 
-
       downloadHandler(
         "CalfSimReport.html",
         content =
@@ -102,12 +101,12 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
 
             withProgress(message = "Rendering the report...", {
 
-            path1 <- system.file("app", "report.Rmd", package = "CalfSim")
+            path_reportRMD <- system.file("app", "report.Rmd", package = "CalfSim")
 
-            path2 <- system.file("app", "built_report.html", package = "CalfSim")
+            path_reportHTML <- system.file("app", "built_report.html", package = "CalfSim")
 
             rmarkdown::render(
-              input = path1,
+              input = path_reportRMD,
               output_file = "built_report.html",
 
               params = list(
@@ -116,9 +115,9 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
               )
             )
 
-            readBin(con = path2,
+            readBin(con = path_reportHTML,
                     what = "raw",
-                    n = file.info(path2)[ , "size"]) |>
+                    n = file.info(path_reportHTML)[ , "size"]) |>
 
               writeBin(con = file)
 
