@@ -18,7 +18,7 @@ mod_observed_vs_predicted_ui <- function(id){
       height = 800,
       bslib::card_body(
 
-        plotly::plotlyOutput(ns("plotObservedPredicted")),
+        plotly::plotlyOutput(ns("plotObservedPredicted"), height = 600, width = "50%"),
 
         tableOutput(ns("modelEvaluationMetrics")),
 
@@ -40,11 +40,33 @@ mod_observed_vs_predicted_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    dataUploaded <- reactive({
+
+      inFile <- input$observedFile
+
+      if (is.null(inFile))
+        return(NULL)
+
+      readxl::read_excel(inFile$datapath)
+
+    })
+
+
     templateFile <- readxl::read_xlsx("data-raw/dataEntryTemplateCalfSim.xlsx")
 
     predicoes <- reactive({
 
-      bezerros <- readxl::read_xlsx("data-raw/dataEntryTemplateCalfSim.xlsx") |>
+      if(is.null(dataUploaded())) {
+
+        bezerros <- templateFile
+
+      } else {
+
+        bezerros <- dataUploaded()
+
+      }
+
+      bezerros <- bezerros |>
         dplyr::rename(initBW = birth_weight_kg) |>
         dplyr::group_split(animal)
 
@@ -94,6 +116,7 @@ mod_observed_vs_predicted_server <- function(id){
 
       plotly::ggplotly(
         predicoes() |>
+          dplyr::mutate(animal = as.factor(animal)) |>
           dplyr::rename(predicted_bw = BWcor, observed_bw = body_weight_kg) |>
           ggplot2::ggplot(ggplot2::aes(x = predicted_bw, y = observed_bw)) +
           ggplot2::theme_bw() +
@@ -108,16 +131,18 @@ mod_observed_vs_predicted_server <- function(id){
 
     })
 
-
     output$modelEvaluationMetrics <- renderTable({
+
+      nObs <- length(predicoes()$body_weight_kg)
 
       model_eval(predicoes()$body_weight_kg, predicoes()$BWcor) |>
         dplyr::mutate(
           meanPred = mean(predicoes()$BWcor, na.rm = TRUE),
-          meanObs = mean(predicoes()$body_weight_kg, na.rm = TRUE)
+          meanObs = mean(predicoes()$body_weight_kg, na.rm = TRUE),
+          nObs = nObs
         ) |>
         dplyr::relocate(
-          meanPred, meanObs, .before = "P-value t test"
+          meanPred, meanObs, nObs, .before = "P-value t test"
         )
 
     })
@@ -129,6 +154,7 @@ mod_observed_vs_predicted_server <- function(id){
         paste("dataEntryTemplateCalfSim", ".xlsx")
 
       },
+
       content = function(file) {
 
         writexl::write_xlsx(templateFile, path = file)

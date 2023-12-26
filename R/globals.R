@@ -24,4 +24,12 @@ utils::globalVariables(c("scenario",
                          "mtcars",
                          "cyl",
                          "final_body_weight",
-                         "starter_intake"))
+                         "starter_intake",
+                         "animal",
+                         "birth_weight_kg",
+                         "body_weight_kg",
+                         "meanObs",
+                         "meanPred",
+                         "observed_bw",
+                         "predicted_bw"
+                         ))
