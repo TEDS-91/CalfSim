@@ -20,8 +20,12 @@
 #' liqDietOnly = FALSE, mature_weight = 750, max_size = 100)
 get_calf_requirements <- function(liqDiet          = rep(6, 70),
                                   liqDietME        = 4.6,
-                                  nfc_cs           = 66,
-                                  #solDietME        = 3.2,
+                                  starter_composition = list(
+                                    cs_ndf = 12,
+                                    cs_nfc = 50,
+                                    cs_cp = 22,
+                                    cs_ee = 6
+                                  ),
                                   liqDietDM        = 0.12,
                                   initBW           = 45,
                                   weaningAge       = 70,
@@ -113,9 +117,18 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
 
   starterIntake[1] <- ifelse(liquid_diet_only[1] == TRUE & weaned[1] == FALSE, 0, NASEM[1])
 
-  nfc_intake_cum[1] <- starterIntake[1] * nfc_cs / 100
+  nfc_intake_cum[1] <- starterIntake[1] * starter_composition$cs_nfc / 100
 
-  MEcs[1] <- MEcs(ccsNFCI = nfc_intake_cum[1], pelleted = TRUE, texturized = TRUE) #TO DO
+
+
+  #MEcs[1] <- MEcs(ccsNFCI = nfc_intake_cum[1], pelleted = TRUE, texturized = TRUE) #TO DO
+
+  MEcs[1] <- starter_met_energy(cs_ndf = starter_composition$cs_ndf,
+                                cs_nfc = starter_composition$cs_nfc,
+                                cs_cp = starter_composition$cs_cp,
+                                cs_ee = starter_composition$cs_ee,
+                                CSNFCI = nfc_intake_cum[1])
+
 
   MEfromSI[1] <- starterIntake[1] * MEcs[1] #solDietME
 
@@ -209,9 +222,19 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
 
     #MEfromSI[i] <- starterIntake[i] * solDietME
 
-    nfc_intake_cum[i] <- sum(starterIntake[1:i]) * nfc_cs / 100
+    nfc_intake_cum[i] <- sum(starterIntake[1:i]) * starter_composition$cs_nfc / 100
 
-    MEcs[i] <- MEcs(ccsNFCI = nfc_intake_cum[i], pelleted = TRUE, texturized = TRUE)
+
+    #MEcs[i] <- MEcs(ccsNFCI = nfc_intake_cum[i], pelleted = TRUE, texturized = TRUE)
+
+    MEcs[i] <- starter_met_energy(cs_ndf = starter_composition$cs_ndf,
+                                  cs_nfc = starter_composition$cs_nfc,
+                                  cs_cp = starter_composition$cs_cp,
+                                  cs_ee = starter_composition$cs_ee,
+                                  CSNFCI = nfc_intake_cum[i])
+
+
+
 
     MEfromSI[i] <- starterIntake[i] * MEcs[i] #solDietME
 

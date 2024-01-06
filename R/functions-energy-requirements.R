@@ -210,7 +210,9 @@ NEtemperature <- function(EBW         = 42.3,
 #' kg_solids(ME = 3)
 kg_solids <- function(ME = 3) {
 
-  kg_solids <- ((1.1376 * ME) - (0.1198 * ME ^ 2) + (0.0076 * ME ^ 3) - 1.2979) / ME
+  kg_calc <- ((1.1376 * ME) - (0.1198 * ME ^ 2) + (0.0076 * ME ^ 3) - 1.2979) / ME
+
+  kg_solids <- ifelse(ME == 0 | kg_calc < 0 , 0, kg_calc)
 
   return(round(kg_solids, 3))
 
@@ -235,31 +237,64 @@ empty_body_weight_gain_from_re <- function(retained_energy = 0.96,
 
 }
 
-#' Equation to predict the metabolizable energy of calf starter - need to be done.
-#'
-#' @param ccsNFCI Non-fiber carbohydrate intake (kg/day).
-#' @param pelleted Pelleted starter.
-#' @param texturized Texturized starter.
-#'
-#' @return The metabolizable energy of calf starter.
-#' @export
-#'
-#' @examples
-#' MEcs(ccsNFCI = 1.7, pelleted = TRUE, texturized = TRUE)
-MEcs <- function(ccsNFCI = 1.7,
-                 pelleted = TRUE,
-                 texturized = TRUE) {
+#
+# starter_met_energy <- function(cs_ndf = 12.9,
+#                                cs_nfc = 55.79,
+#                                cs_cp = 22,
+#                                cs_ee = 3.9,
+#                                NFCint = 15,
+#                                form_of_starter = "pelleted") {
+#
+#   lnCSNFCI <- ifelse(NFCint <= 15.8, log(NFCint), log(15.8))
+#
+#   pel <- ifelse(form_of_starter == "pelleted", 1, 0)
+#
+#   tex <- ifelse(form_of_starter == "texturized", 1, 0)
+#
+#   dCPcs <- 0.7074 + 0.0268 * lnCSNFCI - 0.3296 * pel - 0.0421 * tex + 0.1076 * pel * lnCSNFCI - 0.0130 * tex * lnCSNFCI
+#
+#   dEEcs <- 0.8834 - 0.0218 * lnCSNFCI - 0.2123 * pel - 0.3808 * tex + 0.0916 * pel * lnCSNFCI + 0.1226 * tex * lnCSNFCI
+#
+#   dNDFcs <- 0.3904 + 0.0262 * lnCSNFCI - 0.0909 * pel - 0.2630 * tex + 0.0789 * pel * lnCSNFCI + 0.0826 * tex * lnCSNFCI
+#
+#   dNFCcs <- 0.9351 + 0.0047 * lnCSNFCI - 0.3486 * pel - 0.3226 * tex + 0.1348 * pel * lnCSNFCI + 0.1272 * tex * lnCSNFCI
+#
+#   starter_dig_energy <- (dCPcs * cs_cp * 5.6 + dEEcs * cs_ee * 9.4 + dNDFcs * cs_ndf * 4.2 + dNFCcs * cs_nfc * 4.2) / 100
+#
+#   starter_dig_energy <- ifelse(starter_dig_energy <= 0 | NFCint == 0, 0, starter_dig_energy)
+#
+#   starter_met_energy <- (1.01 * starter_dig_energy - 0.45) + (0.0046 * (cs_ee - 3))
+#
+#   starter_met_energy <- ifelse(starter_met_energy <= 0 | NFCint == 0, 0, starter_met_energy)
+#
+#   return(starter_met_energy)
+#
+# }
 
-  MEcs_exp <- 1.6230 + 1.7683 * (1 - exp(-(0.1677 * ccsNFCI)))
+starter_met_energy <- function(cs_ndf = 12.9,
+                               cs_nfc = 55.79,
+                               cs_cp = 22,
+                               cs_ee = 3.9,
+                               CSNFCI = 15) {
 
-  texturized <- ifelse(texturized == TRUE, 1, 0)
+  dCPcs <- 0.5547 + 0.2981 * (1 - exp(-(0.0692 * CSNFCI)))
 
-  pelleted <- ifelse(pelleted == TRUE, 1, 0)
+  dEEcs <- 0.4892 + 0.3919 * (1 - exp(-(0.1316 * CSNFCI)))
 
-  # MEcs_lin <- 2.3186 + 0.2297 * log(ccsNFCI) - 0.6628 * pelleted - 0.2708 * texturized + 0.2960 * pelleted * log(ccsNFCI) + 0.2093 * texturized * log(ccsNFCI)
-  #
-  # MEcs <- ifelse(MEcs_lin <= 0, 0, MEcs_lin)
+  dNDFcs <- 0.1028 + 0.5687 * (1 - exp(-(0.0843 * CSNFCI)))
 
-  return(MEcs_exp)
+  dNFCcs <- 0.3792 + 0.5857 * (1 - exp(-(0.4145 * CSNFCI)))
+
+  starter_dig_energy <- (dCPcs * cs_cp * 5.6 + dEEcs * cs_ee * 9.4 + dNDFcs * cs_ndf * 4.2 + dNFCcs * cs_nfc * 4.2) / 100
+
+  starter_dig_energy <- ifelse(starter_dig_energy <= 0 | CSNFCI == 0, 0, starter_dig_energy)
+
+  starter_met_energy <- (1.01 * starter_dig_energy - 0.45) + (0.0046 * (cs_ee - 3))
+
+  starter_met_energy <- ifelse(starter_met_energy <= 0 | CSNFCI == 0, 0, starter_met_energy)
+
+  return(starter_met_energy)
 
 }
+
+

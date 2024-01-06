@@ -76,9 +76,13 @@ mod_milk_composition_server <- function(id){
     liq_diet_dm <- reactive({
 
       if(input$liq_diet == "whole") {
+
         liq_diet_dm <- input$total_solids / 100
+
       } else {
+
         liq_diet_dm <- input$liqDietDilution
+
       }
 
     })

@@ -24,16 +24,20 @@ mod_inputs_page_ui <- function(id){
                  numericInput(ns("BW"), label = h6("Birth Weight (kg):"), value = 40),
                  numericInput(ns("temp"), label = h6("Aver. Temp. (C):"), value = 15)),
           column(4,
-                 numericInput(ns("weaning_age"), label = h6("Weaning Age (days):"), value = 56),
-                 numericInput(ns("nfc"), label = h6("NFC Starter (%):"), value = 60)),
+                 numericInput(ns("weaning_age"), label = h6("Weaning Age (days):"), value = 56)),
           column(4,
               selectInput(ns("scenarios"), label = h6("Number of Scenarios:"), choices = c(1, 2, 3, 4), selected = 2)))),
       bslib::card(
         mod_milk_composition_ui(ns("milk_milk_replacer_composition")))
       )
     ),
-    uiOutput(ns("nutritional_plans_design")),
     mod_starter_composition_ui(ns("starter_composition")),
+    bslib::card(
+      bslib::card_header(
+        class = "bg-dark",
+        "Animal and Milk/Replacer inputs."),
+      uiOutput(ns("nutritional_plans_design"))
+    ),
     actionButton(ns("simulate"), label = "Simulate!", icon = tags$i(fontawesome::fa("person-running"))),
     textOutput(ns("data_preparation"))
   )
@@ -167,9 +171,14 @@ mod_inputs_page_server <- function(id){
     calculating_requirements <- eventReactive(input$simulate, {
 
       dataframes_with_requirements <- lapply(1:input$scenarios,
-                                             \(x) get_calf_requirements(liqDiet      = milk_allowance_list()[[x]],
+                                             \(x) get_calf_requirements(liqDiet     = milk_allowance_list()[[x]],
                                                                         liqDietME   = milk_composition()[["milk_ME"]],
-                                                                        nfc_cs      = input$nfc,
+                                                                        starter_composition = list(
+                                                                          cs_ndf = starter_composition()[["cs_ndf"]],
+                                                                          cs_nfc = starter_composition()[["cs_nfc"]],
+                                                                          cs_cp = starter_composition()[["cs_cp"]],
+                                                                          cs_ee = starter_composition()[["cs_ee"]]
+                                                                        ),
                                                                         liqDietDM   = milk_composition()[["liq_diet_dm"]],
                                                                         initBW      = input$BW,
                                                                         weaningAge  = input$weaning_age,

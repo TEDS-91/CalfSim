@@ -73,8 +73,12 @@ mod_nutrient_requirements_server <- function(id){
                                  liqDiet          = 6,
                                  liqDietME        = 4.9,
                                  FPstarter        = 1,
-                                 nfc_cs           = 66,
-                                 #solDietME        = 3.2,
+                                 starter_composition = list(
+                                   cs_ndf = 12,
+                                   cs_nfc = 55,
+                                   cs_cp = 22,
+                                   cs_ee = 3
+                                 ),
                                  liqDietDM        = 0.12,
                                  weaningAge       = 70,
                                  averTemp         = 20,
@@ -100,9 +104,18 @@ mod_nutrient_requirements_server <- function(id){
 
       starterIntake <- ifelse(liqDietOnly == TRUE & weaned == FALSE, 0, NASEM)
 
-      nfc_intake_cum <- starterIntake * nfc_cs / 100
+      nfc_intake_cum <- starterIntake * starter_composition$cs_nfc / 100
 
-      MEcs <- MEcs(ccsNFCI = nfc_intake_cum, pelleted = TRUE, texturized = TRUE)
+
+
+      #MEcs <- MEcs(ccsNFCI = nfc_intake_cum, pelleted = TRUE, texturized = TRUE)
+      MEcs <- starter_met_energy(cs_ndf = starter_composition$cs_ndf,
+                                 cs_nfc = starter_composition$cs_nfc,
+                                 cs_cp = starter_composition$cs_cp,
+                                 cs_ee = starter_composition$cs_ee,
+                                 CSNFCI = nfc_intake_cum)
+
+
 
       MEfromSI <- starterIntake * MEcs #solDietME
 

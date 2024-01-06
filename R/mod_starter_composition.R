@@ -11,10 +11,30 @@ mod_starter_composition_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    DT::DTOutput(ns("tabela")),
-    tableOutput(ns("tabela_atual")),
-    actionButton(ns("deleteRows"), "Delete Rows"),
-    actionButton(ns("addRows"), "Add Rows")
+    bslib::card(
+      full_screen = TRUE,
+      bslib::card_header(
+        class = "bg-dark",
+        "Starter chemical composition."),
+      bslib::card_body(
+        bslib::card(
+          fluidRow(
+          column(3,
+                 sliderInput(ns("CP"), label = h6("Crude Protein (%):"), value = 21.2, min = 15, max = 30, step = 0.1)),
+          column(3,
+                 sliderInput(ns("NDF"), label = h6("Neutral Detergent Fiber (%):"), value = 12.9, min = 5, max = 30, step = 0.1)),
+          column(3,
+                sliderInput(ns("NFC"), label = h6("Non Fiber Carbohydrates (%):"), value = 55.79, min = 30, max = 70, step = 0.1)),
+          column(3,
+                 sliderInput(ns("EE"), label = h6("Fat (%):"), value = 3.9, min = 2, max = 9, step = 0.1)),
+          column(3,
+                 fileInput(ns("file_input"), "upload file ( . pdf format only)", accept = c(".pdf")))
+          )
+        )
+      )
+    ),
+
+    tableOutput(ns("starter_composition"))
 
   )
 }
@@ -26,104 +46,72 @@ mod_starter_composition_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    df <- tibble::tibble(
-      "Ingredient" = c("Soyben Meal", "Corn Grain", "Corn Gluten Meal", "Wheat Bran", "Soybean Oil"),
-      "Dry Matter (%)" = c(89, 89, 89, 89, 1),
-      "Crude Protein (%)" = c(48, 9, 4, 15, 0),
-      "Metab. Energy (Mcal/kg)" = c(3.2, 3.2, 3.2, 3.2, 8.9),
-      "Diet Prop. (%)" = c(25, 70, 0, 0, 0)
-    )
+    input_pdf_file <- reactive({
+      req(input$file_input)
 
-    tabela_para_salvar <- reactiveVal(NULL)
+      txt <- pdftools::pdf_text(input$file_input$datapath)
 
-    output$tabela <- DT::renderDataTable({
+      txt <- stringr::str_split(txt, pattern = "\n")
 
-      tab_mtcars <- df
-
-      tabela_para_salvar(tab_mtcars)
-
-      tab_mtcars |>
-        DT::datatable(
-          editable = TRUE
-        )
-    })
-
-    proxy <- DT::dataTableProxy("tabela")
-
-
-    observeEvent(input$addRows, {
-
-      tab_atual <- tabela_para_salvar()
-
-      tab_atualizada <- tab_atual |>
-        dplyr::add_row("Ingredient" = "Added Feed",
-                       "Dry Matter (%)" = NA,
-                       "Crude Protein (%)" = NA,
-                       "Metab. Energy (Mcal/kg)" = NA,
-                       "Diet Prop. (%)" = 0)
-
-      DT::replaceData(
-        proxy,
-        tab_atualizada
-      )
-
-      tabela_para_salvar(tab_atualizada)
+      txt
 
     })
 
-    observeEvent(input$deleteRows, {
+    starter_composition_lab <- reactive({
 
-      tab_atual <- tabela_para_salvar()
-
-      if(is.null(input$tabela_rows_selected)){
-
-        tabela_para_salvar(tab_atual)
-
-      } else {
-
-        tab_atualizada <- tab_atual[-as.numeric(input$tabela_rows_selected), ]
-
-        DT::replaceData(
-          proxy,
-          tab_atualizada
-        )
-
-        tabela_para_salvar(tab_atualizada)
+      filtering_strings <- function(vector, text_pattern) {
+        vector |>
+          unlist() |>
+          tibble::as_tibble() |>
+          dplyr::filter(str_detect(value, text_pattern))
       }
 
-    })
 
-    observeEvent(input$tabela_cell_edit, {
+      list_of_components <- list(
+        "Crude Protein",
+        "NFC",
+        "aNDF",
+        "Fat"
+      ) |>
+        lapply(filtering_strings, vector = input_pdf_file()) |>
+        dplyr::bind_rows()
 
-      tab_atual <- tabela_para_salvar()
-
-      tab_atualizada <- DT::editData(
-        tab_atual,
-        input$tabela_cell_edit
+      suppressWarnings(
+        list_of_components |>
+          tidyr::separate(value, into = c("text", "column2", "column3", "column4"), sep = "\\s+") |>
+          dplyr::mutate(
+            nutrient = c("CP", "Garbage", "NFC", "NDF", "Fat"),
+            values = ifelse(nutrient == "CP", column3,
+                            ifelse(nutrient == "Fat", column3, column2)
+            ),
+            values = as.numeric(values)) |>
+          dplyr::filter(nutrient != "Garbage") |>
+          dplyr::select(nutrient, values)
       )
 
-      DT::replaceData(
-        proxy,
-        tab_atualizada
+    })
+
+    output$starter_composition <- renderTable({
+
+      starter_composition_lab()
+
+    })
+
+    # output$starter_composition <- renderPrint({
+    #   paste0("CP: ", input$CP, " NDF: ", input$NDF, " NFC: ", input$NFC, " EE: ", input$EE)
+    # })
+
+
+    starter_composition_outputs <- reactive({
+      list(
+        cs_cp = input$CP,
+        cs_ndf = input$NDF,
+        cs_nfc = input$NFC,
+        cs_ee = input$EE
       )
-
-      tabela_para_salvar(tab_atualizada)
-
     })
 
-    teste <- reactive({
-
-      tabela_para_salvar() |>
-        dplyr::summarise(
-          "ME (Mcal/kg)" = sum(`Metab. Energy (Mcal/kg)` * `Diet Prop. (%)` / 100, na.rm = TRUE),
-        )
-    })
-
-    output$tabela_atual <- renderTable({
-      teste()
-    })
-
-
+    starter_composition_outputs
 
   })
 }

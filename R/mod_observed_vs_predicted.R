@@ -77,8 +77,12 @@ mod_observed_vs_predicted_server <- function(id){
         predictions[[i]] <- get_calf_requirements(
           liqDiet          = rep(5, 70),
           liqDietME        = 4.6,
-          nfc_cs           = 66,
-          #solDietME        = 3.2,
+          starter_composition = list(
+            cs_ndf = 12,
+            cs_nfc = 50,
+            cs_cp = 22,
+            cs_ee = 6
+          ),
           liqDietDM        = 0.12,
           initBW           = bezerros[[i]]$initBW,
           weaningAge       = 70,
