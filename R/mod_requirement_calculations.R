@@ -21,12 +21,12 @@ mod_inputs_page_ui <- function(id){
       bslib::card(
         fluidRow(
           column(4,
-                 numericInput(ns("BW"), label = h6("Birth Weight (kg):"), value = 40),
-                 numericInput(ns("temp"), label = h6("Aver. Temp. (C):"), value = 15)),
+                 numericInput(ns("BW"), label = h6(strong("Birth Weight (kg):")), value = 40),
+                 numericInput(ns("temp"), label = h6(strong("Aver. Temp. (C):")), value = 15)),
           column(4,
-                 numericInput(ns("weaning_age"), label = h6("Weaning Age (days):"), value = 56)),
+                 numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 56)),
           column(4,
-              selectInput(ns("scenarios"), label = h6("Number of Scenarios:"), choices = c(1, 2, 3, 4), selected = 2)))),
+              selectInput(ns("scenarios"), label = h6(strong("Number of Scenarios:")), choices = c(1, 2, 3, 4), selected = 2)))),
       bslib::card(
         mod_milk_composition_ui(ns("milk_milk_replacer_composition")))
       )

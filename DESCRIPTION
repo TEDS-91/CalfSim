@@ -16,10 +16,12 @@ Imports:
     htmltools,
     htmlwidgets,
     kableExtra,
+    pdftools,
     purrr,
     readxl,
     rmarkdown,
     shiny (>= 1.7.4),
+    stringr,
     tibble,
     tidyr,
     writexl

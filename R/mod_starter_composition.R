@@ -14,28 +14,42 @@ mod_starter_composition_ui <- function(id){
     bslib::card(
       full_screen = TRUE,
       bslib::card_header(
-        class = "bg-dark",
+        class = "bg-black",
         "Starter chemical composition."),
       bslib::card_body(
-        bslib::card(
+
+        radioButtons(ns("starter_composition"), strong("Manual starter composition inputs or lab results?"),
+                    choices = c("Manual" = "manual", "Lab results" = "lab"), inline = TRUE
+        ),
+        # Only show this panel if manual is selected
+        conditionalPanel(
+          condition = "input.starter_composition == 'manual'", ns = ns,
+          bslib::card(
+            fluidRow(
+              column(3,
+                     sliderInput(ns("CP"), label = h6(strong("Crude Protein (%):")), value = 21.2, min = 15, max = 30, step = 0.1)),
+              column(3,
+                     sliderInput(ns("NDF"), label = h6(strong("Neutral Detergent Fiber (%):")), value = 12.9, min = 5, max = 30, step = 0.1)),
+              column(3,
+                     sliderInput(ns("NFC"), label = h6(strong("Non Fiber Carbohydrates (%):")), value = 55.79, min = 30, max = 70, step = 0.1)),
+              column(3,
+                     sliderInput(ns("EE"), label = h6(strong("Fat (%):")), value = 3.9, min = 2, max = 9, step = 0.1))
+            )
+          )
+        ),
+        # Only show this panel if lab results is selected
+        conditionalPanel(
+          condition = "input.starter_composition == 'lab'", ns = ns,
           fluidRow(
-          column(3,
-                 sliderInput(ns("CP"), label = h6("Crude Protein (%):"), value = 21.2, min = 15, max = 30, step = 0.1)),
-          column(3,
-                 sliderInput(ns("NDF"), label = h6("Neutral Detergent Fiber (%):"), value = 12.9, min = 5, max = 30, step = 0.1)),
-          column(3,
-                sliderInput(ns("NFC"), label = h6("Non Fiber Carbohydrates (%):"), value = 55.79, min = 30, max = 70, step = 0.1)),
-          column(3,
-                 sliderInput(ns("EE"), label = h6("Fat (%):"), value = 3.9, min = 2, max = 9, step = 0.1)),
-          column(3,
-                 fileInput(ns("file_input"), "upload file ( . pdf format only)", accept = c(".pdf")))
+            column(6,
+                   DT::dataTableOutput(ns("starter_composition")),
+                   br(),
+                   fileInput(ns("file_input"), "Upload file (.pdf only)", accept = c(".pdf"))),
+            p(strong("Functionality only implemented for Rock River Laboratory Inc. PDF reports."))
           )
         )
       )
-    ),
-
-    tableOutput(ns("starter_composition"))
-
+    )
   )
 }
 
@@ -47,25 +61,18 @@ mod_starter_composition_server <- function(id){
     ns <- session$ns
 
     input_pdf_file <- reactive({
+
       req(input$file_input)
 
-      txt <- pdftools::pdf_text(input$file_input$datapath)
+      pdf_text <- pdftools::pdf_text(input$file_input$datapath)
 
-      txt <- stringr::str_split(txt, pattern = "\n")
+      pdf_text <- stringr::str_split(pdf_text, pattern = "\n")
 
-      txt
+      pdf_text
 
     })
 
     starter_composition_lab <- reactive({
-
-      filtering_strings <- function(vector, text_pattern) {
-        vector |>
-          unlist() |>
-          tibble::as_tibble() |>
-          dplyr::filter(str_detect(value, text_pattern))
-      }
-
 
       list_of_components <- list(
         "Crude Protein",
@@ -80,34 +87,67 @@ mod_starter_composition_server <- function(id){
         list_of_components |>
           tidyr::separate(value, into = c("text", "column2", "column3", "column4"), sep = "\\s+") |>
           dplyr::mutate(
-            nutrient = c("CP", "Garbage", "NFC", "NDF", "Fat"),
-            values = ifelse(nutrient == "CP", column3,
+            nutrient = c("Crude Protein", "Garbage", "Non Fiber Carbohydrates", "Neutral Detergent Fiber", "Fat"),
+            values = ifelse(nutrient == "Crude Protein", column3,
                             ifelse(nutrient == "Fat", column3, column2)
             ),
             values = as.numeric(values)) |>
           dplyr::filter(nutrient != "Garbage") |>
-          dplyr::select(nutrient, values)
+          dplyr::select(nutrient, values) |>
+          dplyr::rename(
+            "Values (% DM)" = values,
+            "Nutrients" = nutrient
+          )
       )
 
     })
 
-    output$starter_composition <- renderTable({
+    output$starter_composition <- DT::renderDataTable({
 
-      starter_composition_lab()
+      starter_composition_lab() |>
+        DT::datatable(
+          caption = htmltools::tags$caption(
+            style = "caption-side: bottom; text-align: left;",
+            " ", htmltools::em(
+              "Please double check whether the values displayed in the table match the values in the PDF report."
+            )
+          ),
+          options = list(dom = "t"),
+          rownames= FALSE
+        )
 
     })
 
-    # output$starter_composition <- renderPrint({
-    #   paste0("CP: ", input$CP, " NDF: ", input$NDF, " NFC: ", input$NFC, " EE: ", input$EE)
-    # })
+    starter_composition_list <- reactive({
 
+      if(input$starter_composition == "manual"){
+
+        list(
+          cs_cp = input$CP,
+          cs_ndf = input$NDF,
+          cs_nfc = input$NFC,
+          cs_ee = input$EE
+        )
+
+      } else {
+
+        list(
+          cs_cp = starter_composition_lab() |> dplyr::filter(Nutrients == "Crude Protein") |> dplyr::pull("Values (% DM)"),
+          cs_ndf = starter_composition_lab() |> dplyr::filter(Nutrients == "Neutral Detergent Fiber") |> dplyr::pull("Values (% DM)"),
+          cs_nfc = starter_composition_lab() |> dplyr::filter(Nutrients == "Non Fiber Carbohydrates") |> dplyr::pull("Values (% DM)"),
+          cs_ee = starter_composition_lab() |> dplyr::filter(Nutrients == "Fat") |> dplyr::pull("Values (% DM)")
+        )
+
+      }
+
+    })
 
     starter_composition_outputs <- reactive({
       list(
-        cs_cp = input$CP,
-        cs_ndf = input$NDF,
-        cs_nfc = input$NFC,
-        cs_ee = input$EE
+        cs_cp = starter_composition_list()$cs_cp,
+        cs_ndf = starter_composition_list()$cs_ndf,
+        cs_nfc = starter_composition_list()$cs_nfc,
+        cs_ee = starter_composition_list()$cs_ee
       )
     })
 
@@ -115,9 +155,3 @@ mod_starter_composition_server <- function(id){
 
   })
 }
-
-## To be copied in the UI
-# mod_starter_composition_ui("starter_composition_1")
-
-## To be copied in the server
-# mod_starter_composition_server("starter_composition_1")

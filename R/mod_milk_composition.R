@@ -11,7 +11,7 @@ mod_milk_composition_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    selectInput(ns("liq_diet"), "Whole Milk or Milk Replacer:",
+    selectInput(ns("liq_diet"), strong("Whole Milk or Milk Replacer:"),
                 choices = c("Whole Milk" = "whole", "Milk Replacer" = "milk_replacer")
     ),
     # Only show this panel if whole milk is selected
@@ -19,28 +19,28 @@ mod_milk_composition_ui <- function(id){
       condition = "input.liq_diet == 'whole'", ns = ns,
       fluidRow(
         column(3,
-               numericInput(ns("milk_protein"), label = h6("Protein (%):"), value = 3.2)),
+               numericInput(ns("milk_protein"), label = h6(strong("Protein (%):")), value = 3.2)),
         column(3,
-               numericInput(ns("milk_fat"), label = h6("Fat (%):"), value = 3.8)),
+               numericInput(ns("milk_fat"), label = h6(strong("Fat (%):")), value = 3.8)),
         column(3,
-               numericInput(ns("milk_ash"), label = h6("Ashes (%):"), value = 0.78)),
+               numericInput(ns("milk_ash"), label = h6(strong("Ashes (%):")), value = 0.78)),
         column(3,
-               numericInput(ns("total_solids"), label = h6("Total Solids (%)"), value = 12.5))
+               numericInput(ns("total_solids"), label = h6(strong("Total Solids (%)")), value = 12.5))
       )),
       # Only show this panel if milk replacer is selected
       conditionalPanel(
         condition = "input.liq_diet == 'milk_replacer'", ns = ns,
         fluidRow(
           column(3,
-                 numericInput(ns("milk_rep_protein"), label = h6("Protein (%):"), value = 21.7)),
+                 numericInput(ns("milk_rep_protein"), label = h6(strong("Protein (%):")), value = 21.7)),
           column(2,
-                 numericInput(ns("milk_rep_fat"), label = h6("Fat (%):"), value = 18.6)),
+                 numericInput(ns("milk_rep_fat"), label = h6(strong("Fat (%):")), value = 18.6)),
           column(2,
-                 numericInput(ns("milk_rep_ash"), label = h6("Ashes (%):"), value = 7.6)),
+                 numericInput(ns("milk_rep_ash"), label = h6(strong("Ashes (%):")), value = 7.6)),
           column(2,
-                 numericInput(ns("dry_matter"), label = h6("DM (%)"), value = 96)),
+                 numericInput(ns("dry_matter"), label = h6(strong("DM (%)")), value = 96)),
           column(3,
-                 numericInput(ns("liqDietDilution"), label = h6("Rep. Dilution:"), value = 0.125),)
+                 numericInput(ns("liqDietDilution"), label = h6(strong("Rep. Dilution:")), value = 0.125))
         )
       ),
     tableOutput(ns("tabela"))

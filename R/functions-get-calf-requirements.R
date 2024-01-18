@@ -2,7 +2,8 @@
 #'
 #' @param liqDiet A numeric vector with the liquid diet intake.
 #' @param liqDietME A numeric vector with the liquid diet metabolizable energy.
-#' @param nfc_cs A numeric vector with the NFC content of the starter.
+#' @param starter_composition A list with the composition of the starter. The list
+#' has to contain cs_ndf, cs_nfc, cs_cp, and cs_ee.
 #' @param liqDietDM A numeric vector with the dry matter content of the liquid diet.
 #' @param initBW A numeric vector with the initial body weight.
 #' @param weaningAge A numeric vector with the weaning age.
@@ -15,9 +16,21 @@
 #' @export
 #'
 #' @examples
-#' get_calf_requirements(liqDiet = rep(6, 70), liqDietME = 4.6, nfc_cs = 66,
-#' liqDietDM = 0.12, initBW = 45, weaningAge = 70, averTemp = 20,
-#' liqDietOnly = FALSE, mature_weight = 750, max_size = 100)
+#' get_calf_requirements(liqDiet = rep(6, 70),
+#'                      liqDietME = 4.6,
+#'                      starter_composition = list(
+#'                        cs_ndf = 12,
+#'                        cs_nfc = 50,
+#'                        cs_cp = 22,
+#'                        cs_ee = 6
+#'                        ),
+#'                      liqDietDM = 0.12,
+#'                      initBW = 45,
+#'                      weaningAge = 70,
+#'                      averTemp = 20,
+#'                      liqDietOnly = FALSE,
+#'                      mature_weight = 750,
+#'                      max_size = 100)
 get_calf_requirements <- function(liqDiet          = rep(6, 70),
                                   liqDietME        = 4.6,
                                   starter_composition = list(
@@ -118,7 +131,6 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
   starterIntake[1] <- ifelse(liquid_diet_only[1] == TRUE & weaned[1] == FALSE, 0, NASEM[1])
 
   nfc_intake_cum[1] <- starterIntake[1] * starter_composition$cs_nfc / 100
-
 
 
   #MEcs[1] <- MEcs(ccsNFCI = nfc_intake_cum[1], pelleted = TRUE, texturized = TRUE) #TO DO

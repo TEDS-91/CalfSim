@@ -31,5 +31,11 @@ utils::globalVariables(c("scenario",
                          "meanObs",
                          "meanPred",
                          "observed_bw",
-                         "predicted_bw"
+                         "predicted_bw",
+                         "column2",
+                         "column3",
+                         "nutrient",
+                         "value",
+                         "values",
+                         "Nutrients"
                          ))

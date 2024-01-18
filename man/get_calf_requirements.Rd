@@ -22,6 +22,9 @@ get_calf_requirements(
 
 \item{liqDietME}{A numeric vector with the liquid diet metabolizable energy.}
 
+\item{starter_composition}{A list with the composition of the starter. The list
+has to contain cs_ndf, cs_nfc, cs_cp, and cs_ee.}
+
 \item{liqDietDM}{A numeric vector with the dry matter content of the liquid diet.}
 
 \item{initBW}{A numeric vector with the initial body weight.}
@@ -35,8 +38,6 @@ get_calf_requirements(
 \item{mature_weight}{A numeric vector with the mature weight.}
 
 \item{max_size}{A numeric vector with the maximum size of the vectors.}
-
-\item{nfc_cs}{A numeric vector with the NFC content of the starter.}
 }
 \value{
 A dataframe with the calf requirements.
@@ -45,7 +46,19 @@ A dataframe with the calf requirements.
 Calculates the calf requirements.
 }
 \examples{
-get_calf_requirements(liqDiet = rep(6, 70), liqDietME = 4.6, nfc_cs = 66,
-liqDietDM = 0.12, initBW = 45, weaningAge = 70, averTemp = 20,
-liqDietOnly = FALSE, mature_weight = 750, max_size = 100)
+get_calf_requirements(liqDiet = rep(6, 70),
+                     liqDietME = 4.6,
+                     starter_composition = list(
+                       cs_ndf = 12,
+                       cs_nfc = 50,
+                       cs_cp = 22,
+                       cs_ee = 6
+                       ),
+                     liqDietDM = 0.12,
+                     initBW = 45,
+                     weaningAge = 70,
+                     averTemp = 20,
+                     liqDietOnly = FALSE,
+                     mature_weight = 750,
+                     max_size = 100)
 }
