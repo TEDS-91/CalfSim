@@ -14,13 +14,19 @@ mod_starter_composition_ui <- function(id){
     bslib::card(
       full_screen = TRUE,
       bslib::card_header(
-        class = "bg-black",
+        class = "bg-dark",
         "Starter chemical composition."),
       bslib::card_body(
 
-        radioButtons(ns("starter_composition"), strong("Manual starter composition inputs or lab results?"),
-                    choices = c("Manual" = "manual", "Lab results" = "lab"), inline = TRUE
+        fluidRow(
+          column(6,
+                 radioButtons(ns("starter_composition"), strong("Manual starter composition inputs or lab results?"),
+                    choices = c("Manual" = "manual", "Lab results" = "lab"), inline = TRUE)),
+          column(6,
+                 radioButtons(ns("form_of_starter"), strong("Form of Starter:"),
+                     choices = c("Pelleted" = "pelleted", "Texturized" = "texturized"), inline = TRUE))
         ),
+
         # Only show this panel if manual is selected
         conditionalPanel(
           condition = "input.starter_composition == 'manual'", ns = ns,
@@ -147,7 +153,8 @@ mod_starter_composition_server <- function(id){
         cs_cp = starter_composition_list()$cs_cp,
         cs_ndf = starter_composition_list()$cs_ndf,
         cs_nfc = starter_composition_list()$cs_nfc,
-        cs_ee = starter_composition_list()$cs_ee
+        cs_ee = starter_composition_list()$cs_ee,
+        form_of_starter = input$form_of_starter
       )
     })
 

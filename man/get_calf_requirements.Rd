@@ -7,7 +7,8 @@
 get_calf_requirements(
   liqDiet = rep(6, 70),
   liqDietME = 4.6,
-  starter_composition = list(cs_ndf = 12, cs_nfc = 50, cs_cp = 22, cs_ee = 6),
+  starter_composition = list(cs_ndf = 12, cs_nfc = 50, cs_cp = 22, cs_ee = 6,
+    form_of_starter = "pelleted"),
   liqDietDM = 0.12,
   initBW = 45,
   weaningAge = 70,
@@ -52,7 +53,8 @@ get_calf_requirements(liqDiet = rep(6, 70),
                        cs_ndf = 12,
                        cs_nfc = 50,
                        cs_cp = 22,
-                       cs_ee = 6
+                       cs_ee = 6,
+                       form_of_starter = "pelleted"
                        ),
                      liqDietDM = 0.12,
                      initBW = 45,

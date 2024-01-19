@@ -22,7 +22,8 @@
 #'                        cs_ndf = 12,
 #'                        cs_nfc = 50,
 #'                        cs_cp = 22,
-#'                        cs_ee = 6
+#'                        cs_ee = 6,
+#'                        form_of_starter = "pelleted"
 #'                        ),
 #'                      liqDietDM = 0.12,
 #'                      initBW = 45,
@@ -37,7 +38,8 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
                                     cs_ndf = 12,
                                     cs_nfc = 50,
                                     cs_cp = 22,
-                                    cs_ee = 6
+                                    cs_ee = 6,
+                                    form_of_starter = "pelleted"
                                   ),
                                   liqDietDM        = 0.12,
                                   initBW           = 45,
@@ -139,7 +141,8 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
                                 cs_nfc = starter_composition$cs_nfc,
                                 cs_cp = starter_composition$cs_cp,
                                 cs_ee = starter_composition$cs_ee,
-                                CSNFCI = nfc_intake_cum[1])
+                                form_of_starter = starter_composition$form_of_starter,
+                                NFCint = nfc_intake_cum[1])
 
 
   MEfromSI[1] <- starterIntake[1] * MEcs[1] #solDietME
@@ -243,7 +246,8 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
                                   cs_nfc = starter_composition$cs_nfc,
                                   cs_cp = starter_composition$cs_cp,
                                   cs_ee = starter_composition$cs_ee,
-                                  CSNFCI = nfc_intake_cum[i])
+                                  form_of_starter = starter_composition$form_of_starter,
+                                  NFCint = nfc_intake_cum[i])
 
 
 

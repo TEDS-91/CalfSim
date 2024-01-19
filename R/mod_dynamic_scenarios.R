@@ -7,7 +7,7 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_dynamic_scenarios_ui <- function(id, scenario_name = "Scenario id"){
+mod_dynamic_scenarios_ui <- function(id, scenario_name = "Scenario name"){
   ns <- NS(id)
   tagList(
     bslib::card(
@@ -15,7 +15,7 @@ mod_dynamic_scenarios_ui <- function(id, scenario_name = "Scenario id"){
         column(6,
                numericInput(ns("number_of_nut_plans"), label = h6(strong("Nut. Plans:")), value = 2)),
         column(6,
-               textInput(ns("scenario_name"), label = h6(strong("Scenario Name:")), value = scenario_name))
+               textInput(ns("scenario_name"), label = h6(strong("Scenario:")), value = scenario_name))
       ),
       uiOutput(ns("nutritional_plans_design")),
     )

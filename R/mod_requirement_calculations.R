@@ -177,7 +177,8 @@ mod_inputs_page_server <- function(id){
                                                                           cs_ndf = starter_composition()[["cs_ndf"]],
                                                                           cs_nfc = starter_composition()[["cs_nfc"]],
                                                                           cs_cp = starter_composition()[["cs_cp"]],
-                                                                          cs_ee = starter_composition()[["cs_ee"]]
+                                                                          cs_ee = starter_composition()[["cs_ee"]],
+                                                                          form_of_starter = starter_composition()[["form_of_starter"]]
                                                                         ),
                                                                         liqDietDM   = milk_composition()[["liq_diet_dm"]],
                                                                         initBW      = input$BW,

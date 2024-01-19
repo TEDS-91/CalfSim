@@ -2,37 +2,41 @@
 % Please edit documentation in R/functions-calf-starter-me.R
 \name{starter_met_energy}
 \alias{starter_met_energy}
-\title{Metabolizable energy calcualtion based on .}
+\title{Metabolizable energy of calf starter (Mcal/kg DM).}
 \usage{
 starter_met_energy(
-  cs_ndf = 12.9,
-  cs_nfc = 55.79,
+  cs_ndf = 12,
+  cs_nfc = 50,
   cs_cp = 22,
-  cs_ee = 3.9,
-  CSNFCI = 15
+  cs_ee = 6,
+  NFCint = 15,
+  form_of_starter = "pelleted"
 )
 }
 \arguments{
-\item{cs_ndf}{Calf starter NDF content (\%).}
+\item{cs_ndf}{Neutral detergent fiber of calf starter (\% DM).}
 
-\item{cs_nfc}{Calf starter NFC content (\%).}
+\item{cs_nfc}{Non-fiber carbohydrates of calf starter (\% DM).}
 
-\item{cs_cp}{Calf starter CP content (\%).}
+\item{cs_cp}{Crude protein of calf starter (\% DM).}
 
-\item{cs_ee}{Calf starter EE content (\%).}
+\item{cs_ee}{Ether extract of calf starter (\% DM).}
 
-\item{CSNFCI}{Calf starter cumulative NFC intake (kg).}
+\item{NFCint}{Cumulative intake of non-fiber carbohydrates (\% DM).}
+
+\item{form_of_starter}{Form of calf starter (pelleted or texturized).}
 }
 \value{
-Metabolizable energy (ME) of calf starter (Mcal/kg DM).
+Metabolizable energy of calf starter (Mcal/kg DM).
 }
 \description{
-Metabolizable energy calcualtion based on .
+Metabolizable energy of calf starter (Mcal/kg DM).
 }
 \examples{
-starter_met_energy(cs_ndf = 12.9,
-                  cs_nfc = 55.79,
+starter_met_energy(cs_ndf = 12,
+                  cs_nfc = 50,
                   cs_cp = 22,
-                  cs_ee = 3.9,
-                  CSNFCI = 15)
+                  cs_ee = 6,
+                  NFCint = 15,
+                  form_of_starter = "pelleted")
 }
