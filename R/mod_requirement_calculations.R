@@ -26,7 +26,7 @@ mod_inputs_page_ui <- function(id){
           column(4,
                  numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 56)),
           column(4,
-              selectInput(ns("scenarios"), label = h6(strong("Number of Scenarios:")), choices = c(1, 2, 3, 4), selected = 2)))),
+              selectInput(ns("scenarios"), label = h6(strong("Number of Scenarios:")), choices = c(1, 2, 3, 4), selected = 1)))),
       bslib::card(
         mod_milk_composition_ui(ns("milk_milk_replacer_composition")))
       )
@@ -180,6 +180,7 @@ mod_inputs_page_server <- function(id){
                                                                           cs_ee = starter_composition()[["cs_ee"]],
                                                                           form_of_starter = starter_composition()[["form_of_starter"]]
                                                                         ),
+                                                                        cs_intake_equation = starter_composition()[["cs_intake_equation"]],
                                                                         liqDietDM   = milk_composition()[["liq_diet_dm"]],
                                                                         initBW      = input$BW,
                                                                         weaningAge  = input$weaning_age,

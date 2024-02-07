@@ -37,5 +37,12 @@ utils::globalVariables(c("scenario",
                          "nutrient",
                          "value",
                          "values",
-                         "Nutrients"
+                         "Nutrients",
+                         "MEcs",
+                         "adg",
+                         "body_weight",
+                         "me_cs",
+                         "me_milk",
+                         "nobs",
+                         "weaned"
                          ))

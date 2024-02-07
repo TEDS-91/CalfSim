@@ -77,8 +77,9 @@ mod_nutrient_requirements_server <- function(id){
                                    cs_ndf = 12,
                                    cs_nfc = 55,
                                    cs_cp = 22,
-                                   cs_ee = 3
-                                 ),
+                                   cs_ee = 3,
+                                   form_of_starter = "pelleted"),
+                                 cs_intake_equation = "NASEM",
                                  liqDietDM        = 0.12,
                                  weaningAge       = 70,
                                  averTemp         = 20,
@@ -113,7 +114,7 @@ mod_nutrient_requirements_server <- function(id){
                                  cs_nfc = starter_composition$cs_nfc,
                                  cs_cp = starter_composition$cs_cp,
                                  cs_ee = starter_composition$cs_ee,
-                                 CSNFCI = nfc_intake_cum)
+                                 NFCint = nfc_intake_cum)
 
 
 
@@ -216,8 +217,3 @@ mod_nutrient_requirements_server <- function(id){
   })
 }
 
-## To be copied in the UI
-# mod_nutrient_requirements_ui("nutrient_requirements_1")
-
-## To be copied in the server
-# mod_nutrient_requirements_server("nutrient_requirements_1")

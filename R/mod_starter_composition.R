@@ -19,12 +19,15 @@ mod_starter_composition_ui <- function(id){
       bslib::card_body(
 
         fluidRow(
-          column(6,
-                 radioButtons(ns("starter_composition"), strong("Manual starter composition inputs or lab results?"),
+          column(4,
+                 radioButtons(ns("starter_composition"), strong("Starter Composition Inputs:"),
                     choices = c("Manual" = "manual", "Lab results" = "lab"), inline = TRUE)),
-          column(6,
+          column(4,
                  radioButtons(ns("form_of_starter"), strong("Form of Starter:"),
-                     choices = c("Pelleted" = "pelleted", "Texturized" = "texturized"), inline = TRUE))
+                     choices = c("Pelleted" = "pelleted", "Texturized" = "texturized"), inline = TRUE)),
+          column(4,
+                 radioButtons(ns("cs_intake_equation"), strong("Starter Intake Equation:"),
+                              choices = c("NASEM (2021)" = "NASEM", "Silva et al. (2019)" = "silva2019"), inline = TRUE))
         ),
 
         # Only show this panel if manual is selected
@@ -38,8 +41,11 @@ mod_starter_composition_ui <- function(id){
                      sliderInput(ns("NDF"), label = h6(strong("Neutral Detergent Fiber (%):")), value = 12.9, min = 5, max = 30, step = 0.1)),
               column(3,
                      sliderInput(ns("NFC"), label = h6(strong("Non Fiber Carbohydrates (%):")), value = 55.79, min = 30, max = 70, step = 0.1)),
-              column(3,
-                     sliderInput(ns("EE"), label = h6(strong("Fat (%):")), value = 3.9, min = 2, max = 9, step = 0.1))
+              column(2,
+                     sliderInput(ns("EE"), label = h6(strong("Fat (%):")), value = 3.9, min = 2, max = 9, step = 0.1)),
+              column(1,
+                     sliderInput(ns("ash"), label = h6(strong("Ash (%):")), value = 6.21, min = 3, max = 10, step = 0.1)),
+              p("Remember: All components must sum up 100. The ash content will be calculated automatically.", style = "color: black; font-size: 14px;")
             )
           )
         ),
@@ -65,6 +71,23 @@ mod_starter_composition_ui <- function(id){
 mod_starter_composition_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+# -------------------------------------------------------------------------
+# Adjusting the re-activity of the starter components ---------------------
+# All components have to sum up 100 ---------------------------------------
+# -------------------------------------------------------------------------
+
+    observeEvent(c(input$CP, input$NDF, input$NFC, input$EE), {
+
+      ash_cor <- 100 - input$CP - input$NDF - input$NFC - input$EE
+
+      updateNumericInput(session, "ash", value = ash_cor, max = round(ash_cor + 3, 0), min = max(0, round(ash_cor - 3), 0))
+
+    })
+
+# -------------------------------------------------------------------------
+# Reading the PDF file and extracting the chemical composition ------------
+# -------------------------------------------------------------------------
 
     input_pdf_file <- reactive({
 
@@ -138,10 +161,21 @@ mod_starter_composition_server <- function(id){
       } else {
 
         list(
-          cs_cp = starter_composition_lab() |> dplyr::filter(Nutrients == "Crude Protein") |> dplyr::pull("Values (% DM)"),
-          cs_ndf = starter_composition_lab() |> dplyr::filter(Nutrients == "Neutral Detergent Fiber") |> dplyr::pull("Values (% DM)"),
-          cs_nfc = starter_composition_lab() |> dplyr::filter(Nutrients == "Non Fiber Carbohydrates") |> dplyr::pull("Values (% DM)"),
-          cs_ee = starter_composition_lab() |> dplyr::filter(Nutrients == "Fat") |> dplyr::pull("Values (% DM)")
+          cs_cp = starter_composition_lab() |>
+            dplyr::filter(Nutrients == "Crude Protein") |>
+            dplyr::pull("Values (% DM)"),
+
+          cs_ndf = starter_composition_lab() |>
+            dplyr::filter(Nutrients == "Neutral Detergent Fiber") |>
+            dplyr::pull("Values (% DM)"),
+
+          cs_nfc = starter_composition_lab() |>
+            dplyr::filter(Nutrients == "Non Fiber Carbohydrates") |>
+            dplyr::pull("Values (% DM)"),
+
+          cs_ee = starter_composition_lab() |>
+            dplyr::filter(Nutrients == "Fat") |>
+            dplyr::pull("Values (% DM)")
         )
 
       }
@@ -154,6 +188,7 @@ mod_starter_composition_server <- function(id){
         cs_ndf = starter_composition_list()$cs_ndf,
         cs_nfc = starter_composition_list()$cs_nfc,
         cs_ee = starter_composition_list()$cs_ee,
+        cs_intake_equation = input$cs_intake_equation,
         form_of_starter = input$form_of_starter
       )
     })

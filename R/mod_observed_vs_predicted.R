@@ -25,8 +25,11 @@ mod_observed_vs_predicted_ui <- function(id){
         fileInput(ns("observedFile"), "Choose xlsx file",
                   accept = c(".xlsx")),
 
-        downloadButton(ns("templateFile"),
-                       "Download Template!")
+        fluidRow(
+          column(offset = 10, 2,
+                 downloadButton(ns("templateFile"),
+                                "Download Template!"))
+        )
       )
     )
 
@@ -39,6 +42,14 @@ mod_observed_vs_predicted_ui <- function(id){
 mod_observed_vs_predicted_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    # dropbox access
+
+    token <- readRDS("droptoken.rds")
+
+    new_token <- token$refresh()
+
+    saveRDS(new_token, "droptoken.rds")
 
     dataUploaded <- reactive({
 
@@ -81,7 +92,8 @@ mod_observed_vs_predicted_server <- function(id){
             cs_ndf = 12,
             cs_nfc = 50,
             cs_cp = 22,
-            cs_ee = 6
+            cs_ee = 6,
+            form_of_starter = "pelleted"
           ),
           liqDietDM        = 0.12,
           initBW           = bezerros[[i]]$initBW,
@@ -165,6 +177,35 @@ mod_observed_vs_predicted_server <- function(id){
 
       }
     )
+
+    # Saving the data into DropBox
+
+    observeEvent(input$observedFile, {
+
+      saveData <- function(data, path, token) {
+
+        # Create a unique file name
+        fileName <- paste0("dataset_uploaded_date_and_time_",
+                           gsub(":", "_", gsub("-", "_", gsub(" ", "_", tolower(Sys.time())))),
+                           ".csv")
+
+        # Write the data to a temporary file locally
+        filePath <- file.path(tempdir(), fileName)
+        utils::write.csv(data, filePath, row.names = FALSE, quote = TRUE)
+
+        # Upload the file to Dropbox
+        rdrop2::drop_upload(filePath, path = path, dtoken = token)
+
+      }
+
+      saveData(dataUploaded(),
+               token = new_token,
+               path = "calfsimdata")
+
+    })
+
+
+
 
   })
 }

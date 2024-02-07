@@ -4,6 +4,7 @@
 #' @param liqDietME A numeric vector with the liquid diet metabolizable energy.
 #' @param starter_composition A list with the composition of the starter. The list
 #' has to contain cs_ndf, cs_nfc, cs_cp, and cs_ee.
+#' @param cs_intake_equation is the equation used to calculate the intake of the starter.
 #' @param liqDietDM A numeric vector with the dry matter content of the liquid diet.
 #' @param initBW A numeric vector with the initial body weight.
 #' @param weaningAge A numeric vector with the weaning age.
@@ -23,8 +24,8 @@
 #'                        cs_nfc = 50,
 #'                        cs_cp = 22,
 #'                        cs_ee = 6,
-#'                        form_of_starter = "pelleted"
-#'                        ),
+#'                        form_of_starter = "pelleted"),
+#'                      cs_intake_equation = "NASEM",
 #'                      liqDietDM = 0.12,
 #'                      initBW = 45,
 #'                      weaningAge = 70,
@@ -39,8 +40,8 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
                                     cs_nfc = 50,
                                     cs_cp = 22,
                                     cs_ee = 6,
-                                    form_of_starter = "pelleted"
-                                  ),
+                                    form_of_starter = "pelleted"),
+                                  cs_intake_equation = "NASEM",
                                   liqDietDM        = 0.12,
                                   initBW           = 45,
                                   weaningAge       = 70,
@@ -65,6 +66,7 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
                     "MEgap",
                     "Quigley",
                     "NASEM",
+                    "silva2019",
                     "nfc_intake_cum",
                     "MEcs",
                     "MEfromSI",
@@ -130,7 +132,10 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
 
   NASEM[1] <- starter_intake_nasem(BW = BW[1], MEiLD = MEfromliqDiet[1], FPstarter = FPstarter[1], temperature = averTemp)
 
-  starterIntake[1] <- ifelse(liquid_diet_only[1] == TRUE & weaned[1] == FALSE, 0, NASEM[1])
+  silva2019[1] <- starter_intake_silva2019(milk_intake = LiqDietAll[1], age = 1)
+
+  starterIntake[1] <- ifelse(liquid_diet_only[1] == TRUE & weaned[1] == FALSE, 0,
+                             ifelse(cs_intake_equation == "NASEM", NASEM[1], silva2019[1]))
 
   nfc_intake_cum[1] <- starterIntake[1] * starter_composition$cs_nfc / 100
 
@@ -233,7 +238,10 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
 
     NASEM[i] <- starter_intake_nasem(BW = BW[i], MEiLD = MEfromliqDiet[i], FPstarter = FPstarter[i], temperature = averTemp)
 
-    starterIntake[i] <- ifelse(liquid_diet_only[i] == TRUE & weaned[i] == FALSE, 0, NASEM[i])
+    silva2019[i] <- starter_intake_silva2019(milk_intake = LiqDietAll[i], age = i)
+
+    starterIntake[i] <- ifelse(liquid_diet_only[i] == TRUE & weaned[i] == FALSE, 0,
+                               ifelse(cs_intake_equation == "NASEM", NASEM[i], silva2019[i]))
 
     #MEfromSI[i] <- starterIntake[i] * solDietME
 
@@ -327,6 +335,7 @@ get_calf_requirements <- function(liqDiet          = rep(6, 70),
       FPstarter,
       #Quigley,
       NASEM,
+      silva2019,
       starterIntake,
       #MEgap,
       nfc_intake_cum,

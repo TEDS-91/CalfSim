@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions-starter-intake.R
 \name{starter_intake_nasem}
 \alias{starter_intake_nasem}
-\title{The NASEM (2021) equation to predict the average starter intake of calves.}
+\title{The NASEM (2021) equation to predict the average starter intake of calves - Eq. 10-1 and 10-2.}
 \usage{
 starter_intake_nasem(BW = 45, MEiLD = 2.76, FPstarter = 2, temperature = 30)
 }
@@ -19,7 +19,7 @@ starter_intake_nasem(BW = 45, MEiLD = 2.76, FPstarter = 2, temperature = 30)
 The expected average starter intake of a calf (kg).
 }
 \description{
-The NASEM (2021) equation to predict the average starter intake of calves.
+The NASEM (2021) equation to predict the average starter intake of calves - Eq. 10-1 and 10-2.
 }
 \examples{
 starter_intake_nasem(BW = 50, FPstarter = 5, temperature = 20, MEiLD = 2.76)

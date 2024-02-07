@@ -11,42 +11,18 @@ mod_kpis_dashboard_ui <- function(id){
   ns <- NS(id)
   tagList(
 
-    bslib::layout_column_wrap(
+    # Creating the dynamic dashboard ui
 
-      width = "250px",
-      bslib::value_box(
-        title = "Final Body weight (kg)",
-        value = textOutput(ns("fBW")),
-        showcase = bsicons::bs_icon("graph-up")
+    bslib::card(
+      full_screen = TRUE,
+      bslib::card_header(
+        "KPI's",
+        class = "bg-dark"
       ),
-      bslib::value_box(
-        title = "Average Daily Gain (kg)",
-        value = textOutput(ns("ADG")),
-        showcase = bsicons::bs_icon("graph-up")
-      ),
-      bslib::value_box(
-        title = "Average Daily Starter Intake (kg)",
-        value = textOutput(ns("ST")),
-        showcase = bsicons::bs_icon("bucket")
-      ),
-      bslib::value_box(
-        title = "Days to NFC 15 kg",
-        value = textOutput(ns("nfcCum")),
-        showcase = bsicons::bs_icon("bucket")
-      ),
-      bslib::value_box(
-        title = "Whole Milk/Milk Replacer ME (Mcal/kg)",
-        value = textOutput(ns("milkME")),
-        showcase = bsicons::bs_icon("fuel-pump")
+      bslib::card_body(
+        uiOutput(ns("kpis_dashboard_ui"))
       )
-    ),
-
-    # fluidRow(
-    #   mod_teste_ui(ns("teste_1"))
-    # ),
-
-    tableOutput(ns("show_inputs")),
-    tableOutput(ns("teste"))
+    )
   )
 }
 
@@ -57,93 +33,102 @@ mod_kpis_dashboard_server <- function(id, dataset){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
-    AllInputs <- reactive({
-      x <- reactiveValuesToList(input)
-      data.frame(
-        names = names(x),
-        values = unlist(x, use.names = FALSE)
-      )
+# -------------------------------------------------------------------------
+# Getting the number of scenarios -----------------------------------------
+# -------------------------------------------------------------------------
+    number_of_scenarios <- reactive({
+
+      dataset() |>
+      dplyr::select(scenario) |>
+        unique() |>
+        nrow()
     })
 
-    # dados <- mod_teste_server("teste_1")
-    #
-    # output$show_inputs <- renderTable({
-    #   dados()[[1]]
-    # })
-    #
-    # dados
-
-    # teste2 <- reactive({
-    #
-    #   #dados() |> tibble::as_tibble()
-    #
-    # })
+# -------------------------------------------------------------------------
+# KPIs calculations based on the scenarios simulated ----------------------
+# -------------------------------------------------------------------------
 
     kpis_calculations <- reactive({
 
-      nfc_15 <- dataset() |>
-        dplyr::filter(nfc_intake_cum <= 16) |>
-        dplyr::pull(nfc_intake_cum) |>
-        length()
-
-      dataset() |>
+      age_nfc_15 <- dataset() |>
+        dplyr::group_by(scenario) |>
+        dplyr::filter(nfc_intake_cum < 16) |>
         dplyr::summarise(
-          final_body_weight = dplyr::last(BWcor), #input$`teste_1-input_teste`,
-          aver_daily_gain = ( final_body_weight - min(BW) ) / dim(dataset())[1],
-          starter_intake = sum(starterIntake, na.rm = TRUE) / dim(dataset())[1],
-          milkME = mean(MEfromliqDiet / liqDietIntake, na.rm = TRUE),
-          nfcCum = nfc_15
+          age_nfc_15 = max(daysOfLife, na.rm = TRUE),
+          .groups = "drop"
         )
 
-    })
-
-    #output$teste <- renderTable({
-
-      # dados$dados_teste |> print()
-      #
-
-      #kpis_calculations()["final_body_weight"]
-
-    #})
-
-    output$fBW <- renderText({
-
-      kpis_calculations() |>
-        dplyr::pull(final_body_weight) |>
-        round(2)
+      kpis <- dataset() |>
+        dplyr::group_by(scenario, weaned) |>
+        dplyr::summarise(
+          nobs = dplyr::n(),
+          final_body_weight = round(dplyr::last(BWcor, na_rm = TRUE), 1),
+          aver_daily_gain = round(mean(ADG, na.rm = TRUE), 3),
+          starter_intake = round(sum(starterIntake, na.rm = TRUE) / nobs, 3),
+          milkME = round(mean(MEfromliqDiet / liqDietIntake, na.rm = TRUE), 3)
+        ) |>
+        dplyr::ungroup() |>
+        dplyr::left_join(age_nfc_15, by = "scenario") |>
+        dplyr::filter(weaned == FALSE) |>
+        dplyr::group_split(scenario)
 
     })
 
-    output$ADG <- renderText({
+# -------------------------------------------------------------------------
+# Function to use in the KPI display --------------------------------------
+# -------------------------------------------------------------------------
 
-      kpis_calculations() |>
-        dplyr::pull(aver_daily_gain) |>
-        round(2)
+    # function for the value boxes
 
-    })
+    # small function for the value boxes
 
-    output$ST <- renderText({
+    value_boxes_adj <- function(variable = "Body weight (kg)",
+                                alias = "fBW",
+                                icon = "graph-up", ...) {
 
-      kpis_calculations() |>
-        dplyr::pull(starter_intake) |>
-        round(2)
+      list(
+        column(3,
+               bslib::value_box(
+                 title = variable,
+                 value = alias,
+                 showcase = bsicons::bs_icon(icon),
+                 showcase_layout = "top right"
+               ))
+      )
+    }
 
-    })
+    # function to display the value boxes according to the number of scenarios simulated
 
-    output$milkME <- renderText({
+    scenario_visual <- function(scenario_id, metrics = list(body_weight, adg, age_nfc_15, me_milk)) {
 
-      kpis_calculations() |>
-        dplyr::pull(milkME) |>
-        round(2)
+      tagList(
+        scenario_id,
+        bslib::layout_column_wrap(
+          width = "250px",
+          height = "100px",
+          fluidRow(
+            data.frame(variable = c("Final Body Weight (kg)", "ADG (kg)", "Age at 15 kg NFC intake (days)", "Milk Met. Energy (Mcal)"),
+                       alias = c(metrics$body_weight, metrics$adg, metrics$age_nfc_15, metrics$me_milk),
+                       icon = c("graph-up", "graph-up", "bucket", "fuel-pump")) |>
+              purrr::pmap(value_boxes_adj)
+          )
+        )
+      )
+    }
 
-    })
+# -------------------------------------------------------------------------
+# Building the UI ---------------------------------------------------------
+# -------------------------------------------------------------------------
 
-    output$nfcCum <- renderText({
+    output$kpis_dashboard_ui <- renderUI({
 
-      kpis_calculations() |>
-        dplyr::pull(nfcCum) |>
-        round(0)
-
+      seq(1, number_of_scenarios(), 1) |>
+        lapply(\(x)
+              scenario_visual(scenario_id = kpis_calculations()[[x]]$scenario[1],
+                              metrics = list(body_weight = kpis_calculations()[[x]]$final_body_weight,
+                                             adg = kpis_calculations()[[x]]$aver_daily_gain,
+                                             age_nfc_15 = kpis_calculations()[[x]]$age_nfc_15,
+                                             me_milk = kpis_calculations()[[x]]$milkME)))
     })
 
   })

@@ -12,3 +12,4 @@ filtering_strings <- function(vector, text_pattern) {
     tibble::as_tibble() |>
     dplyr::filter(stringr::str_detect(value, text_pattern))
 }
+

@@ -9,6 +9,7 @@ get_calf_requirements(
   liqDietME = 4.6,
   starter_composition = list(cs_ndf = 12, cs_nfc = 50, cs_cp = 22, cs_ee = 6,
     form_of_starter = "pelleted"),
+  cs_intake_equation = "NASEM",
   liqDietDM = 0.12,
   initBW = 45,
   weaningAge = 70,
@@ -25,6 +26,8 @@ get_calf_requirements(
 
 \item{starter_composition}{A list with the composition of the starter. The list
 has to contain cs_ndf, cs_nfc, cs_cp, and cs_ee.}
+
+\item{cs_intake_equation}{is the equation used to calculate the intake of the starter.}
 
 \item{liqDietDM}{A numeric vector with the dry matter content of the liquid diet.}
 
@@ -54,8 +57,8 @@ get_calf_requirements(liqDiet = rep(6, 70),
                        cs_nfc = 50,
                        cs_cp = 22,
                        cs_ee = 6,
-                       form_of_starter = "pelleted"
-                       ),
+                       form_of_starter = "pelleted"),
+                     cs_intake_equation = "NASEM",
                      liqDietDM = 0.12,
                      initBW = 45,
                      weaningAge = 70,
