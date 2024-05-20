@@ -11,12 +11,13 @@ mod_descriptive_pre_weaning_performance_ui <- function(id){
   ns <- NS(id)
   tagList(
     bslib::card(
+      full_screen = TRUE,
       bslib::card_header(
         class = "bg-dark",
         "Performance until weaning."),
-      height = 650,
+      height = 900,
       bslib::card_body(
-        min_height = 500,
+        min_height = 850,
         DT::DTOutput(ns("table")),
       )
     ),
@@ -51,13 +52,18 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
         dplyr::filter(weaned == FALSE) |>
         dplyr::group_by(scenario) |>
         dplyr::summarise(
-          "Initial Body Weight (kg)" = dplyr::first(BW),
-          "Final Body Weight (kg)" = dplyr::last(BWcor),
-          "Av. Daily Gain (kg)" = mean(ADG, na.rm = TRUE),
-          "Av. Daily Feed Intake (kg)" = mean(totalDMI, na.rm = TRUE),
-          "Feed Efic. (kg/kg)" = sum(totalDMI) / (dplyr::last(BWcor) - dplyr::first(BW)),
+          "Initial Body Weight (kg)" = round(dplyr::first(BW), 2),
+          "Final Body Weight (kg)" = round(dplyr::last(BWcor), 2),
+          "Av. Daily Gain (kg)" = round(mean(ADG, na.rm = TRUE), 3),
+          "Av. Daily Feed Intake (kg)" = round(mean(totalDMI, na.rm = TRUE), 3),
+          "Feed Efic. (kg/kg)" = round(sum(totalDMI) / (dplyr::last(BWcor) - dplyr::first(BW)), 3),
           "Age at Weaning (days)" = max(daysOfLife),
-          "Total Milk Consumption (kg)" = sum(LiqDietAll)
+          "Total Milk Consumption (kg)" = round(sum(LiqDietAll), 2),
+          "Total Starter Consumption (kg)" = round(sum(starterIntake), 2),
+          "Total Milk Cost ($)" = round(sum(total_milk_cost), 2),
+          "Total Starter Cost ($)" = round(sum(total_starter_cost), 2),
+          "Total Feed Cost ($)" = round(sum(total_milk_cost + total_starter_cost), 2),
+          "Cost per kg of BW gain ($)" = round(`Total Feed Cost ($)` / (max(BWcor) - min(BW)), 2)
         ) |>
         dplyr::left_join(age_nfc_15, by = "scenario") |>
         dplyr::rename("Age at 15 kg of NFC intake (days)" = age_nfc_15,
@@ -80,7 +86,7 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
       descriptive_data()
 
     }, options = list(paging = TRUE,
-                      scrollY = "400px",
+                      scrollY = "600px",
                       scrollX = "900px",
                       pageLength = 20,
                       initComplete = htmlwidgets::JS(

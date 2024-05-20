@@ -103,7 +103,7 @@ get_na_req <- function(EBW = 65,
 #' @export
 #'
 #' @examples
-#' get_s_req(BW = 65, ADG = 0.45)
+#' get_cu_req(BW = 65, ADG = 0.45)
 get_cu_req <- function(BW = 65,
                        ADG = 0.45) {
 

@@ -14,17 +14,18 @@ mod_inputs_page_ui <- function(id){
     bslib::card(
       bslib::card_header(
         class = "bg-dark",
-        "Animal and Milk/Replacer inputs."),
+        "Animal, Management, Environmental, and Liquid Diet Inputs."),
       bslib::layout_column_wrap(
-        width = 1/2,
-        height = 250,
+        width = NULL,
+        height = 270,
+        style = htmltools::css(grid_template_columns = "1.3fr 2fr"),
       bslib::card(
         fluidRow(
           column(4,
                  numericInput(ns("BW"), label = h6(strong("Birth Weight (kg):")), value = 40),
                  numericInput(ns("temp"), label = h6(strong("Aver. Temp. (C):")), value = 15)),
           column(4,
-                 numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 56)),
+                 numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 65)),
           column(4,
               selectInput(ns("scenarios"), label = h6(strong("Number of Scenarios:")), choices = c(1, 2, 3, 4), selected = 1)))),
       bslib::card(
@@ -35,7 +36,7 @@ mod_inputs_page_ui <- function(id){
     bslib::card(
       bslib::card_header(
         class = "bg-dark",
-        "Animal and Milk/Replacer inputs."),
+        "Scenarios for Milk Allowance Plans."),
       uiOutput(ns("nutritional_plans_design"))
     ),
     actionButton(ns("simulate"), label = "Simulate!", icon = tags$i(fontawesome::fa("person-running"))),
@@ -197,9 +198,19 @@ mod_inputs_page_server <- function(id){
 
       # creating the dataframe with the requirements and scenarios
 
+      milk_cost <- milk_composition()[["liq_diet_cost"]]
+
+      starter_cost <- starter_composition()[["starter_cost"]]
+
       dataframes_with_requirements |>
         purrr::set_names(scenario_names) |>
-        dplyr::bind_rows(.id = "scenario")
+        dplyr::bind_rows(.id = "scenario") |>
+        dplyr::mutate(
+          milk_cost = milk_cost,
+          total_milk_cost = milk_cost * LiqDietAll,
+          starter_cost = starter_cost,
+          total_starter_cost = starter_cost * starterIntake
+        )
 
     })
 
@@ -208,6 +219,19 @@ mod_inputs_page_server <- function(id){
       calculating_requirements()
 
     })
+
+# -------------------------------------------------------------------------
+# Costs calculations ------------------------------------------------------
+# -------------------------------------------------------------------------
+
+    costs <- reactive({
+
+      milk_cost <- milk_composition()[["liq_diet_cost"]]
+
+      calculating_requirements()
+
+    })
+
 
     return(
       list(

@@ -18,5 +18,5 @@ S adequate intakes (mg/day).
 Estimates the calf sulfur adequate intakes (AI) - NASEM (2021) Eq. 10-24.
 }
 \examples{
-get_s_req(BW = 65, ADG = 0.45)
+get_cu_req(BW = 65, ADG = 0.45)
 }

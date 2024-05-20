@@ -44,5 +44,8 @@ utils::globalVariables(c("scenario",
                          "me_cs",
                          "me_milk",
                          "nobs",
-                         "weaned"
+                         "weaned",
+                         "Total Feed Cost ($)",
+                         "total_milk_cost",
+                         "total_starter_cost"
                          ))

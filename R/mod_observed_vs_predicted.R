@@ -45,11 +45,11 @@ mod_observed_vs_predicted_server <- function(id){
 
     # dropbox access
 
-    token <- readRDS("droptoken.rds")
+    token <- readRDS("inst/app/rdrop/droptoken.rds")
 
     new_token <- token$refresh()
 
-    saveRDS(new_token, "droptoken.rds")
+    saveRDS(new_token, "inst/app/rdrop/droptoken.rds")
 
     dataUploaded <- reactive({
 

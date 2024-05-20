@@ -15,7 +15,7 @@ mod_starter_composition_ui <- function(id){
       full_screen = TRUE,
       bslib::card_header(
         class = "bg-dark",
-        "Starter chemical composition."),
+        "Starter Composition."),
       bslib::card_body(
 
         fluidRow(
@@ -35,16 +35,18 @@ mod_starter_composition_ui <- function(id){
           condition = "input.starter_composition == 'manual'", ns = ns,
           bslib::card(
             fluidRow(
-              column(3,
-                     sliderInput(ns("CP"), label = h6(strong("Crude Protein (%):")), value = 21.2, min = 15, max = 30, step = 0.1)),
-              column(3,
-                     sliderInput(ns("NDF"), label = h6(strong("Neutral Detergent Fiber (%):")), value = 12.9, min = 5, max = 30, step = 0.1)),
-              column(3,
-                     sliderInput(ns("NFC"), label = h6(strong("Non Fiber Carbohydrates (%):")), value = 55.79, min = 30, max = 70, step = 0.1)),
+              column(2,
+                     sliderInput(ns("CP"), label = h6(strong("CP (%):")), value = 21.2, min = 15, max = 30, step = 0.1)),
+              column(2,
+                     sliderInput(ns("NDF"), label = h6(strong("NDF (%):")), value = 12.9, min = 5, max = 30, step = 0.1)),
+              column(2,
+                     sliderInput(ns("NFC"), label = h6(strong("NFC (%):")), value = 55.79, min = 30, max = 70, step = 0.1)),
               column(2,
                      sliderInput(ns("EE"), label = h6(strong("Fat (%):")), value = 3.9, min = 2, max = 9, step = 0.1)),
-              column(1,
+              column(2,
                      sliderInput(ns("ash"), label = h6(strong("Ash (%):")), value = 6.21, min = 3, max = 10, step = 0.1)),
+              column(2,
+                     sliderInput(ns("starter_cost"), label = h6(strong("Cost ($/DM):")), value = 3.50, min = 1, max = 10, step = 0.1)),
               p("Remember: All components must sum up 100. The ash content will be calculated automatically.", style = "color: black; font-size: 14px;")
             )
           )
@@ -189,7 +191,8 @@ mod_starter_composition_server <- function(id){
         cs_nfc = starter_composition_list()$cs_nfc,
         cs_ee = starter_composition_list()$cs_ee,
         cs_intake_equation = input$cs_intake_equation,
-        form_of_starter = input$form_of_starter
+        form_of_starter = input$form_of_starter,
+        starter_cost = input$starter_cost
       )
     })
 

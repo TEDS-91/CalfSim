@@ -65,7 +65,13 @@ mod_kpis_dashboard_server <- function(id, dataset){
           final_body_weight = round(dplyr::last(BWcor, na_rm = TRUE), 1),
           aver_daily_gain = round(mean(ADG, na.rm = TRUE), 3),
           starter_intake = round(sum(starterIntake, na.rm = TRUE) / nobs, 3),
-          milkME = round(mean(MEfromliqDiet / liqDietIntake, na.rm = TRUE), 3)
+          milkME = round(mean(MEfromliqDiet / liqDietIntake, na.rm = TRUE), 3),
+          "Total Milk Consumption (kg)" = round(sum(LiqDietAll), 2),
+          "Total Starter Consumption (kg)" = round(sum(starterIntake), 2),
+          "Total Milk Cost ($)" = round(sum(total_milk_cost), 2),
+          "Total Starter Cost ($)" = round(sum(total_starter_cost), 2),
+          "Total Feed Cost ($)" = round(sum(total_milk_cost + total_starter_cost), 2),
+          "Cost per kg of BW gain ($)" = round(`Total Feed Cost ($)` / (max(BWcor) - min(BW)), 2)
         ) |>
         dplyr::ungroup() |>
         dplyr::left_join(age_nfc_15, by = "scenario") |>
@@ -102,14 +108,15 @@ mod_kpis_dashboard_server <- function(id, dataset){
     scenario_visual <- function(scenario_id, metrics = list(body_weight, adg, age_nfc_15, me_milk)) {
 
       tagList(
-        scenario_id,
+        strong(scenario_id),
+        br(),
         bslib::layout_column_wrap(
           width = "250px",
           height = "100px",
           fluidRow(
-            data.frame(variable = c("Final Body Weight (kg)", "ADG (kg)", "Age at 15 kg NFC intake (days)", "Milk Met. Energy (Mcal)"),
+            data.frame(variable = c("Final Body Weight (kg)", "ADG (kg)", "Age at 15 kg NFC intake (days)", "Cost/kg of BW gain ($)"),
                        alias = c(metrics$body_weight, metrics$adg, metrics$age_nfc_15, metrics$me_milk),
-                       icon = c("graph-up", "graph-up", "bucket", "fuel-pump")) |>
+                       icon = c("graph-up", "graph-up", "bucket", "currency-dollar")) |>
               purrr::pmap(value_boxes_adj)
           )
         )
@@ -128,7 +135,7 @@ mod_kpis_dashboard_server <- function(id, dataset){
                               metrics = list(body_weight = kpis_calculations()[[x]]$final_body_weight,
                                              adg = kpis_calculations()[[x]]$aver_daily_gain,
                                              age_nfc_15 = kpis_calculations()[[x]]$age_nfc_15,
-                                             me_milk = kpis_calculations()[[x]]$milkME)))
+                                             me_milk = kpis_calculations()[[x]]$`Cost per kg of BW gain ($)`)))
     })
 
   })
