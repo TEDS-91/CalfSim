@@ -5,39 +5,39 @@
 \title{Calculates the calf requirements.}
 \usage{
 get_calf_requirements(
-  liqDiet = rep(6, 70),
-  liqDietME = 4.6,
+  liq_diet = rep(6, 70),
+  liq_diet_me = 4.6,
   starter_composition = list(cs_ndf = 12, cs_nfc = 50, cs_cp = 22, cs_ee = 6,
     form_of_starter = "pelleted"),
   cs_intake_equation = "NASEM",
-  liqDietDM = 0.12,
-  initBW = 45,
-  weaningAge = 70,
-  averTemp = 20,
-  liqDietOnly = FALSE,
+  liq_diet_dm = 0.12,
+  initial_bw = 45,
+  weaning_age = 70,
+  average_temperature = 20,
+  liq_diet_only = FALSE,
   mature_weight = 750,
   max_size = 100
 )
 }
 \arguments{
-\item{liqDiet}{A numeric vector with the liquid diet intake.}
+\item{liq_diet}{A numeric vector with the liquid diet intake.}
 
-\item{liqDietME}{A numeric vector with the liquid diet metabolizable energy.}
+\item{liq_diet_me}{A numeric vector with the liquid diet metabolizable energy.}
 
 \item{starter_composition}{A list with the composition of the starter. The list
 has to contain cs_ndf, cs_nfc, cs_cp, and cs_ee.}
 
 \item{cs_intake_equation}{is the equation used to calculate the intake of the starter.}
 
-\item{liqDietDM}{A numeric vector with the dry matter content of the liquid diet.}
+\item{liq_diet_dm}{A numeric vector with the dry matter content of the liquid diet.}
 
-\item{initBW}{A numeric vector with the initial body weight.}
+\item{initial_bw}{A numeric vector with the initial body weight.}
 
-\item{weaningAge}{A numeric vector with the weaning age.}
+\item{weaning_age}{A numeric vector with the weaning age.}
 
-\item{averTemp}{A numeric vector with the average temperature.}
+\item{average_temperature}{A numeric vector with the average temperature.}
 
-\item{liqDietOnly}{A logical vector indicating if the calf is fed only liquid diet.}
+\item{liq_diet_only}{A logical vector indicating if the calf is fed only liquid diet.}
 
 \item{mature_weight}{A numeric vector with the mature weight.}
 
@@ -50,8 +50,8 @@ A dataframe with the calf requirements.
 Calculates the calf requirements.
 }
 \examples{
-get_calf_requirements(liqDiet = rep(6, 70),
-                     liqDietME = 4.6,
+get_calf_requirements(liq_diet = rep(6, 70),
+                     liq_diet_me = 4.6,
                      starter_composition = list(
                        cs_ndf = 12,
                        cs_nfc = 50,
@@ -59,11 +59,11 @@ get_calf_requirements(liqDiet = rep(6, 70),
                        cs_ee = 6,
                        form_of_starter = "pelleted"),
                      cs_intake_equation = "NASEM",
-                     liqDietDM = 0.12,
-                     initBW = 45,
-                     weaningAge = 70,
-                     averTemp = 20,
-                     liqDietOnly = FALSE,
+                     liq_diet_dm = 0.12,
+                     initial_bw = 45,
+                     weaning_age = 70,
+                     average_temperature = 20,
+                     liq_diet_only = FALSE,
                      mature_weight = 750,
                      max_size = 100)
 }

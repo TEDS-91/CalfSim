@@ -4,12 +4,12 @@
 \alias{metabolic_fecal_cp}
 \title{NASEM (2021) equation to predict the metabolic fecal crude protein (CP) losses - Eq. 10-12.}
 \usage{
-metabolic_fecal_cp(liqDietDMI = 0.7, solidDietDMI = 0.4)
+metabolic_fecal_cp(liq_diet_dmi = 0.7, solid_diet_dmi = 0.4)
 }
 \arguments{
-\item{liqDietDMI}{Liquid feed dry matter intake (DMI; kg/d).}
+\item{liq_diet_dmi}{Liquid feed dry matter intake (DMI; kg/d).}
 
-\item{solidDietDMI}{Solid feed dry matter intake (DMI; kg/d).}
+\item{solid_diet_dmi}{Solid feed dry matter intake (DMI; kg/d).}
 }
 \value{
 Metabolic fecal CP losses (g/d).
@@ -18,5 +18,5 @@ Metabolic fecal CP losses (g/d).
 NASEM (2021) equation to predict the metabolic fecal crude protein (CP) losses - Eq. 10-12.
 }
 \examples{
-metabolic_fecal_cp(liqDietDMI   = 0.7, solidDietDMI = 0.4)
+metabolic_fecal_cp(liq_diet_dmi   = 0.7, solid_diet_dmi = 0.4)
 }

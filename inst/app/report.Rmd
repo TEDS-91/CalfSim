@@ -88,7 +88,7 @@ params$teste |>
 ```{r, echo = FALSE}
 
 p1 <- params$all_data |> 
-  scenario_plot(var_y = "BWcor")
+  scenario_plot(var_y = "BW_cor")
 
 p2 <- params$all_data |> 
   scenario_plot(var_y = "ADG")

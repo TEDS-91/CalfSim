@@ -34,18 +34,18 @@ endogenous_urinary_cp <- function(BW = 40) {
 
 #' NASEM (2021) equation to predict the metabolic fecal crude protein (CP) losses - Eq. 10-12.
 #'
-#' @param liqDietDMI Liquid feed dry matter intake (DMI; kg/d).
-#' @param solidDietDMI Solid feed dry matter intake (DMI; kg/d).
+#' @param liq_diet_dmi Liquid feed dry matter intake (DMI; kg/d).
+#' @param solid_diet_dmi Solid feed dry matter intake (DMI; kg/d).
 #'
 #' @return Metabolic fecal CP losses (g/d).
 #' @export
 #'
 #' @examples
-#' metabolic_fecal_cp(liqDietDMI   = 0.7, solidDietDMI = 0.4)
-metabolic_fecal_cp <- function(liqDietDMI   = 0.7,
-                               solidDietDMI = 0.4) {
+#' metabolic_fecal_cp(liq_diet_dmi   = 0.7, solid_diet_dmi = 0.4)
+metabolic_fecal_cp <- function(liq_diet_dmi   = 0.7,
+                               solid_diet_dmi = 0.4) {
 
-  metabolic_fecal_cp <- 11.9 * liqDietDMI + 20.6 * solidDietDMI
+  metabolic_fecal_cp <- 11.9 * liq_diet_dmi + 20.6 * solid_diet_dmi
 
   return(round(metabolic_fecal_cp, 3))
 
@@ -74,20 +74,20 @@ MPmain <- function(scurf_cp              = 2,
 
 #' NASEM (2021) equation to predict the net protein requirement for growth - Eq. 10-14.
 #'
-#' @param EBWgain Empty body weight gain (kg/d).
+#' @param EBW_gain Empty body weight gain (kg/d).
 #' @param retained_energy retained energy (Mcal/d).
 #'
 #' @return Net protein requirement for growth (g/d).
 #' @export
 #'
 #' @examples
-#' NPgain(EBWgain = 0.4, retained_energy = 0.9)
-NPgain <- function(EBWgain         = 0.4,
+#' net_protein_gain(EBW_gain = 0.4, retained_energy = 0.9)
+net_protein_gain <- function(EBW_gain         = 0.4,
                    retained_energy = 0.9) {
 
-  NPgain <- (166.2 * EBWgain) + (6.1276 * (retained_energy / EBWgain))
+  net_protein_gain <- (166.2 * EBW_gain) + (6.1276 * (retained_energy / EBW_gain))
 
-  return(round(NPgain, 3))
+  return(round(net_protein_gain, 3))
 
 }
 
@@ -100,12 +100,12 @@ NPgain <- function(EBWgain         = 0.4,
 #' @export
 #'
 #' @examples
-#' efMPgain(BW = 0.16, mature_weight = 0.29)
-efMPgain <- function(BW            = 50,
+#' ef_met_protein_gain(BW = 0.16, mature_weight = 0.29)
+ef_met_protein_gain <- function(BW            = 50,
                      mature_weight = 700) {
 
-  efMPgain <- 0.7 - 0.532 * BW / mature_weight
+  ef_met_protein_gain <- 0.7 - 0.532 * BW / mature_weight
 
-  return(round(efMPgain, 3))
+  return(round(ef_met_protein_gain, 3))
 
 }

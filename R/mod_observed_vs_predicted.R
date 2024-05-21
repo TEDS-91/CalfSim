@@ -78,7 +78,7 @@ mod_observed_vs_predicted_server <- function(id){
       }
 
       bezerros <- bezerros |>
-        dplyr::rename(initBW = birth_weight_kg) |>
+        dplyr::rename(initial_bw = birth_weight_kg) |>
         dplyr::group_split(animal)
 
       predictions <- list()
@@ -86,8 +86,8 @@ mod_observed_vs_predicted_server <- function(id){
       for (i in 1:length(bezerros)) {
 
         predictions[[i]] <- get_calf_requirements(
-          liqDiet          = rep(5, 70),
-          liqDietME        = 4.6,
+          liq_diet          = rep(5, 70),
+          liq_diet_me        = 4.6,
           starter_composition = list(
             cs_ndf = 12,
             cs_nfc = 50,
@@ -95,11 +95,11 @@ mod_observed_vs_predicted_server <- function(id){
             cs_ee = 6,
             form_of_starter = "pelleted"
           ),
-          liqDietDM        = 0.12,
-          initBW           = bezerros[[i]]$initBW,
-          weaningAge       = 70,
-          averTemp         = 20,
-          liqDietOnly      = FALSE,
+          liq_diet_dm        = 0.12,
+          initial_bw           = bezerros[[i]]$initial_bw,
+          weaning_age       = 70,
+          average_temperature         = 20,
+          liq_diet_only      = FALSE,
           mature_weight    = 750,
           max_size         = 100
         )
@@ -111,10 +111,10 @@ mod_observed_vs_predicted_server <- function(id){
 
         valores_pred[[i]] <- predictions[[i]] |>
           dplyr::filter(
-            daysOfLife == bezerros[[i]]$age_days
+            days_of_life == bezerros[[i]]$age_days
           ) |>
           dplyr::select(
-            daysOfLife, BWcor
+            days_of_life, BW_cor
           )
 
       }
@@ -133,7 +133,7 @@ mod_observed_vs_predicted_server <- function(id){
       plotly::ggplotly(
         predicoes() |>
           dplyr::mutate(animal = as.factor(animal)) |>
-          dplyr::rename(predicted_bw = BWcor, observed_bw = body_weight_kg) |>
+          dplyr::rename(predicted_bw = BW_cor, observed_bw = body_weight_kg) |>
           ggplot2::ggplot(ggplot2::aes(x = predicted_bw, y = observed_bw)) +
           ggplot2::theme_bw() +
           ggplot2::geom_point(size = 2, alpha = 0.5) +
@@ -151,9 +151,9 @@ mod_observed_vs_predicted_server <- function(id){
 
       nObs <- length(predicoes()$body_weight_kg)
 
-      model_eval(predicoes()$body_weight_kg, predicoes()$BWcor) |>
+      model_eval(predicoes()$body_weight_kg, predicoes()$BW_cor) |>
         dplyr::mutate(
-          meanPred = mean(predicoes()$BWcor, na.rm = TRUE),
+          meanPred = mean(predicoes()$BW_cor, na.rm = TRUE),
           meanObs = mean(predicoes()$body_weight_kg, na.rm = TRUE),
           nObs = nObs
         ) |>

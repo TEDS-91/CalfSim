@@ -54,7 +54,7 @@ mod_kpis_dashboard_server <- function(id, dataset){
         dplyr::group_by(scenario) |>
         dplyr::filter(nfc_intake_cum < 16) |>
         dplyr::summarise(
-          age_nfc_15 = max(daysOfLife, na.rm = TRUE),
+          age_nfc_15 = max(days_of_life, na.rm = TRUE),
           .groups = "drop"
         )
 
@@ -62,16 +62,16 @@ mod_kpis_dashboard_server <- function(id, dataset){
         dplyr::group_by(scenario, weaned) |>
         dplyr::summarise(
           nobs = dplyr::n(),
-          final_body_weight = round(dplyr::last(BWcor, na_rm = TRUE), 1),
+          final_body_weight = round(dplyr::last(BW_cor, na_rm = TRUE), 1),
           aver_daily_gain = round(mean(ADG, na.rm = TRUE), 3),
-          starter_intake = round(sum(starterIntake, na.rm = TRUE) / nobs, 3),
-          milkME = round(mean(MEfromliqDiet / liqDietIntake, na.rm = TRUE), 3),
-          "Total Milk Consumption (kg)" = round(sum(LiqDietAll), 2),
-          "Total Starter Consumption (kg)" = round(sum(starterIntake), 2),
+          starter_intake = round(sum(starter_intake, na.rm = TRUE) / nobs, 3),
+          milkME = round(mean(me_from_liq_diet / liq_diet_intake, na.rm = TRUE), 3),
+          "Total Milk Consumption (kg)" = round(sum(liq_diet_all), 2),
+          "Total Starter Consumption (kg)" = round(sum(starter_intake), 2),
           "Total Milk Cost ($)" = round(sum(total_milk_cost), 2),
           "Total Starter Cost ($)" = round(sum(total_starter_cost), 2),
           "Total Feed Cost ($)" = round(sum(total_milk_cost + total_starter_cost), 2),
-          "Cost per kg of BW gain ($)" = round(`Total Feed Cost ($)` / (max(BWcor) - min(BW)), 2)
+          "Cost per kg of BW gain ($)" = round(`Total Feed Cost ($)` / (max(BW_cor) - min(BW)), 2)
         ) |>
         dplyr::ungroup() |>
         dplyr::left_join(age_nfc_15, by = "scenario") |>

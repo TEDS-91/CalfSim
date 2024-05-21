@@ -9,7 +9,7 @@ starter_met_energy(
   cs_nfc = 50,
   cs_cp = 22,
   cs_ee = 6,
-  NFCint = 15,
+  nfc_intake = 15,
   form_of_starter = "pelleted"
 )
 }
@@ -22,7 +22,7 @@ starter_met_energy(
 
 \item{cs_ee}{Ether extract of calf starter (\% DM).}
 
-\item{NFCint}{Cumulative intake of non-fiber carbohydrates (\% DM).}
+\item{nfc_intake}{Cumulative intake of non-fiber carbohydrates (\% DM).}
 
 \item{form_of_starter}{Form of calf starter (pelleted or texturized).}
 }
@@ -37,6 +37,6 @@ starter_met_energy(cs_ndf = 12,
                   cs_nfc = 50,
                   cs_cp = 22,
                   cs_ee = 6,
-                  NFCint = 15,
+                  nfc_intake = 15,
                   form_of_starter = "pelleted")
 }

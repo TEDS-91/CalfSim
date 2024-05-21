@@ -43,8 +43,8 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
         dplyr::group_by(scenario) |>
         dplyr::filter(nfc_intake_cum < 17) |>
         dplyr::summarise(
-          age_nfc_15 = max(daysOfLife, na.rm = TRUE),
-          me_cs = round(max(MEcs, na.rm = TRUE), 2),
+          age_nfc_15 = max(days_of_life, na.rm = TRUE),
+          me_cs = round(max(me_calf_starter, na.rm = TRUE), 2),
           .groups = "drop"
         )
 
@@ -53,17 +53,17 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
         dplyr::group_by(scenario) |>
         dplyr::summarise(
           "Initial Body Weight (kg)" = round(dplyr::first(BW), 2),
-          "Final Body Weight (kg)" = round(dplyr::last(BWcor), 2),
+          "Final Body Weight (kg)" = round(dplyr::last(BW_cor), 2),
           "Av. Daily Gain (kg)" = round(mean(ADG, na.rm = TRUE), 3),
-          "Av. Daily Feed Intake (kg)" = round(mean(totalDMI, na.rm = TRUE), 3),
-          "Feed Efic. (kg/kg)" = round(sum(totalDMI) / (dplyr::last(BWcor) - dplyr::first(BW)), 3),
-          "Age at Weaning (days)" = max(daysOfLife),
-          "Total Milk Consumption (kg)" = round(sum(LiqDietAll), 2),
-          "Total Starter Consumption (kg)" = round(sum(starterIntake), 2),
+          "Av. Daily Feed Intake (kg)" = round(mean(total_dmi, na.rm = TRUE), 3),
+          "Feed Efic. (kg/kg)" = round(sum(total_dmi) / (dplyr::last(BW_cor) - dplyr::first(BW)), 3),
+          "Age at Weaning (days)" = max(days_of_life),
+          "Total Milk Consumption (kg)" = round(sum(liq_diet_all), 2),
+          "Total Starter Consumption (kg)" = round(sum(starter_intake), 2),
           "Total Milk Cost ($)" = round(sum(total_milk_cost), 2),
           "Total Starter Cost ($)" = round(sum(total_starter_cost), 2),
           "Total Feed Cost ($)" = round(sum(total_milk_cost + total_starter_cost), 2),
-          "Cost per kg of BW gain ($)" = round(`Total Feed Cost ($)` / (max(BWcor) - min(BW)), 2)
+          "Cost per kg of BW gain ($)" = round(`Total Feed Cost ($)` / (max(BW_cor) - min(BW)), 2)
         ) |>
         dplyr::left_join(age_nfc_15, by = "scenario") |>
         dplyr::rename("Age at 15 kg of NFC intake (days)" = age_nfc_15,

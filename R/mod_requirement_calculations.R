@@ -172,8 +172,8 @@ mod_inputs_page_server <- function(id){
     calculating_requirements <- eventReactive(input$simulate, {
 
       dataframes_with_requirements <- lapply(1:input$scenarios,
-                                             \(x) get_calf_requirements(liqDiet     = milk_allowance_list()[[x]],
-                                                                        liqDietME   = milk_composition()[["milk_ME"]],
+                                             \(x) get_calf_requirements(liq_diet     = milk_allowance_list()[[x]],
+                                                                        liq_diet_me  = milk_composition()[["milk_ME"]],
                                                                         starter_composition = list(
                                                                           cs_ndf = starter_composition()[["cs_ndf"]],
                                                                           cs_nfc = starter_composition()[["cs_nfc"]],
@@ -182,11 +182,11 @@ mod_inputs_page_server <- function(id){
                                                                           form_of_starter = starter_composition()[["form_of_starter"]]
                                                                         ),
                                                                         cs_intake_equation = starter_composition()[["cs_intake_equation"]],
-                                                                        liqDietDM   = milk_composition()[["liq_diet_dm"]],
-                                                                        initBW      = input$BW,
-                                                                        weaningAge  = input$weaning_age,
-                                                                        averTemp    = input$temp,
-                                                                        liqDietOnly = FALSE,
+                                                                        liq_diet_dm = milk_composition()[["liq_diet_dm"]],
+                                                                        initial_bw      = input$BW,
+                                                                        weaning_age  = input$weaning_age,
+                                                                        average_temperature    = input$temp,
+                                                                        liq_diet_only = FALSE,
                                                                         max_size    = 100))
 
 
@@ -207,9 +207,9 @@ mod_inputs_page_server <- function(id){
         dplyr::bind_rows(.id = "scenario") |>
         dplyr::mutate(
           milk_cost = milk_cost,
-          total_milk_cost = milk_cost * LiqDietAll,
+          total_milk_cost = milk_cost * liq_diet_all,
           starter_cost = starter_cost,
-          total_starter_cost = starter_cost * starterIntake
+          total_starter_cost = starter_cost * starter_intake
         )
 
     })

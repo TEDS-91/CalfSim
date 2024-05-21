@@ -70,8 +70,8 @@ mod_nutrient_requirements_server <- function(id){
 
     get_calf_req_ADG <- function(averBW           = 45,
                                  ADG              = 0.2,
-                                 liqDiet          = 6,
-                                 liqDietME        = 4.9,
+                                 liq_diet         = 6,
+                                 liq_diet_me      = 4.9,
                                  FPstarter        = 1,
                                  starter_composition = list(
                                    cs_ndf = 12,
@@ -80,10 +80,10 @@ mod_nutrient_requirements_server <- function(id){
                                    cs_ee = 3,
                                    form_of_starter = "pelleted"),
                                  cs_intake_equation = "NASEM",
-                                 liqDietDM        = 0.12,
-                                 weaningAge       = 70,
-                                 averTemp         = 20,
-                                 liqDietOnly      = FALSE,
+                                 liq_diet_dm      = 0.12,
+                                 weaning_age       = 70,
+                                 average_temperature         = 20,
+                                 liq_diet_only    = FALSE,
                                  mature_weight    = 700,
                                  max_size         = 1) {
 
@@ -95,101 +95,101 @@ mod_nutrient_requirements_server <- function(id){
 
       EBW <- empty_body_weight(BW = averBW, liquid_diet_only = liqDietOnly, weaned = FALSE)
 
-      LiqDietAll <- liqDiet # LD[1]
+      liq_diet_all <- liq_diet # LD[1]
 
-      liqDietIntake <- LiqDietAll * liqDietDM
+      liqDietIntake <- liq_diet_all * liqDietDM
 
       MEfromliqDiet <- liqDietIntake * liqDietME
 
-      NASEM <- starter_intake_nasem(BW = averBW, MEiLD = MEfromliqDiet, FPstarter = FPstarter, temperature = averTemp)
+      NASEM <- starter_intake_nasem(BW = averBW, MEiLD = MEfromliqDiet, FPstarter = FPstarter, temperature = average_temperature)
 
-      starterIntake <- ifelse(liqDietOnly == TRUE & weaned == FALSE, 0, NASEM)
+      starter_intake <- ifelse(liqDietOnly == TRUE & weaned == FALSE, 0, NASEM)
 
-      nfc_intake_cum <- starterIntake * starter_composition$cs_nfc / 100
+      nfc_intake_cum <- starter_intake * starter_composition$cs_nfc / 100
 
 
 
-      #MEcs <- MEcs(ccsNFCI = nfc_intake_cum, pelleted = TRUE, texturized = TRUE)
-      MEcs <- starter_met_energy(cs_ndf = starter_composition$cs_ndf,
+      #me_calf_starter <- me_calf_starter(ccsNFCI = nfc_intake_cum, pelleted = TRUE, texturized = TRUE)
+      me_calf_starter <- starter_met_energy(cs_ndf = starter_composition$cs_ndf,
                                  cs_nfc = starter_composition$cs_nfc,
                                  cs_cp = starter_composition$cs_cp,
                                  cs_ee = starter_composition$cs_ee,
-                                 NFCint = nfc_intake_cum)
+                                 nfc_intake = nfc_intake_cum)
 
 
 
-      MEfromSI <- starterIntake * MEcs #solDietME
+      me_from_starter_intake <- starter_intake * me_calf_starter #solDietME
 
-      totalDMI <- liqDietIntake + starterIntake
+      total_dmi <- liqDietIntake + starter_intake
 
-      totalMEI <- MEfromliqDiet + MEfromSI
+      total_me_intake <- MEfromliqDiet + me_from_starter_intake
 
-      LiqDietRatio <- liqDietIntake / (liqDietIntake + starterIntake)
+      LiqDietRatio <- liqDietIntake / (liqDietIntake + starter_intake)
 
-      MEtemp <- NEtemperature(EBW = averBW, age = 30, temperature = 20) # to do
+      me_temperature <- NEtemperature(EBW = averBW, age = 30, temperature = 20) # to do
 
-      MEmaint <- NEm(EBW, F) / km(liquid_diet_only = liqDietOnly) / 1000 + (MEtemp / km(liquid_diet_only = liqDietOnly))
+      me_maintenance <- NEm(EBW, F) / km(liquid_diet_only = liqDietOnly) / 1000 + (me_temperature / km(liquid_diet_only = liqDietOnly))
 
-      MEbal <- totalMEI - MEmaint
+      me_balance <- total_me_intake - me_maintenance
 
-      MEefS <- kg_solids(ME = 3.1)#MEcs) #solDietME)
+      me_ef_starter <- kg_solids(ME = 3.1)#me_calf_starter) #solDietME)
 
       MEefLiqDiet <- 0.55
 
-      averEf <- (MEefS * (1 - LiqDietRatio) + (MEefLiqDiet * LiqDietRatio))
+      average_me_ef <- (me_ef_starter * (1 - LiqDietRatio) + (MEefLiqDiet * LiqDietRatio))
 
       NEg <- EBG ^ 1.1 * EBW ^ 0.205
 
-      MEg <- NEg / averEf
+      MEg <- NEg / average_me_ef
 
-      totalME <- MEmaint + MEg
+      totalME <- me_maintenance + MEg
 
       # Protein requirements
 
-      scurfCP <- scurf_cp(BW = averBW)
+      scurf_cp <- scurf_cp(BW = averBW)
 
-      urinaryCP <- endogenous_urinary_cp(BW = averBW)
+      urinary_cp <- endogenous_urinary_cp(BW = averBW)
 
-      fecalCP <- metabolic_fecal_cp(liqDietDMI = liqDietIntake, solidDietDMI = starterIntake)
+      fecal_cp <- metabolic_fecal_cp(liq_diet_dmi = liqDietIntake, solid_diet_dmi = starter_intake)
 
-      metProtMain <- MPmain(scurf_cp = scurfCP, endogenous_urinary_cp = urinaryCP, metabolic_fecal_cp = fecalCP)
+      met_protein_maintenance <- MPmain(scurf_cp = scurf_cp, endogenous_urinary_cp = urinary_cp, metabolic_fecal_cp = fecal_cp)
 
-      npGain <- NPgain(EBWgain = EBG, retained_energy = NEg)
+      net_protein_gain <- net_protein_gain(EBW_gain = EBG, retained_energy = NEg)
 
-      efMPGain <- efMPgain(BW = averBW, mature_weight = mature_weight)
+      ef_met_protein_gain <- ef_met_protein_gain(BW = averBW, mature_weight = mature_weight)
 
-      metProtGain <- npGain / efMPGain
+      met_protein_gain <- net_protein_gain / ef_met_protein_gain
 
-      totalMPReq <- metProtMain + metProtGain
+      total_met_protein_req <- met_protein_maintenance + met_protein_gain
 
-      efMptoCp <- LiqDietRatio * 0.95 + (1 - LiqDietRatio) * 0.75
+      ef_met_protein_to_cp <- LiqDietRatio * 0.95 + (1 - LiqDietRatio) * 0.75
 
-      reqCP <- totalMPReq / efMptoCp
+      total_cp_req <- total_met_protein_req / ef_met_protein_to_cp
 
-      cpPctg <- reqCP / 10 / totalDMI
+      diet_cp_pct <- total_cp_req / 10 / total_dmi
 
       return(tibble::tibble(
         BW = averBW,
         ADG = ADG,
         EBWkg = EBW,
         EBG = EBG,
-        LiqDietAll = LiqDietAll,
+        Liq_diet_all = liq_diet_all,
         liqDietIntake = liqDietIntake,
         MEfromliqDiet = MEfromliqDiet,
         NASEMsi = NASEM,
-        starterIntake = starterIntake,
+        starter_intake = starter_intake,
         nfc_intake_cum = nfc_intake_cum,
-        MEcs = MEcs,
-        MEfromSI = MEfromSI,
-        totalDMI = totalDMI,
-        totalMEI = totalMEI,
+        me_calf_starter = me_calf_starter,
+        me_from_starter_intake = me_from_starter_intake,
+        total_dmi = total_dmi,
+        total_me_intake = total_me_intake,
         LiqDietRatio = LiqDietRatio,
-        MEmaint = MEmaint,
+        me_maintenance = me_maintenance,
         NEg = NEg,
         MEg = MEg,
         totalME = totalME,
-        totalMPReq = totalMPReq,
-        reqCP = reqCP
+        total_met_protein_req = total_met_protein_req,
+        total_cp_req = total_cp_req
       ))
 
     }
@@ -199,7 +199,7 @@ mod_nutrient_requirements_server <- function(id){
       tidyr::expand_grid(averBW = seq(input$min_peso, input$max_peso, input$int_peso),
                   ADG = seq(input$min_adg, input$max_adg, input$int_adg)) |>
         purrr::pmap(get_calf_req_ADG) |>
-        purrr::map(dplyr::select, BW, ADG, MEmaint, NEg, MEg, totalMPReq, reqCP) |>
+        purrr::map(dplyr::select, BW, ADG, me_maintenance, NEg, MEg, total_met_protein_req, total_cp_req) |>
         dplyr::bind_rows() |>
         dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x) round(x, 3)))
 

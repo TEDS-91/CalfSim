@@ -1,9 +1,18 @@
-scenario_plot <- function(dataset, var_y) {
+#' Scenario plot.
+#'
+#' @param dataset A dataset with the variables to be plotted.
+#' @param var_y A character string with the variable to be plotted.
+#'
+#' @return A plotly object.
+#' @export
+#'
+scenario_plot <- function(dataset,
+                          var_y) {
 
   plot <- dataset |>
     dplyr::group_by(scenario) |>
     dplyr::mutate(dplyr::across(dplyr::where(is.numeric), \(x) round(x, 3))) |>
-    echarts4r::e_charts(daysOfLife, renderer = "svg") |>
+    echarts4r::e_charts(days_of_life, renderer = "svg") |>
     echarts4r::e_line_(var_y, smooth = TRUE) |>
     echarts4r::e_tooltip(trigger = "axis",
                          axis_pointer = list(type = "cross")) |>
@@ -16,7 +25,7 @@ scenario_plot <- function(dataset, var_y) {
         color = "#666666",
         fontWeight = "bold"
       ),
-      nameGap = 30
+      name_gap = 30
     ) |>
     echarts4r::e_x_axis(
       name = "Days of Life",
@@ -25,7 +34,7 @@ scenario_plot <- function(dataset, var_y) {
         color = "#666666",
         fontWeight = "bold"
       ),
-      nameGap = 30
+      name_gap = 30
     )
 
   return(plot)
