@@ -53,7 +53,7 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
   init_vectors <- c("days_of_life",
                     "liquid_diet_only",
                     "weaned",
-                    "temp",
+                    "temperature",
                     "liq_diet_all",
                     "liq_diet_intake",
                     "BW",
@@ -109,7 +109,7 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
 
   weaned[1] <- FALSE
 
-  temp[1] <- average_temperature
+  temperature[1] <- average_temperature
 
   BW[1] <- initial_bw
 
@@ -215,7 +215,7 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
 
     weaned[i] <- ifelse(i <= weaning_age, FALSE, TRUE)
 
-    temp[i] <- average_temperature
+    temperature[i] <- average_temperature
 
     BW[i] <- BW[i-1] + ADG[i-1]
 
@@ -324,7 +324,7 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
       days_of_life,
       liquid_diet_only,
       weaned,
-      temp,
+      temperature,
       BW,
       BW_cor,
       EBW,

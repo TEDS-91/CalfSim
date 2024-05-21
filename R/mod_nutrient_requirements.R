@@ -91,9 +91,9 @@ mod_nutrient_requirements_server <- function(id){
 
       # retained energy
 
-      EBG <- empty_weight_gain(ADG = ADG, liquid_diet_only = liqDietOnly, weaned = FALSE)
+      EBG <- empty_weight_gain(ADG = ADG, liquid_diet_only = TRUE, weaned = FALSE)
 
-      EBW <- empty_body_weight(BW = averBW, liquid_diet_only = liqDietOnly, weaned = FALSE)
+      EBW <- empty_body_weight(BW = averBW, liquid_diet_only = TRUE, weaned = FALSE)
 
       liq_diet_all <- liq_diet # LD[1]
 
@@ -101,7 +101,10 @@ mod_nutrient_requirements_server <- function(id){
 
       MEfromliqDiet <- liqDietIntake * liqDietME
 
-      NASEM <- starter_intake_nasem(BW = averBW, MEiLD = MEfromliqDiet, FPstarter = FPstarter, temperature = average_temperature)
+      NASEM <- starter_intake_nasem(BW = averBW,
+                                    MEiLD = MEfromliqDiet,
+                                    FPstarter = FPstarter,
+                                    temperature = average_temperature)
 
       starter_intake <- ifelse(liqDietOnly == TRUE & weaned == FALSE, 0, NASEM)
 

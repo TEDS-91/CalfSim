@@ -206,7 +206,7 @@ mod_inputs_page_server <- function(id){
         purrr::set_names(scenario_names) |>
         dplyr::bind_rows(.id = "scenario") |>
         dplyr::mutate(
-          milk_cost = milk_cost,
+          milk_cost = ifelse(weaned == TRUE, 0, milk_cost),
           total_milk_cost = milk_cost * liq_diet_all,
           starter_cost = starter_cost,
           total_starter_cost = starter_cost * starter_intake
