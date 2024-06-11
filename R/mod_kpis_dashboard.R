@@ -17,7 +17,7 @@ mod_kpis_dashboard_ui <- function(id){
       full_screen = TRUE,
       bslib::card_header(
         "KPI's",
-        class = "bg-dark"
+        class = "bg-green"
       ),
       bslib::card_body(
         uiOutput(ns("kpis_dashboard_ui"))
@@ -109,12 +109,11 @@ mod_kpis_dashboard_server <- function(id, dataset){
 
       tagList(
         strong(scenario_id),
-        br(),
         bslib::layout_column_wrap(
           width = "250px",
-          height = "100px",
+          height = "130px",
           fluidRow(
-            data.frame(variable = c("Final Body Weight (kg)", "ADG (kg)", "Age at 15 kg NFC intake (days)", "Cost/kg of BW gain ($)"),
+            data.frame(variable = c("Final Body Weight (kg)", "ADG (kg)", "15 kg of NFCI (days)", "Cost/kg of BW gain ($)"),
                        alias = c(metrics$body_weight, metrics$adg, metrics$age_nfc_15, metrics$me_milk),
                        icon = c("graph-up", "graph-up", "bucket", "currency-dollar")) |>
               purrr::pmap(value_boxes_adj)

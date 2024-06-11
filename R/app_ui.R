@@ -10,8 +10,15 @@ app_ui <- function(request) {
     golem_add_external_resources(),
     # Your application UI logic
 
-    bslib::page_navbar(
+    tags$head(
+      tags$script(HTML("
+      Shiny.addCustomMessageHandler('scrollToTop', function(message) {
+        window.scrollTo(0, 0);
+      });
+    "))
+    ),
 
+    bslib::page_navbar(
       title = "CalfSim",
       #bg = "#66AC47",
       id = "nav",
@@ -23,12 +30,16 @@ app_ui <- function(request) {
       # ),
       bslib::nav_panel(
         title = "Inputs",
-
+        value = "Inputs",
         mod_inputs_page_ui("requirements_calculations"),
-        mod_data_table_ui("dataSimulated")
+        actionButton("simulate_button",
+                     label = "Simulate!",
+                     icon = tags$i(fontawesome::fa("person-running"))),
+        mod_data_table_ui("dataSimulated"),
       ),
       bslib::nav_panel(
         title = "Dashboard",
+        value = "Dashboard",
         mod_kpis_dashboard_ui("key_performance_indicators"),
         mod_dashboard_plot_ui("plotDashboard"),
         mod_descriptive_pre_weaning_performance_ui("descriptive_pre_weaning_performance")
@@ -41,6 +52,10 @@ app_ui <- function(request) {
       bslib::nav_panel(
         title = "Nutrient Requirements NASEM (2021)",
         mod_nutrient_requirements_ui("NASEM")
+      ),
+      bslib::nav_panel(
+        title = "About CalfSim model",
+        mod_mod_calfsim_info_ui("mod_calfsim_info_1")
       )
     )
   )

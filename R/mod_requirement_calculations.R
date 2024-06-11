@@ -13,7 +13,7 @@ mod_inputs_page_ui <- function(id){
 
     bslib::card(
       bslib::card_header(
-        class = "bg-dark",
+        class = "bg-green",
         "Animal, Management, Environmental, and Liquid Diet Inputs."),
       bslib::layout_column_wrap(
         width = NULL,
@@ -35,11 +35,10 @@ mod_inputs_page_ui <- function(id){
     mod_starter_composition_ui(ns("starter_composition")),
     bslib::card(
       bslib::card_header(
-        class = "bg-dark",
+        class = "bg-green",
         "Scenarios for Milk Allowance Plans."),
       uiOutput(ns("nutritional_plans_design"))
     ),
-    actionButton(ns("simulate"), label = "Simulate!", icon = tags$i(fontawesome::fa("person-running"))),
     textOutput(ns("data_preparation"))
   )
 }
@@ -47,7 +46,7 @@ mod_inputs_page_ui <- function(id){
 #' inputs_page Server Functions
 #'
 #' @noRd
-mod_inputs_page_server <- function(id){
+mod_inputs_page_server <- function(id, simulate_button){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
@@ -169,7 +168,8 @@ mod_inputs_page_server <- function(id){
 # Calculating the nutritional requirements and nutrient supplied ----------
 # -------------------------------------------------------------------------
 
-    calculating_requirements <- eventReactive(input$simulate, {
+    calculating_requirements <- eventReactive(simulate_button(),
+                                              {
 
       dataframes_with_requirements <- lapply(1:input$scenarios,
                                              \(x) get_calf_requirements(liq_diet     = milk_allowance_list()[[x]],

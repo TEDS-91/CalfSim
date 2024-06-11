@@ -14,7 +14,7 @@ mod_starter_composition_ui <- function(id){
     bslib::card(
       full_screen = TRUE,
       bslib::card_header(
-        class = "bg-dark",
+        class = "bg-green",
         "Starter Composition."),
       bslib::card_body(
 
