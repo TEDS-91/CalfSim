@@ -43,7 +43,8 @@ mod_mod_calfsim_info_ui <- function(id){
                                   bslib::card_body(
                                     htmltools::HTML(paste("Email:",
                                                           "tdasilva@uvm.edu/ tadeuederzootecnista@gmail.com",
-                                                          tags$a(href = "https://github.com/TEDS-91", "TEDS-91 (github page)"),
+                                                          tags$a(href = "https://github.com/TEDS-91", "TEDS-91 (github page)",
+                                                                 target = "_blank"),
                                                           sep = "<br/>"))
                                     ))
 
@@ -68,7 +69,8 @@ mod_mod_calfsim_info_ui <- function(id){
                                   bslib::card_body(
                                     htmltools::HTML(paste("Email:",
                                                           "jcardoso@uvm.edu/ jhcardosocosta@gmail.com",
-                                                          tags$a(href = "https://costalab.weebly.com/", "Costa's Lab Web Page!"),
+                                                          tags$a(href = "https://costalab.weebly.com/", "Costa's Lab Web Page!",
+                                                                 target = "_blank"),
                                                           sep = "<br/>"))
                       ))
       ))))

@@ -49,10 +49,10 @@ app_ui <- function(request) {
         mod_observed_vs_predicted_ui("observed_vs_predicted"),
         "Content to be added"
       ),
-      bslib::nav_panel(
-        title = "Nutrient Requirements NASEM (2021)",
-        mod_nutrient_requirements_ui("NASEM")
-      ),
+      # bslib::nav_panel(
+      #   title = "Nutrient Requirements NASEM (2021)",
+      #   mod_nutrient_requirements_ui("NASEM")
+      # ),
       bslib::nav_panel(
         title = "About CalfSim model",
         mod_mod_calfsim_info_ui("mod_calfsim_info_1")
