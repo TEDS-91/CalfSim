@@ -1,0 +1,81 @@
+
+
+
+raw_data <- get_calf_requirements(liqDiet = rep(6, 20), weaningAge = 20, max_size = 20) |> 
+  dplyr::select(LiqDietAll, starterIntake, ADG) |> 
+  dplyr::mutate(
+    custo_liq = LiqDietAll * 0.5,
+    custo_start = starterIntake * 0.5
+  )
+
+total_cost <- raw_data |> 
+  dplyr::summarise(
+    total_cost = sum(custo_liq + custo_start)
+  )
+
+adg_medio <- raw_data |> 
+  dplyr::summarise(
+    adg_medio = mean(ADG)
+  )
+
+custo_kg <- total_cost / adg_medio
+
+
+funcao_geral <- function(vetor = rep(6, 60), preco_leite = 0.55, preco_starter = 0.3) {
+  
+  raw_data <- get_calf_requirements(liqDiet = vetor, weaningAge = 60, max_size = 60) |> 
+    dplyr::select(LiqDietAll, starterIntake, ADG) |> 
+    dplyr::mutate(
+      custo_liq = LiqDietAll * preco_leite,
+      custo_start = starterIntake * preco_starter
+    )
+  
+  total_cost <- raw_data |> 
+    dplyr::summarise(
+      total_cost = sum(custo_liq + custo_start)
+    )
+  
+  total_gain <- raw_data |> 
+    dplyr::summarise(
+      adg_medio = mean(ADG),
+      total_gain = sum(ADG)
+    )
+  
+  custo_kg <- total_cost / total_gain$total_gain
+  
+  list(custo_kg[[1]], total_gain$adg_medio)
+  
+}
+
+funcao_geral(rep(9, 60))
+
+custo <- seq(4, 20, 1) |> 
+  purrr::map_dbl(\(x) funcao_geral(rep(x, 60), preco_leite = 0.45, preco_starter = 0.3)) 
+  
+ggplot2::ggplot( NULL, ggplot2::aes(x = seq(4, 20, 1), y = custo)) +
+  ggplot2::geom_line() +
+  ggplot2::scale_x_continuous(breaks = seq(4, 20, 1)) +
+  ggplot2::labs(x = "Leite Ingerido (L/d)", 
+                y = "Custo por kg de ganho de peso (R$/kg)")
+
+
+teste <- optim(rep(6, 60), 
+      funcao_geral, 
+      lower = rep(2, 60), 
+      upper = rep(12, 60), 
+      method = "L-BFGS-B", 
+      preco_leite = 0.45, 
+      preco_starter = 0.3)
+
+teste$par |> 
+  plot()
+
+funcao_geral(c(rep(10, 10), rep(10, 30), rep(3, 20)), preco_leite = 0.45, preco_starter = 0.3)
+
+get_calf_requirements(rep(10, 60)) |> 
+  dplyr::select(daysOfLife, NASEM) |>
+  plot()
+
+
+
+             

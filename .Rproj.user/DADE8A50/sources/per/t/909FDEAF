@@ -1,0 +1,26 @@
+{
+    "id": "909FDEAF",
+    "path": "~/Postdoc - UVM/CalfSim/R/mod_descriptive_pre_weaning_performance.R",
+    "project_path": "R/mod_descriptive_pre_weaning_performance.R",
+    "type": "r_source",
+    "hash": "535780083",
+    "contents": "",
+    "dirty": false,
+    "created": 1708014432234.0,
+    "source_on_save": false,
+    "relative_order": 11,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "60,10",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1708015989,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1708015989621,
+    "read_only": false,
+    "read_only_alternatives": []
+}

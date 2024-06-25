@@ -1,0 +1,26 @@
+{
+    "id": "AA79A5F8",
+    "path": "~/Documents/Postdoc - UVM/CalfSim/R/mod_inputs_page.R",
+    "project_path": "R/mod_inputs_page.R",
+    "type": "r_source",
+    "hash": "501603265",
+    "contents": "",
+    "dirty": false,
+    "created": 1718473728524.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "30,102",
+        "scrollLine": "7"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1719326300,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1719326300309,
+    "read_only": false,
+    "read_only_alternatives": []
+}
