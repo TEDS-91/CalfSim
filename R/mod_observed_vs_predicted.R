@@ -131,9 +131,9 @@ mod_observed_vs_predicted_server <- function(id){
 
     })
 
-
-    path_template <- system.file("app", "dataEntryTemplateCalfSim.xlsx",
-                         package = "CalfSim")
+    path_template <- system.file("app",
+                                 "dataEntryTemplateCalfSim.xlsx",
+                                 package = "CalfSim")
 
     templateFile <- readxl::read_xlsx(path = path_template)
 

@@ -1,6 +1,6 @@
 {
     "dialog-state": {
-        "query": "plotly",
+        "query": "data-raw/dataEntryTemplateCalfSim.xlsx",
         "path": "",
         "regex": false,
         "caseSensitive": false,
@@ -9,7 +9,7 @@
         "useGitGrep": true,
         "excludeGitIgnore": true,
         "excludeFilePatterns": [],
-        "resultsCount": 6,
+        "resultsCount": 0,
         "errorCount": 0,
         "replaceErrors": "",
         "projectRelative": true
