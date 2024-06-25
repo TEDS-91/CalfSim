@@ -132,7 +132,10 @@ mod_observed_vs_predicted_server <- function(id){
     })
 
 
-    templateFile <- readxl::read_xlsx("data-raw/dataEntryTemplateCalfSim.xlsx")
+    path_template <- system.file("app", "dataEntryTemplateCalfSim.xlsx",
+                         package = "CalfSim")
+
+    templateFile <- readxl::read_xlsx(path = path_template)
 
     predicoes <- eventReactive(input$simulate_button, {
 
