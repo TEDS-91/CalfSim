@@ -18,6 +18,7 @@ Imports:
     kableExtra,
     pdftools,
     purrr,
+    plotly,
     readxl,
     rmarkdown,
     shiny (>= 1.7.4),
