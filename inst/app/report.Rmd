@@ -87,10 +87,14 @@ params$teste |>
 
 ```{r, echo = FALSE}
 
-p1 <- params$all_data |> 
+p1 <- params$all_data |>
+  dplyr::rename(Scenario = scenario,
+                "Days on Feed" = days_of_life) |>
   scenario_plot(var_y = "BW_cor")
 
-p2 <- params$all_data |> 
+p2 <- params$all_data |>
+  dplyr::rename(Scenario = scenario,
+                "Days on Feed" = days_of_life) |>
   scenario_plot(var_y = "ADG")
 
 echarts4r::e_arrange(p1, p2, rows = 1, cols = 2)

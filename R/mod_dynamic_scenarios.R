@@ -7,13 +7,13 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_dynamic_scenarios_ui <- function(id, scenario_name = "Scenario name"){
+mod_dynamic_scenarios_ui <- function(id, scenario_name = "Scenario Name"){
   ns <- NS(id)
   tagList(
     bslib::card(
       fluidRow(
         column(6,
-               numericInput(ns("number_of_nut_plans"), label = h6(strong("Nut. Plans:")), value = 2)),
+               numericInput(ns("number_of_nut_plans"), label = h6(strong("Liquid Diet Feeding Plan:")), value = 2)),
         column(6,
                textInput(ns("scenario_name"), label = h6(strong("Scenario:")), value = scenario_name))
       ),
@@ -40,11 +40,11 @@ mod_dynamic_scenarios_server <- function(id){
 
             column(6,
                    lapply(1:input$number_of_nut_plans, \(i) numericInput(ns(paste0("plan_", i)),
-                                                                         label = strong(paste0(i, " Phase (l/d):")),
+                                                                         label = strong(paste0(i, "° Phase (l/d):")),
                                                                          value = max((7 - i), 1)))),
             column(6,
                    lapply(1:(input$number_of_nut_plans - 1), \(i) numericInput(ns(paste0("days_", i)),
-                                                                               label = strong(paste0(i, " Change (days)")),
+                                                                               label = strong(paste0(i, "° Change (days):")),
                                                                                value = ((i * 10) ))))
           )
         )

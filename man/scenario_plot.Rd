@@ -12,7 +12,7 @@ scenario_plot(dataset, var_y)
 \item{var_y}{A character string with the variable to be plotted.}
 }
 \value{
-A plotly object.
+A echarts object.
 }
 \description{
 Scenario plot.

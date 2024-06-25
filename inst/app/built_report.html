@@ -450,6 +450,26 @@ background-color: #00000008;
 border: 0;
 }
 </style>
+<style type="text/css">@layer htmltools {
+.html-fill-container {
+display: flex;
+flex-direction: column;
+
+min-height: 0;
+min-width: 0;
+}
+.html-fill-container > .html-fill-item {
+
+flex: 1 1 auto;
+min-height: 0;
+min-width: 0;
+}
+.html-fill-container > :not(.html-fill-item) {
+
+flex: 0 0 auto;
+}
+}
+</style>
 <script>(function() {
   // If window.HTMLWidgets is already defined, then use it; otherwise create a
   // new object. This allows preceding code to set options that affect the
@@ -2100,23 +2120,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -2218,17 +2232,14 @@ text-align: center;
 <div id="calf-inputs" class="section level2">
 <h2>Calf Inputs</h2>
 <p>Report under development…</p>
-<table class="table table-striped table-hover table-condensed table-responsive" style="margin-left: auto; margin-right: auto;">
+<table class="table table-striped table-hover table-condensed table-responsive" style="color: black; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
-<th style="text-align:left;font-weight: bold;color: white !important;background-color: #007582 !important;">
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(0, 117, 130, 255) !important;">
 Variable
 </th>
-<th style="text-align:left;font-weight: bold;color: white !important;background-color: #007582 !important;">
-HighPerf
-</th>
-<th style="text-align:left;font-weight: bold;color: white !important;background-color: #007582 !important;">
-LowPerf
+<th style="text-align:left;font-weight: bold;color: white !important;background-color: rgba(0, 117, 130, 255) !important;">
+Scenario name 1
 </th>
 </tr>
 </thead>
@@ -2238,10 +2249,7 @@ LowPerf
 Initial Body Weight (kg)
 </td>
 <td style="text-align:left;">
-40.0000
-</td>
-<td style="text-align:left;">
-40.0000
+40.000
 </td>
 </tr>
 <tr>
@@ -2249,10 +2257,7 @@ Initial Body Weight (kg)
 Final Body Weight (kg)
 </td>
 <td style="text-align:left;">
-82.9490
-</td>
-<td style="text-align:left;">
-72.3210
+74.200
 </td>
 </tr>
 <tr>
@@ -2260,10 +2265,7 @@ Final Body Weight (kg)
 Av. Daily Gain (kg)
 </td>
 <td style="text-align:left;">
-0.7669
-</td>
-<td style="text-align:left;">
-0.5772
+0.611
 </td>
 </tr>
 <tr>
@@ -2271,10 +2273,7 @@ Av. Daily Gain (kg)
 Av. Daily Feed Intake (kg)
 </td>
 <td style="text-align:left;">
-1.2430
-</td>
-<td style="text-align:left;">
-1.0172
+1.061
 </td>
 </tr>
 <tr>
@@ -2282,10 +2281,7 @@ Av. Daily Feed Intake (kg)
 Feed Efic. (kg/kg)
 </td>
 <td style="text-align:left;">
-1.6207
-</td>
-<td style="text-align:left;">
-1.7625
+1.738
 </td>
 </tr>
 <tr>
@@ -2293,10 +2289,7 @@ Feed Efic. (kg/kg)
 Age at Weaning (days)
 </td>
 <td style="text-align:left;">
-56.0000
-</td>
-<td style="text-align:left;">
-56.0000
+56.000
 </td>
 </tr>
 <tr>
@@ -2304,10 +2297,41 @@ Age at Weaning (days)
 Total Milk Consumption (kg)
 </td>
 <td style="text-align:left;">
-344.0000
+290.000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Total Starter Consumption (kg)
 </td>
 <td style="text-align:left;">
-280.0000
+23.190
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Total Milk Cost (<span class="math inline">\() &lt;/td&gt;
+   &lt;td style=&quot;text-align:left;&quot;&gt; 140.650 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style=&quot;text-align:left;font-weight: bold;&quot;&gt; Total
+Starter Cost (\)</span>)
+</td>
+<td style="text-align:left;">
+81.170
+</td>
+</tr>
+<tr>
+<td style="text-align:left;font-weight: bold;">
+Total Feed Cost (<span class="math inline">\() &lt;/td&gt;
+   &lt;td style=&quot;text-align:left;&quot;&gt; 221.820 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style=&quot;text-align:left;font-weight: bold;&quot;&gt; Cost
+per kg of BW gain (\)</span>)
+</td>
+<td style="text-align:left;">
+6.490
 </td>
 </tr>
 <tr>
@@ -2315,21 +2339,15 @@ Total Milk Consumption (kg)
 Age at 15 kg of NFC intake (days)
 </td>
 <td style="text-align:left;">
-57.0000
-</td>
-<td style="text-align:left;">
-60.0000
+59.000
 </td>
 </tr>
 <tr>
 <td style="text-align:left;font-weight: bold;">
-CS Met. Energy (Mcal)
+Starter Met. Energy (Mcal)
 </td>
 <td style="text-align:left;">
-3.3900
-</td>
-<td style="text-align:left;">
-3.3900
+3.390
 </td>
 </tr>
 </tbody>
@@ -2339,12 +2357,12 @@ CS Met. Energy (Mcal)
 <h2>Performance</h2>
 <div class="row">
 <div class="col-xs-6">
-<div class="echarts4r html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-fc412a900939f48d5864" style="width:100%;height:500px;"></div>
-<script type="application/json" data-for="htmlwidget-fc412a900939f48d5864">{"x":{"theme":"roma","tl":false,"draw":true,"renderer":"svg","events":[],"buttons":[],"opts":{"yAxis":[{"show":true,"name":"BWcor","nameLocation":"center","nameTextStyle":{"color":"#666666","fontWeight":"bold"},"nameGap":30}],"xAxis":[{"type":"value","name":"Days of Life","nameLocation":"center","nameTextStyle":{"color":"#666666","fontWeight":"bold"},"nameGap":30}],"legend":{"data":["HighPerf","LowPerf"]},"series":[{"data":[{"value":[1,40.696]},{"value":[2,41.379]},{"value":[3,42.051]},{"value":[4,42.711]},{"value":[5,43.359]},{"value":[6,43.998]},{"value":[7,44.627]},{"value":[8,45.247]},{"value":[9,45.858]},{"value":[10,46.461]},{"value":[11,47.418]},{"value":[12,48.36]},{"value":[13,49.287]},{"value":[14,50.2]},{"value":[15,51.1]},{"value":[16,51.987]},{"value":[17,52.862]},{"value":[18,53.731]},{"value":[19,54.596]},{"value":[20,55.457]},{"value":[21,56.315]},{"value":[22,57.171]},{"value":[23,58.025]},{"value":[24,58.878]},{"value":[25,59.731]},{"value":[26,60.584]},{"value":[27,61.438]},{"value":[28,62.293]},{"value":[29,63.15]},{"value":[30,64.01000000000001]},{"value":[31,64.873]},{"value":[32,65.739]},{"value":[33,66.61]},{"value":[34,67.485]},{"value":[35,68.366]},{"value":[36,68.80200000000001]},{"value":[37,69.264]},{"value":[38,69.751]},{"value":[39,70.262]},{"value":[40,70.798]},{"value":[41,71.35899999999999]},{"value":[42,71.94499999999999]},{"value":[43,72.557]},{"value":[44,73.193]},{"value":[45,73.855]},{"value":[46,74.54300000000001]},{"value":[47,75.258]},{"value":[48,75.999]},{"value":[49,76.768]},{"value":[50,77.56399999999999]},{"value":[51,78.38800000000001]},{"value":[52,79.241]},{"value":[53,80.123]},{"value":[54,81.03400000000001]},{"value":[55,81.976]},{"value":[56,82.949]},{"value":[57,83.88800000000001]},{"value":[58,84.858]},{"value":[59,85.86]},{"value":[60,86.893]},{"value":[61,87.958]},{"value":[62,89.056]},{"value":[63,90.187]},{"value":[64,91.34999999999999]},{"value":[65,92.54600000000001]},{"value":[66,93.77500000000001]},{"value":[67,95.03700000000001]},{"value":[68,96.33199999999999]},{"value":[69,97.661]},{"value":[70,99.024]},{"value":[71,100.421]},{"value":[72,101.853]},{"value":[73,103.319]},{"value":[74,104.82]},{"value":[75,106.356]},{"value":[76,107.927]},{"value":[77,109.533]},{"value":[78,111.175]},{"value":[79,112.853]},{"value":[80,114.566]},{"value":[81,116.316]},{"value":[82,118.102]},{"value":[83,119.924]},{"value":[84,121.782]},{"value":[85,123.678]},{"value":[86,125.61]},{"value":[87,127.58]},{"value":[88,129.587]},{"value":[89,131.631]},{"value":[90,133.713]},{"value":[91,135.833]},{"value":[92,137.991]},{"value":[93,140.187]},{"value":[94,142.422]},{"value":[95,144.695]},{"value":[96,147.007]},{"value":[97,149.358]},{"value":[98,151.748]},{"value":[99,154.177]},{"value":[100,156.646]}],"yAxisIndex":0,"xAxisIndex":0,"name":"HighPerf","type":"line","coordinateSystem":"cartesian2d","smooth":true},{"data":[{"value":[1,40.515]},{"value":[2,41.024]},{"value":[3,41.523]},{"value":[4,42.013]},{"value":[5,42.493]},{"value":[6,42.964]},{"value":[7,43.426]},{"value":[8,43.881]},{"value":[9,44.33]},{"value":[10,44.773]},{"value":[11,45.21]},{"value":[12,45.642]},{"value":[13,46.069]},{"value":[14,46.492]},{"value":[15,46.91]},{"value":[16,47.326]},{"value":[17,47.746]},{"value":[18,48.17]},{"value":[19,48.598]},{"value":[20,49.031]},{"value":[21,49.469]},{"value":[22,49.913]},{"value":[23,50.363]},{"value":[24,50.819]},{"value":[25,51.282]},{"value":[26,51.753]},{"value":[27,52.232]},{"value":[28,52.72]},{"value":[29,53.217]},{"value":[30,53.724]},{"value":[31,54.241]},{"value":[32,54.769]},{"value":[33,55.309]},{"value":[34,55.861]},{"value":[35,56.426]},{"value":[36,57.004]},{"value":[37,57.596]},{"value":[38,58.202]},{"value":[39,58.824]},{"value":[40,59.462]},{"value":[41,60.116]},{"value":[42,60.787]},{"value":[43,61.476]},{"value":[44,62.183]},{"value":[45,62.909]},{"value":[46,63.654]},{"value":[47,64.419]},{"value":[48,65.205]},{"value":[49,66.01300000000001]},{"value":[50,66.843]},{"value":[51,67.696]},{"value":[52,68.572]},{"value":[53,69.47199999999999]},{"value":[54,70.39700000000001]},{"value":[55,71.346]},{"value":[56,72.321]},{"value":[57,73.184]},{"value":[58,74.09999999999999]},{"value":[59,75.069]},{"value":[60,76.074]},{"value":[61,77.111]},{"value":[62,78.181]},{"value":[63,79.28400000000001]},{"value":[64,80.42]},{"value":[65,81.59]},{"value":[66,82.79300000000001]},{"value":[67,84.029]},{"value":[68,85.29900000000001]},{"value":[69,86.604]},{"value":[70,87.943]},{"value":[71,89.316]},{"value":[72,90.724]},{"value":[73,92.167]},{"value":[74,93.645]},{"value":[75,95.15900000000001]},{"value":[76,96.708]},{"value":[77,98.29300000000001]},{"value":[78,99.913]},{"value":[79,101.569]},{"value":[80,103.261]},{"value":[81,104.99]},{"value":[82,106.755]},{"value":[83,108.557]},{"value":[84,110.396]},{"value":[85,112.272]},{"value":[86,114.185]},{"value":[87,116.135]},{"value":[88,118.123]},{"value":[89,120.149]},{"value":[90,122.212]},{"value":[91,124.313]},{"value":[92,126.453]},{"value":[93,128.631]},{"value":[94,130.847]},{"value":[95,133.102]},{"value":[96,135.396]},{"value":[97,137.729]},{"value":[98,140.101]},{"value":[99,142.512]},{"value":[100,144.963]}],"yAxisIndex":0,"xAxisIndex":0,"name":"LowPerf","type":"line","coordinateSystem":"cartesian2d","smooth":true}],"tooltip":{"trigger":"axis","axis_pointer":{"type":"cross"}},"title":[{"text":"Scenarios"}]},"dispose":true},"evals":[],"jsHooks":[]}</script>
+<div class="echarts4r html-widget html-fill-item" id="htmlwidget-31435cef5620d1999727" style="width:100%;height:500px;"></div>
+<script type="application/json" data-for="htmlwidget-31435cef5620d1999727">{"x":{"theme":"roma","tl":false,"draw":true,"renderer":"svg","events":[],"buttons":[],"opts":{"yAxis":[{"show":true,"name":"BW_cor","nameLocation":"center","nameGap":30,"nameTextStyle":{"color":"#666666","fontWeight":"bold"}}],"xAxis":[{"type":"value","name":"Days on Feed","nameLocation":"center","nameTextStyle":{"color":"#666666","fontWeight":"bold"}}],"legend":{"data":["Scenario name 1"]},"series":[{"data":[{"value":[1,40.696]},{"value":[2,41.379]},{"value":[3,42.051]},{"value":[4,42.711]},{"value":[5,43.359]},{"value":[6,43.998]},{"value":[7,44.627]},{"value":[8,45.247]},{"value":[9,45.858]},{"value":[10,46.461]},{"value":[11,46.877]},{"value":[12,47.29]},{"value":[13,47.7]},{"value":[14,48.107]},{"value":[15,48.517]},{"value":[16,48.932]},{"value":[17,49.351]},{"value":[18,49.775]},{"value":[19,50.204]},{"value":[20,50.639]},{"value":[21,51.079]},{"value":[22,51.525]},{"value":[23,51.978]},{"value":[24,52.438]},{"value":[25,52.905]},{"value":[26,53.38]},{"value":[27,53.864]},{"value":[28,54.357]},{"value":[29,54.859]},{"value":[30,55.372]},{"value":[31,55.895]},{"value":[32,56.43]},{"value":[33,56.977]},{"value":[34,57.536]},{"value":[35,58.108]},{"value":[36,58.693]},{"value":[37,59.293]},{"value":[38,59.907]},{"value":[39,60.537]},{"value":[40,61.183]},{"value":[41,61.845]},{"value":[42,62.524]},{"value":[43,63.221]},{"value":[44,63.937]},{"value":[45,64.672]},{"value":[46,65.42700000000001]},{"value":[47,66.203]},{"value":[48,66.999]},{"value":[49,67.816]},{"value":[50,68.65600000000001]},{"value":[51,69.518]},{"value":[52,70.404]},{"value":[53,71.31399999999999]},{"value":[54,72.249]},{"value":[55,73.209]},{"value":[56,74.196]},{"value":[57,75.077]},{"value":[58,76.011]},{"value":[59,76.989]},{"value":[60,77.999]},{"value":[61,79.041]},{"value":[62,80.116]},{"value":[63,81.224]},{"value":[64,82.36499999999999]},{"value":[65,83.538]},{"value":[66,84.745]},{"value":[67,85.986]},{"value":[68,87.261]},{"value":[69,88.56999999999999]},{"value":[70,89.913]},{"value":[71,91.29000000000001]},{"value":[72,92.702]},{"value":[73,94.149]},{"value":[74,95.631]},{"value":[75,97.148]},{"value":[76,98.70099999999999]},{"value":[77,100.289]},{"value":[78,101.913]},{"value":[79,103.572]},{"value":[80,105.268]},{"value":[81,107]},{"value":[82,108.769]},{"value":[83,110.574]},{"value":[84,112.416]},{"value":[85,114.295]},{"value":[86,116.211]},{"value":[87,118.164]},{"value":[88,120.155]},{"value":[89,122.184]},{"value":[90,124.25]},{"value":[91,126.354]},{"value":[92,128.496]},{"value":[93,130.677]},{"value":[94,132.896]},{"value":[95,135.154]},{"value":[96,137.45]},{"value":[97,139.785]},{"value":[98,142.16]},{"value":[99,144.574]},{"value":[100,147.027]}],"yAxisIndex":0,"xAxisIndex":0,"name":"Scenario name 1","type":"line","coordinateSystem":"cartesian2d","smooth":true}],"tooltip":{"trigger":"axis","axis_pointer":{"type":"cross"}},"title":[{"text":"Scenarios"}]},"dispose":true},"evals":[],"jsHooks":[]}</script>
 </div>
 <div class="col-xs-6">
-<div class="echarts4r html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-baa38702e72632ef5204" style="width:100%;height:500px;"></div>
-<script type="application/json" data-for="htmlwidget-baa38702e72632ef5204">{"x":{"theme":"roma","tl":false,"draw":true,"renderer":"svg","events":[],"buttons":[],"opts":{"yAxis":[{"show":true,"name":"ADG","nameLocation":"center","nameTextStyle":{"color":"#666666","fontWeight":"bold"},"nameGap":30}],"xAxis":[{"type":"value","name":"Days of Life","nameLocation":"center","nameTextStyle":{"color":"#666666","fontWeight":"bold"},"nameGap":30}],"legend":{"data":["HighPerf","LowPerf"]},"series":[{"data":[{"value":[1,0.696]},{"value":[2,0.6830000000000001]},{"value":[3,0.672]},{"value":[4,0.66]},{"value":[5,0.648]},{"value":[6,0.639]},{"value":[7,0.629]},{"value":[8,0.62]},{"value":[9,0.611]},{"value":[10,0.603]},{"value":[11,0.957]},{"value":[12,0.9419999999999999]},{"value":[13,0.927]},{"value":[14,0.913]},{"value":[15,0.9]},{"value":[16,0.887]},{"value":[17,0.875]},{"value":[18,0.869]},{"value":[19,0.865]},{"value":[20,0.861]},{"value":[21,0.858]},{"value":[22,0.856]},{"value":[23,0.854]},{"value":[24,0.853]},{"value":[25,0.853]},{"value":[26,0.853]},{"value":[27,0.854]},{"value":[28,0.855]},{"value":[29,0.857]},{"value":[30,0.86]},{"value":[31,0.863]},{"value":[32,0.866]},{"value":[33,0.871]},{"value":[34,0.875]},{"value":[35,0.881]},{"value":[36,0.436]},{"value":[37,0.462]},{"value":[38,0.487]},{"value":[39,0.511]},{"value":[40,0.536]},{"value":[41,0.5610000000000001]},{"value":[42,0.586]},{"value":[43,0.612]},{"value":[44,0.636]},{"value":[45,0.662]},{"value":[46,0.6879999999999999]},{"value":[47,0.715]},{"value":[48,0.741]},{"value":[49,0.769]},{"value":[50,0.796]},{"value":[51,0.824]},{"value":[52,0.853]},{"value":[53,0.882]},{"value":[54,0.911]},{"value":[55,0.9419999999999999]},{"value":[56,0.973]},{"value":[57,0.9389999999999999]},{"value":[58,0.97]},{"value":[59,1.002]},{"value":[60,1.033]},{"value":[61,1.065]},{"value":[62,1.098]},{"value":[63,1.131]},{"value":[64,1.163]},{"value":[65,1.196]},{"value":[66,1.229]},{"value":[67,1.262]},{"value":[68,1.295]},{"value":[69,1.329]},{"value":[70,1.363]},{"value":[71,1.397]},{"value":[72,1.432]},{"value":[73,1.466]},{"value":[74,1.501]},{"value":[75,1.536]},{"value":[76,1.571]},{"value":[77,1.606]},{"value":[78,1.642]},{"value":[79,1.678]},{"value":[80,1.713]},{"value":[81,1.75]},{"value":[82,1.786]},{"value":[83,1.822]},{"value":[84,1.858]},{"value":[85,1.896]},{"value":[86,1.932]},{"value":[87,1.97]},{"value":[88,2.007]},{"value":[89,2.044]},{"value":[90,2.082]},{"value":[91,2.12]},{"value":[92,2.158]},{"value":[93,2.196]},{"value":[94,2.235]},{"value":[95,2.273]},{"value":[96,2.312]},{"value":[97,2.351]},{"value":[98,2.39]},{"value":[99,2.429]},{"value":[100,2.469]}],"yAxisIndex":0,"xAxisIndex":0,"name":"HighPerf","type":"line","coordinateSystem":"cartesian2d","smooth":true},{"data":[{"value":[1,0.515]},{"value":[2,0.509]},{"value":[3,0.499]},{"value":[4,0.49]},{"value":[5,0.48]},{"value":[6,0.471]},{"value":[7,0.462]},{"value":[8,0.455]},{"value":[9,0.449]},{"value":[10,0.443]},{"value":[11,0.437]},{"value":[12,0.432]},{"value":[13,0.427]},{"value":[14,0.423]},{"value":[15,0.418]},{"value":[16,0.416]},{"value":[17,0.42]},{"value":[18,0.424]},{"value":[19,0.428]},{"value":[20,0.433]},{"value":[21,0.438]},{"value":[22,0.444]},{"value":[23,0.45]},{"value":[24,0.456]},{"value":[25,0.463]},{"value":[26,0.471]},{"value":[27,0.479]},{"value":[28,0.488]},{"value":[29,0.497]},{"value":[30,0.507]},{"value":[31,0.517]},{"value":[32,0.528]},{"value":[33,0.54]},{"value":[34,0.552]},{"value":[35,0.5649999999999999]},{"value":[36,0.578]},{"value":[37,0.592]},{"value":[38,0.606]},{"value":[39,0.622]},{"value":[40,0.638]},{"value":[41,0.654]},{"value":[42,0.671]},{"value":[43,0.6889999999999999]},{"value":[44,0.707]},{"value":[45,0.726]},{"value":[46,0.745]},{"value":[47,0.765]},{"value":[48,0.786]},{"value":[49,0.8080000000000001]},{"value":[50,0.83]},{"value":[51,0.853]},{"value":[52,0.876]},{"value":[53,0.9]},{"value":[54,0.925]},{"value":[55,0.949]},{"value":[56,0.975]},{"value":[57,0.863]},{"value":[58,0.916]},{"value":[59,0.969]},{"value":[60,1.005]},{"value":[61,1.037]},{"value":[62,1.07]},{"value":[63,1.103]},{"value":[64,1.136]},{"value":[65,1.17]},{"value":[66,1.203]},{"value":[67,1.236]},{"value":[68,1.27]},{"value":[69,1.305]},{"value":[70,1.339]},{"value":[71,1.373]},{"value":[72,1.408]},{"value":[73,1.443]},{"value":[74,1.478]},{"value":[75,1.514]},{"value":[76,1.549]},{"value":[77,1.585]},{"value":[78,1.62]},{"value":[79,1.656]},{"value":[80,1.692]},{"value":[81,1.729]},{"value":[82,1.765]},{"value":[83,1.802]},{"value":[84,1.839]},{"value":[85,1.876]},{"value":[86,1.913]},{"value":[87,1.95]},{"value":[88,1.988]},{"value":[89,2.026]},{"value":[90,2.063]},{"value":[91,2.101]},{"value":[92,2.14]},{"value":[93,2.178]},{"value":[94,2.216]},{"value":[95,2.255]},{"value":[96,2.294]},{"value":[97,2.333]},{"value":[98,2.372]},{"value":[99,2.411]},{"value":[100,2.451]}],"yAxisIndex":0,"xAxisIndex":0,"name":"LowPerf","type":"line","coordinateSystem":"cartesian2d","smooth":true}],"tooltip":{"trigger":"axis","axis_pointer":{"type":"cross"}},"title":[{"text":"Scenarios"}]},"dispose":true},"evals":[],"jsHooks":[]}</script>
+<div class="echarts4r html-widget html-fill-item" id="htmlwidget-1ca67fa94b34c84d4676" style="width:100%;height:500px;"></div>
+<script type="application/json" data-for="htmlwidget-1ca67fa94b34c84d4676">{"x":{"theme":"roma","tl":false,"draw":true,"renderer":"svg","events":[],"buttons":[],"opts":{"yAxis":[{"show":true,"name":"ADG","nameLocation":"center","nameGap":30,"nameTextStyle":{"color":"#666666","fontWeight":"bold"}}],"xAxis":[{"type":"value","name":"Days on Feed","nameLocation":"center","nameTextStyle":{"color":"#666666","fontWeight":"bold"}}],"legend":{"data":["Scenario name 1"]},"series":[{"data":[{"value":[1,0.696]},{"value":[2,0.6830000000000001]},{"value":[3,0.672]},{"value":[4,0.66]},{"value":[5,0.648]},{"value":[6,0.639]},{"value":[7,0.629]},{"value":[8,0.62]},{"value":[9,0.611]},{"value":[10,0.603]},{"value":[11,0.416]},{"value":[12,0.413]},{"value":[13,0.41]},{"value":[14,0.407]},{"value":[15,0.41]},{"value":[16,0.415]},{"value":[17,0.419]},{"value":[18,0.424]},{"value":[19,0.429]},{"value":[20,0.435]},{"value":[21,0.44]},{"value":[22,0.446]},{"value":[23,0.453]},{"value":[24,0.46]},{"value":[25,0.467]},{"value":[26,0.475]},{"value":[27,0.484]},{"value":[28,0.493]},{"value":[29,0.502]},{"value":[30,0.513]},{"value":[31,0.523]},{"value":[32,0.535]},{"value":[33,0.547]},{"value":[34,0.5590000000000001]},{"value":[35,0.572]},{"value":[36,0.585]},{"value":[37,0.6]},{"value":[38,0.614]},{"value":[39,0.63]},{"value":[40,0.646]},{"value":[41,0.662]},{"value":[42,0.679]},{"value":[43,0.697]},{"value":[44,0.716]},{"value":[45,0.735]},{"value":[46,0.755]},{"value":[47,0.776]},{"value":[48,0.796]},{"value":[49,0.8169999999999999]},{"value":[50,0.84]},{"value":[51,0.862]},{"value":[52,0.886]},{"value":[53,0.91]},{"value":[54,0.9350000000000001]},{"value":[55,0.96]},{"value":[56,0.987]},{"value":[57,0.881]},{"value":[58,0.9340000000000001]},{"value":[59,0.978]},{"value":[60,1.01]},{"value":[61,1.042]},{"value":[62,1.075]},{"value":[63,1.108]},{"value":[64,1.141]},{"value":[65,1.173]},{"value":[66,1.207]},{"value":[67,1.241]},{"value":[68,1.275]},{"value":[69,1.309]},{"value":[70,1.343]},{"value":[71,1.377]},{"value":[72,1.412]},{"value":[73,1.447]},{"value":[74,1.482]},{"value":[75,1.517]},{"value":[76,1.553]},{"value":[77,1.588]},{"value":[78,1.624]},{"value":[79,1.659]},{"value":[80,1.696]},{"value":[81,1.732]},{"value":[82,1.769]},{"value":[83,1.805]},{"value":[84,1.842]},{"value":[85,1.879]},{"value":[86,1.916]},{"value":[87,1.953]},{"value":[88,1.991]},{"value":[89,2.029]},{"value":[90,2.066]},{"value":[91,2.104]},{"value":[92,2.142]},{"value":[93,2.181]},{"value":[94,2.219]},{"value":[95,2.258]},{"value":[96,2.296]},{"value":[97,2.335]},{"value":[98,2.375]},{"value":[99,2.414]},{"value":[100,2.453]}],"yAxisIndex":0,"xAxisIndex":0,"name":"Scenario name 1","type":"line","coordinateSystem":"cartesian2d","smooth":true}],"tooltip":{"trigger":"axis","axis_pointer":{"type":"cross"}},"title":[{"text":"Scenarios"}]},"dispose":true},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <hr />

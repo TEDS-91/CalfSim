@@ -19,7 +19,7 @@ app_ui <- function(request) {
     ),
 
     bslib::page_navbar(
-      title = "CalfSim",
+      title = div(img(src = "www/calfsimlogo.png", height = "70px", width = "100px"), ""),
       #bg = "#66AC47",
       id = "nav",
       fillable_mobile = TRUE,
@@ -32,10 +32,20 @@ app_ui <- function(request) {
         title = "Inputs",
         value = "Inputs",
         mod_inputs_page_ui("requirements_calculations"),
-        actionButton("simulate_button",
-                     label = "Simulate!",
-                     icon = tags$i(fontawesome::fa("person-running"))),
-        mod_data_table_ui("dataSimulated"),
+
+        fluidRow(
+          column(offset = 10, width = 2,
+                 actionButton("simulate_button",
+                              label = "Simulate",
+                              icon = tags$i(fontawesome::fa("person-running")),
+                              style = "color: white; background-color: #036c15; border-color: #036c15") |>
+                   bslib::tooltip(
+                     paste("Simulate the calf growth based on the inputs provided.", "\n",
+                     "Hitting this button is mandatory to get the simulation outcomes.")
+                   )
+          )
+        )#,
+        #mod_data_table_ui("dataSimulated")
       ),
       bslib::nav_panel(
         title = "Dashboard",
@@ -45,19 +55,24 @@ app_ui <- function(request) {
         mod_descriptive_pre_weaning_performance_ui("descriptive_pre_weaning_performance")
       ),
       bslib::nav_panel(
-        title = "Predictions vs Observations",
-        mod_observed_vs_predicted_ui("observed_vs_predicted"),
-        "Content to be added"
+        title = "On-farm Assessment",
+        mod_observed_vs_predicted_ui("observed_vs_predicted")
       ),
       # bslib::nav_panel(
       #   title = "Nutrient Requirements NASEM (2021)",
       #   mod_nutrient_requirements_ui("NASEM")
       # ),
       bslib::nav_panel(
-        title = "About CalfSim model",
+        title = "About CalfSim",
         mod_mod_calfsim_info_ui("mod_calfsim_info_1")
       )
-    )
+    ),
+    # This will add a logo at the bottom across all tabs
+    hr(),
+    tags$footer(
+      div(style = "text-align: center; padding: 10px 0;",
+          img(src = "www/logolab.png", height = "120px", width = "150px"),
+      ))
   )
 }
 

@@ -13,20 +13,57 @@ mod_observed_vs_predicted_ui <- function(id){
 
     bslib::card(
       bslib::card_header(
-        class = "bg-dark",
+        class = "bg-green",
+        "Animal, Management, Environmental, and Liquid Diet Inputs."),
+      bslib::layout_column_wrap(
+        width = NULL,
+        height = 270,
+        style = htmltools::css(grid_template_columns = "1.3fr 2fr"),
+        bslib::card(
+          fluidRow(
+            column(6,
+                   numericInput(ns("temp"), label = h6(strong("Aver. Temp. (C):")), value = 15)),
+            column(6,
+                   numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 56)))),
+        bslib::card(
+          mod_milk_composition_ui(ns("milk_milk_replacer_composition")))
+      )
+    ),
+    mod_starter_composition_ui(ns("starter_composition")),
+    bslib::card(
+      bslib::card_header(
+        class = "bg-green",
+        "Scenarios for Milk Allowance Plans."),
+      mod_dynamic_scenarios_ui(ns("on_farm_scenario"), scenario_name = "On Farm Data Scenario"),
+      fluidRow(
+        column(offset = 7, width = 3,
+               fileInput(ns("observedFile"), "Choose xlsx file",
+                         accept = c(".xlsx"))
+        ),
+        column(width = 2,
+               actionButton(ns("simulate_button"),
+                            label = "Simulate",
+                            icon = tags$i(fontawesome::fa("person-running")),
+                            style = "color: white; background-color: #036c15; border-color: #036c15")
+        )
+      ),
+    ),
+    textOutput(ns("data_preparation")),
+    bslib::card(
+      bslib::card_header(
+        class = "bg-green",
         "Observed vs Predicted."),
       height = 800,
       bslib::card_body(
 
-        plotly::plotlyOutput(ns("plotObservedPredicted"), height = 600, width = "50%"),
+        bslib::layout_column_wrap(
 
-        tableOutput(ns("modelEvaluationMetrics")),
+        plotly::plotlyOutput(ns("plotObservedPredicted"), height = 600),
 
-        fileInput(ns("observedFile"), "Choose xlsx file",
-                  accept = c(".xlsx")),
+        DT::DTOutput(ns("modelEvaluationMetrics"))),
 
         fluidRow(
-          column(offset = 10, 2,
+          column(offset = 9, 3,
                  downloadButton(ns("templateFile"),
                                 "Download Template!"))
         )
@@ -43,13 +80,45 @@ mod_observed_vs_predicted_server <- function(id){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
 
+    # dynamic scenarios
+
+    on_farm_feeding_plan <- reactive({
+
+      on_farm_feeding_plan <- mod_dynamic_scenarios_server("on_farm_scenario")
+
+    })
+
+    on_farm_feeding_plan_to_populate_get_requirements <- reactive({
+
+      on_farm_feeding_plan_to_populate_get_requirements <- milk_allowance_program(weaning_age       = input$weaning_age,
+                                                                                  nutritional_plans = on_farm_feeding_plan()()[["nutritional_plans"]],
+                                                                                  milk_allowance    = on_farm_feeding_plan()()[["milk_allowance"]],
+                                                                                  ages_of_change    = on_farm_feeding_plan()()[["days_of_change"]] )
+
+    })
+
+    output$data_preparation <- renderText({
+
+      on_farm_feeding_plan()
+      print(" ")
+
+    })
+
+    # starter composition
+
+    starter_composition <- mod_starter_composition_server("starter_composition")
+
+    # milk composition
+
+    milk_composition <- mod_milk_composition_server("milk_milk_replacer_composition")
+
     # dropbox access
 
-    token <- readRDS("inst/app/rdrop/droptoken.rds")
+    #token <- readRDS("inst/app/rdrop/droptoken.rds")
 
-    new_token <- token$refresh()
+    #new_token <- token$refresh()
 
-    saveRDS(new_token, "inst/app/rdrop/droptoken.rds")
+    #saveRDS(new_token, "inst/app/rdrop/droptoken.rds")
 
     dataUploaded <- reactive({
 
@@ -65,7 +134,7 @@ mod_observed_vs_predicted_server <- function(id){
 
     templateFile <- readxl::read_xlsx("data-raw/dataEntryTemplateCalfSim.xlsx")
 
-    predicoes <- reactive({
+    predicoes <- eventReactive(input$simulate_button, {
 
       if(is.null(dataUploaded())) {
 
@@ -86,19 +155,19 @@ mod_observed_vs_predicted_server <- function(id){
       for (i in 1:length(bezerros)) {
 
         predictions[[i]] <- get_calf_requirements(
-          liq_diet          = rep(5, 70),
-          liq_diet_me        = 4.6,
+          liq_diet          = on_farm_feeding_plan_to_populate_get_requirements(),
+          liq_diet_me        = milk_composition()[["milk_ME"]],
           starter_composition = list(
-            cs_ndf = 12,
-            cs_nfc = 50,
-            cs_cp = 22,
-            cs_ee = 6,
-            form_of_starter = "pelleted"
+            cs_ndf = starter_composition()[["cs_ndf"]],
+            cs_nfc = starter_composition()[["cs_nfc"]],
+            cs_cp = starter_composition()[["cs_cp"]],
+            cs_ee = starter_composition()[["cs_ee"]],
+            form_of_starter = starter_composition()[["form_of_starter"]]
           ),
-          liq_diet_dm        = 0.12,
+          liq_diet_dm        = milk_composition()[["liq_diet_dm"]],
           initial_bw           = bezerros[[i]]$initial_bw,
-          weaning_age       = 70,
-          average_temperature         = 20,
+          weaning_age       = input$weaning_age,
+          average_temperature         = input$temp,
           liq_diet_only      = FALSE,
           mature_weight    = 750,
           max_size         = 100
@@ -141,13 +210,14 @@ mod_observed_vs_predicted_server <- function(id){
           ggplot2::geom_smooth(method = "lm", se = TRUE) +
           ggplot2::labs(
             x = "Predicted Body Weight (kg)",
-            y = "Observed Body Weight (kg)"
+            y = "Observed Body Weight (kg)",
+            caption = "Note: Solid red line represents X = Y."
           )
       )
 
     })
 
-    output$modelEvaluationMetrics <- renderTable({
+    output$modelEvaluationMetrics <- DT::renderDT({
 
       nObs <- length(predicoes()$body_weight_kg)
 
@@ -159,9 +229,26 @@ mod_observed_vs_predicted_server <- function(id){
         ) |>
         dplyr::relocate(
           meanPred, meanObs, nObs, .before = "P-value t test"
+        ) |>
+        tidyr::pivot_longer(
+          cols = dplyr::everything(),
+          names_to = "Stats",
+          values_to = "Value"
+        ) |>
+        dplyr::mutate(
+          Value = round(Value, 2)
         )
 
-    })
+    }, options = list(paging = TRUE,
+                      scrollY = "400px",
+                      scrollX = "900px",
+                      pageLength = 10,
+                      rownames = FALSE,
+                      initComplete = htmlwidgets::JS(
+                        "function(settings, json) {",
+                        "$(this.api().table().header()).css({'font-size': '12px', 'background-color': '#007582', 'color': '#fff'});",
+                        "}")),
+    style = "bootstrap5")
 
     output$templateFile <- downloadHandler(
 
@@ -203,9 +290,6 @@ mod_observed_vs_predicted_server <- function(id){
                path = "calfsimdata")
 
     })
-
-
-
 
   })
 }

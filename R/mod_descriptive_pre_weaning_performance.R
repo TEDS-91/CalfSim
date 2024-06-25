@@ -13,11 +13,11 @@ mod_descriptive_pre_weaning_performance_ui <- function(id){
     bslib::card(
       full_screen = TRUE,
       bslib::card_header(
-        class = "bg-dark",
-        "Performance until weaning."),
-      height = 900,
+        class = "bg-green",
+        "Performance Until Weaning."),
+      height = 650,
       bslib::card_body(
-        min_height = 850,
+        min_height = 550,
         DT::DTOutput(ns("table")),
       )
     ),
@@ -86,9 +86,10 @@ mod_descriptive_pre_weaning_performance_server <- function(id, dataset){
       descriptive_data()
 
     }, options = list(paging = TRUE,
-                      scrollY = "600px",
+                      scrollY = "400px",
                       scrollX = "900px",
-                      pageLength = 20,
+                      pageLength = 10,
+                      rownames = FALSE,
                       initComplete = htmlwidgets::JS(
                         "function(settings, json) {",
                         "$(this.api().table().header()).css({'font-size': '12px', 'background-color': '#007582', 'color': '#fff'});",

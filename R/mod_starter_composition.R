@@ -36,17 +36,17 @@ mod_starter_composition_ui <- function(id){
           bslib::card(
             fluidRow(
               column(2,
-                     sliderInput(ns("CP"), label = h6(strong("CP (%):")), value = 21.2, min = 15, max = 30, step = 0.1)),
+                     numericInput(ns("CP"), label = h6(strong("CP (%):")), value = 21.2, min = 15, max = 30, step = 0.1)),
               column(2,
-                     sliderInput(ns("NDF"), label = h6(strong("NDF (%):")), value = 12.9, min = 5, max = 30, step = 0.1)),
+                     numericInput(ns("NDF"), label = h6(strong("NDF (%):")), value = 12.9, min = 5, max = 30, step = 0.1)),
               column(2,
-                     sliderInput(ns("NFC"), label = h6(strong("NFC (%):")), value = 55.79, min = 30, max = 70, step = 0.1)),
+                     numericInput(ns("NFC"), label = h6(strong("NFC (%):")), value = 55.79, min = 30, max = 70, step = 0.1)),
               column(2,
-                     sliderInput(ns("EE"), label = h6(strong("Fat (%):")), value = 3.9, min = 2, max = 9, step = 0.1)),
+                     numericInput(ns("EE"), label = h6(strong("Fat (%):")), value = 3.9, min = 2, max = 9, step = 0.1)),
               column(2,
-                     sliderInput(ns("ash"), label = h6(strong("Ash (%):")), value = 6.21, min = 3, max = 10, step = 0.1)),
+                     numericInput(ns("ash"), label = h6(strong("Ash (%):")), value = 6.21, min = 3, max = 10, step = 0.1)),
               column(2,
-                     sliderInput(ns("starter_cost"), label = h6(strong("Cost ($/DM):")), value = 3.50, min = 1, max = 10, step = 0.1)),
+                     numericInput(ns("starter_cost"), label = h6(strong("Cost ($/DM):")), value = 3.50, min = 1, max = 10, step = 0.1)),
               p("Remember: All components must sum up 100. The ash content will be calculated automatically.", style = "color: black; font-size: 14px;")
             )
           )
@@ -83,7 +83,7 @@ mod_starter_composition_server <- function(id){
 
       ash_cor <- 100 - input$CP - input$NDF - input$NFC - input$EE
 
-      updateNumericInput(session, "ash", value = ash_cor, max = round(ash_cor + 3, 0), min = max(0, round(ash_cor - 3), 0))
+      updateNumericInput(session, "ash", value = round(ash_cor, 2), max = round(ash_cor + 3, 0), min = max(0, round(ash_cor - 3), 0))
 
     })
 

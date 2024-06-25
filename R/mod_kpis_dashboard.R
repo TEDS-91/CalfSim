@@ -16,8 +16,16 @@ mod_kpis_dashboard_ui <- function(id){
     bslib::card(
       full_screen = TRUE,
       bslib::card_header(
-        "KPI's",
-        class = "bg-green"
+        "KPI's Until Weaning.",
+        class = "bg-green",
+        bslib::tooltip(
+          bsicons::bs_icon("info-circle"),
+          "
+          NFCI: cumulative Non-Fiber Carbohydrate intake.
+          15 kg of NFCI: days of life when the calf reaches 15 kg of NFCI.
+          ",
+          placement = "right"
+        )
       ),
       bslib::card_body(
         uiOutput(ns("kpis_dashboard_ui"))
@@ -98,7 +106,8 @@ mod_kpis_dashboard_server <- function(id, dataset){
                  title = variable,
                  value = alias,
                  showcase = bsicons::bs_icon(icon),
-                 showcase_layout = "top right"
+                 showcase_layout = "top right",
+                 theme = "bg-success"
                ))
       )
     }

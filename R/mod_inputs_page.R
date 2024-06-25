@@ -25,9 +25,10 @@ mod_inputs_page_ui <- function(id){
                  numericInput(ns("BW"), label = h6(strong("Birth Weight (kg):")), value = 40),
                  numericInput(ns("temp"), label = h6(strong("Aver. Temp. (C):")), value = 15)),
           column(4,
-                 numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 65)),
+                 numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 56)),
           column(4,
-              selectInput(ns("scenarios"), label = h6(strong("Number of Scenarios:")), choices = c(1, 2, 3, 4), selected = 1)))),
+              selectInput(ns("scenarios"), label = h6(strong("No. of Scenarios:")), choices = c(1, 2, 3, 4), selected = 1) |>
+                bslib::tooltip("Select the number of milk allowance scenarios to be simulated (max. 4).")))),
       bslib::card(
         mod_milk_composition_ui(ns("milk_milk_replacer_composition")))
       )
@@ -70,7 +71,7 @@ mod_inputs_page_server <- function(id, simulate_button){
 
     output$nutritional_plans_design <- renderUI({
 
-      cenarios <- lapply(1:input$scenarios, \(x) mod_dynamic_scenarios_ui(ns(paste0("scenario_", x)), scenario_name = paste0("Scenario id ", x)))
+      cenarios <- lapply(1:input$scenarios, \(x) mod_dynamic_scenarios_ui(ns(paste0("scenario_", x)), scenario_name = paste0("Scenario name ", x)))
 
         if(input$scenarios == 1) {
 
@@ -235,7 +236,8 @@ mod_inputs_page_server <- function(id, simulate_button){
 
     return(
       list(
-      data_frame_simulated = reactive({ calculating_requirements() })
+      data_frame_simulated = reactive({ calculating_requirements() }),
+      weaning_age = reactive({ input$weaning_age })
     )
   )
 

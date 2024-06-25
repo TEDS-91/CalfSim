@@ -12,7 +12,7 @@ mod_data_table_ui <- function(id){
   tagList(
     bslib::card(
       bslib::card_header(
-        class = "bg-dark",
+        class = "bg-green",
         "Table with all data simulated."),
       height = 800,
       bslib::card_body(

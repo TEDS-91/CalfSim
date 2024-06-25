@@ -13,7 +13,7 @@ mod_economics_ui <- function(id){
 
     bslib::card(
       bslib::card_header(
-        class = "bg-dark",
+        class = "bg-green",
         "Economics."),
       bslib::card_body(
         numericInput(ns("milk_cost"), label = "Milk Price or MR ($/l):", value = 0.35, min = 0, max = 1),

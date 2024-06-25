@@ -53,5 +53,14 @@ utils::globalVariables(c("scenario",
                          "liqDietOnly",
                          "liq_diet_all",
                          "liq_diet_intake",
-                         "me_from_liq_diet"
+                         "me_from_liq_diet",
+                         "Days on Feed",
+                         "Scenario",
+                         "fat_gain",
+                         "me_balance",
+                         "me_from_starter_intake",
+                         "met_protein_gain",
+                         "met_protein_maintenance",
+                         "protein_gain",
+                         "total_me_intake"
                          ))
