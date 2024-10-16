@@ -5,7 +5,7 @@ account: tadeuedersilva
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 10836337
-bundleId: 9231246
+bundleId: 9231259
 url: https://tadeuedersilva.shinyapps.io/calfsim/
 version: 1
 asMultiple: FALSE
