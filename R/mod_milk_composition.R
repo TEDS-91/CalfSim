@@ -75,8 +75,6 @@ mod_milk_composition_server <- function(id){
                                                                    total_solids = input$dry_matter)
       }
 
-      print(metabolizable_energy)
-
     })
 
     liq_diet_dm_cost <- reactive({

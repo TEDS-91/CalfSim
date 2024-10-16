@@ -42,13 +42,23 @@ mod_dynamic_scenarios_server <- function(id){
                    lapply(1:input$number_of_nut_plans, \(i) numericInput(ns(paste0("plan_", i)),
                                                                          label = strong(paste0(i, "° Phase (l/d):")),
                                                                          value = max((7 - i), 1)))),
+
             column(6,
                    lapply(1:(input$number_of_nut_plans - 1), \(i) numericInput(ns(paste0("days_", i)),
                                                                                label = strong(paste0(i, "° Change (days):")),
-                                                                               value = ((i * 10) ))))
+                                                                               value = ((i * 10) )))),
+            #uiOutput(ns("liter_to_pint"))
           )
         )
 
+    })
+
+    output$liter_to_pint <- renderUI({
+      fluidRow(
+        p(strong("Equiv. Pints/day:")),
+        lapply(1:input$number_of_nut_plans,
+               \(i) paste0(i, "° Phase: ", round(input[[paste0("plan_", i)]] * 0.473, 1), " "))
+      )
     })
 
     milk_allowance <- reactive({

@@ -1,6 +1,6 @@
 {
     "dialog-state": {
-        "query": "data-raw/dataEntryTemplateCalfSim.xlsx",
+        "query": "car",
         "path": "",
         "regex": false,
         "caseSensitive": false,
@@ -9,7 +9,7 @@
         "useGitGrep": true,
         "excludeGitIgnore": true,
         "excludeFilePatterns": [],
-        "resultsCount": 0,
+        "resultsCount": 269,
         "errorCount": 0,
         "replaceErrors": "",
         "projectRelative": true

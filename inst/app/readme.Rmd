@@ -1,0 +1,64 @@
+---
+title: "CalfSim Tool Documentation"
+author: "Dr. Tadeu Eder da Silva & Prof. Dr. João Costa"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Introduction
+
+Welcome to the CalfSim Tool, a free and user-friendly resource developed at the University of Vermont-Burlington, Costa Lab, under the leadership of Dr. Tadeu Eder da Silva and Prof. Dr. João Costa. This tool is designed for consultants and researchers to simulate calf performance under various nutritional plans, with nutritional requirements based on the NASEM (2021) guidelines, adapted for specific research needs.
+
+## Features
+
+CalfSim offers several key functionalities:
+
+- **Nutritional Plan Simulation:** Allows simulation of calf growth performance under different liquid diet scenarios.
+- **Customizable Inputs:** Users can input various parameters such as initial calf weight (kg), weaning age (days), average environmental temperature (°C), and the number of scenarios (1-4) they wish to simulate.
+- **Detailed Nutritional Settings:** Input detailed nutritional information for both whole milk or milk replacer, including protein (%), fat (%), ash (%), dry matter (%), dilution, and cost.
+- **Starter Composition:** Define the chemical composition of the starter feed, including protein (%), NDF (%), NFC (%), fat (%), ash (%), cost ($/kg DM), and physical form (pelleted or texturized).
+- **Milk Allowance Plans:** This critical section allows for the definition of scenarios for milk feeding during the lactation period, specifying changes in milk quantity and timing.
+
+# Getting Started
+
+## Accessing the Tool
+
+Navigate to the [CalfSim Tool](https://tadeuedersilva.shinyapps.io/calfsim/).
+
+## Input Section
+
+### Animal, Management, Environmental, and Liquid Diet Inputs
+
+- Enter the initial weight of the calf, weaning age, average environmental temperature, and the number of scenarios you intend to simulate.
+- Provide nutritional content for the chosen milk formula including protein, fat, ashes, dry matter percentage, dilution, and cost.
+
+### Starter Composition
+
+- Input the chemical composition of the starter diet.
+
+### Scenarios for Milk Allowance Plans
+
+- Name the scenarios and specify the number of changes in milk quantity during the lactation period.
+- Set the timing for these changes, ensuring they do not exceed the defined lactation period.
+
+## Simulating and Viewing Results
+
+After entering all required information, press the **Simulate** button located in the lower right corner of the interface. Immediately upon simulation, you will be redirected to the dashboard page where you can view and analyze the results.
+
+# Technology Stack
+
+- **R Shiny:** Empowers interactive web applications directly from R.
+- **bs4Dash:** Utilizes Bootstrap 4 for responsive Shiny dashboards.
+- **rhandsontable:** Adds hands-on table editing capabilities to Shiny applications.
+
+# Contributions
+
+Contributions to enhance or extend the functionality of CalfSim are welcome! Please follow standard Git practices for contributing to this project.
+
+# Support
+
+For support or to report bugs, please open an issue in this repository or contact the developers directly.
+
+# License
+
+This project is licensed under the MIT License. See LICENSE.md for more details.

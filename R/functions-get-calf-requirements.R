@@ -74,6 +74,8 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
                     "total_me_intake",
                     "liq_diet_ratio",
                     "me_temperature",
+                    "km_calc",
+                    "net_energy_maint",
                     "me_maintenance",
                     "me_balance",
                     "me_ef_starter",
@@ -115,19 +117,13 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
 
   EBW[1] <- empty_body_weight(BW[1], liquid_diet_only = liquid_diet_only[1], weaned = weaned[1])
 
-  liq_diet_all[1] <- liq_diet[1] # LD[1]
+  liq_diet_all[1] <- liq_diet[1]
 
   liq_diet_intake[1] <- liq_diet_all[1] * liq_diet_dm
 
   me_from_liq_diet[1] <- liq_diet_intake[1] * liq_diet_me
 
-  FPstarter[1] <- 1 / 7
-
-  #starter_intake[1] <- starter_intake_nasem(BW = BW[1], MEiLD = me_from_liq_diet[1], FPstarter = FPstarter[1], temperature = average_temperature)
-
-  #me_gap[1] <- me_gap(BW = BW[1], ADG = ADG[1], MEiLD = me_from_liq_diet[1])
-
-  #Quigley[1] <- starter_intake_quigley(me_gap = me_gap[1], age = 1, temperature = average_temperature, NDFDM = 18.3, PctForage = 0.6)
+  FPstarter[1] <- ifelse(((1 / 7) - 1) < 0, 0, ceiling((1 / 7) - 1))
 
   NASEM[1] <- starter_intake_nasem(BW = BW[1], MEiLD = me_from_liq_diet[1], FPstarter = FPstarter[1], temperature = average_temperature)
 
@@ -138,9 +134,6 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
 
   nfc_intake_cum[1] <- starter_intake[1] * starter_composition$cs_nfc / 100
 
-
-  #me_calf_starter[1] <- me_calf_starter(ccsNFCI = nfc_intake_cum[1], pelleted = TRUE, texturized = TRUE) #TO DO
-
   me_calf_starter[1] <- starter_met_energy(cs_ndf = starter_composition$cs_ndf,
                                 cs_nfc = starter_composition$cs_nfc,
                                 cs_cp = starter_composition$cs_cp,
@@ -149,7 +142,7 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
                                 nfc_intake = nfc_intake_cum[1])
 
 
-  me_from_starter_intake[1] <- starter_intake[1] * me_calf_starter[1] #solDietME
+  me_from_starter_intake[1] <- starter_intake[1] * me_calf_starter[1]
 
   total_dmi[1] <- liq_diet_intake[1] + starter_intake[1]
 
@@ -161,11 +154,15 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
 
   me_temperature[1] <- NEtemperature(EBW = EBW[1], age = days_of_life[1], temperature = average_temperature)
 
-  me_maintenance[1] <- NEm(EBW[1], F) / km(liquid_diet_only = liquid_diet_only[1]) / 1000 + (me_temperature[1] / km(liquid_diet_only = liquid_diet_only[1]))
+  km_calc[1] <- km(ME = me_calf_starter[1], liquid_diet_only = TRUE, weaned = weaned[1])
+
+  net_energy_maint[1] <- NEm(EBW[1], weaned = FALSE)
+
+  me_maintenance[1] <- net_energy_maint[1] / km(liquid_diet_only = liquid_diet_only[1]) / 1000 + (me_temperature[1] / km(liquid_diet_only = liquid_diet_only[1]))
 
   me_balance[1] <- total_me_intake[1] - me_maintenance[1]
 
-  me_ef_starter[1] <- kg_solids(ME = me_calf_starter[1]) #solDietME)
+  me_ef_starter[1] <- kg_solids(ME = me_calf_starter[1])
 
   me_ef_liq_diet[1] <- 0.55
 
@@ -221,19 +218,13 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
 
     EBW[i] <- empty_body_weight(BW[i], liquid_diet_only = liquid_diet_only[i], weaned = weaned[i])
 
-    liq_diet_all[i] <- liq_diet[i] #LD[i]
+    liq_diet_all[i] <- liq_diet[i]
 
     liq_diet_intake[i] <- ifelse(i <= weaning_age, liq_diet_all[i] * liq_diet_dm, 0)
 
     me_from_liq_diet[i] <- liq_diet_intake[i] * liq_diet_me
 
-    FPstarter[i] <- i / 7
-
-    #starter_intake[i] <- starter_intake_nasem(BW = BW[i], MEiLD = me_from_liq_diet[i], FPstarter = FPstarter[i], temperature = average_temperature)
-
-    #me_gap[i] <- me_gap(BW = BW[i], ADG = ADG[i], MEiLD = me_from_liq_diet[i])
-
-    #Quigley[i] <- starter_intake_quigley(me_gap = me_gap[i], age = i, temperature = average_temperature, NDFDM = 18.3, PctForage = 0.6)
+    FPstarter[i] <- ifelse(((i / 7) - 2) < 0, 0, (i / 7) - 2)
 
     NASEM[i] <- starter_intake_nasem(BW = BW[i], MEiLD = me_from_liq_diet[i], FPstarter = FPstarter[i], temperature = average_temperature)
 
@@ -256,9 +247,6 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
                                   form_of_starter = starter_composition$form_of_starter,
                                   nfc_intake = nfc_intake_cum[i])
 
-
-
-
     me_from_starter_intake[i] <- starter_intake[i] * me_calf_starter[i] #solDietME
 
     total_dmi[i] <- liq_diet_intake[i] + starter_intake[i]
@@ -271,11 +259,16 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
 
     me_temperature[i] <- NEtemperature(EBW = EBW[i], age = days_of_life[i], temperature = average_temperature)
 
-    me_maintenance[i] <- NEm(EBW[i], F) / km(liquid_diet_only = liquid_diet_only[i]) / 1000 + (me_temperature[i] / km(liquid_diet_only = liquid_diet_only[i]))
+    km_calc[i] <- km(ME = me_calf_starter[i], liquid_diet_only = TRUE, weaned = weaned[i])
+
+    net_energy_maint[i] <- NEm(EBW[i], weaned = weaned[i])
+
+    # TODO: Check if the function km is correct
+    me_maintenance[i] <- net_energy_maint[i] / km(liquid_diet_only = liquid_diet_only[i], weaned = weaned[i]) / 1000 + (me_temperature[i] / km(liquid_diet_only = liquid_diet_only[i], weaned = weaned[i]))
 
     me_balance[i] <- total_me_intake[i] - me_maintenance[i]
 
-    me_ef_starter[i] <- kg_solids(ME = me_calf_starter[i]) #solDietME)
+    me_ef_starter[i] <- kg_solids(ME = me_calf_starter[i])
 
     me_ef_liq_diet[i] <- 0.55
 
@@ -332,7 +325,6 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
       liq_diet_intake,
       me_from_liq_diet,
       FPstarter,
-      #Quigley,
       NASEM,
       silva2019,
       starter_intake,
@@ -343,6 +335,8 @@ get_calf_requirements <- function(liq_diet           = rep(6, 70),
       total_dmi,
       total_me_intake,
       liq_diet_ratio,
+      km_calc,
+      net_energy_maint,
       me_temperature,
       me_maintenance,
       me_balance,

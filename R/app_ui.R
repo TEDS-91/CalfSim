@@ -19,7 +19,7 @@ app_ui <- function(request) {
     ),
 
     bslib::page_navbar(
-      title = div(img(src = "www/calfsimlogo.png", height = "70px", width = "100px"), ""),
+      title = div(img(src = "www/calfsimlogo.jpeg", height = "70px", width = "100px"), ""),
       #bg = "#66AC47",
       id = "nav",
       fillable_mobile = TRUE,
@@ -59,9 +59,19 @@ app_ui <- function(request) {
         mod_observed_vs_predicted_ui("observed_vs_predicted")
       ),
       # bslib::nav_panel(
+      #   title = "All dynamic",
+      #   mod_all_dynamic_scenarios_ui("all_dynamic_scenarios_1")
+      # ),
+      # bslib::nav_panel(
       #   title = "Nutrient Requirements NASEM (2021)",
       #   mod_nutrient_requirements_ui("NASEM")
       # ),
+      bslib::nav_panel(
+        title = "Read Me",
+        htmltools::tags$iframe(src = "www/readme.html",
+                               width = '100%',
+                               height = 1000,  style = "border:none;")
+      ),
       bslib::nav_panel(
         title = "About CalfSim",
         mod_mod_calfsim_info_ui("mod_calfsim_info_1")

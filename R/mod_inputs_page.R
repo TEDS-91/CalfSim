@@ -23,7 +23,8 @@ mod_inputs_page_ui <- function(id){
         fluidRow(
           column(4,
                  numericInput(ns("BW"), label = h6(strong("Birth Weight (kg):")), value = 40),
-                 numericInput(ns("temp"), label = h6(strong("Aver. Temp. (C):")), value = 15)),
+                 numericInput(ns("temp"), label = h6(strong("Aver. Temp. (C):")), value = 15),
+                 uiOutput(ns("temp_F"))),
           column(4,
                  numericInput(ns("weaning_age"), label = h6(strong("Weaning Age (days):")), value = 56)),
           column(4,
@@ -39,8 +40,7 @@ mod_inputs_page_ui <- function(id){
         class = "bg-green",
         "Scenarios for Milk Allowance Plans."),
       uiOutput(ns("nutritional_plans_design"))
-    ),
-    textOutput(ns("data_preparation"))
+    )
   )
 }
 
@@ -50,6 +50,10 @@ mod_inputs_page_ui <- function(id){
 mod_inputs_page_server <- function(id, simulate_button){
   moduleServer( id, function(input, output, session){
     ns <- session$ns
+
+    output$temp_F <- renderUI({
+      p(paste0("Temp. (F): ", round(input$temp * 9/5 + 32, 2)))
+    })
 
 # -------------------------------------------------------------------------
 # Defining the milk composition -------------------------------------------
@@ -67,9 +71,9 @@ mod_inputs_page_server <- function(id, simulate_button){
 
       })
 
-    all_scenarios
-
     output$nutritional_plans_design <- renderUI({
+
+      all_scenarios()
 
       cenarios <- lapply(1:input$scenarios, \(x) mod_dynamic_scenarios_ui(ns(paste0("scenario_", x)), scenario_name = paste0("Scenario name ", x)))
 
@@ -155,13 +159,6 @@ mod_inputs_page_server <- function(id, simulate_button){
 
 
       milk_allowance_list
-
-    })
-
-    output$data_preparation <- renderText({
-
-      all_scenarios()
-      print(" ")
 
     })
 
